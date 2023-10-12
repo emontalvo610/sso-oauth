@@ -2,26 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+@import "../public/fonts/inter.css";
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: white;
+  margin: 0px;
+}
+
+* {
+  font-family: 'Inter';
+}
+
+a {
+  color: #3366FF;
+  text-decoration: underline;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #d6d6d6 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #d6d6d6;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
+/* Custom Buttons */
+.btn-simple {
+  @apply flex;
+  @apply justify-center;
+  @apply border border-solid;
+  @apply border-gray-300;
+  @apply shadow-none;
+  @apply font-semibold;
+  @apply !text-sm;
+  width: 120px;
+  height: 40px;
+}
+
+.btn-submit {
+  @apply border-none;
+  @apply h-11;
+  @apply text-md;
+  @apply font-semibold;
+  @apply w-full;
+  @apply justify-center;
+}
+
+.input-basic {
+  height: 44px;
+  @apply !text-md;
+  @apply text-gray-900;
+  @apply border border-solid;
+  @apply border-gray-300;
+  @apply shadow-none;
+  @apply font-normal;
+  @apply box-border;
 }
