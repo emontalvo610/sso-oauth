@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="box-border flex min-h-screen items-center justify-between p-6 sm:p-2">
+        <main className="box-border flex min-h-screen items-center justify-between p-6 sm:p-4">
           {children}
         </main>
       </body>

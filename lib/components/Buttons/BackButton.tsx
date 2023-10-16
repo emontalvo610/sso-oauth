@@ -8,7 +8,7 @@ const BackButton = () => {
       prefixIcon={<FontAwesomeIcon icon={faArrowLeft} width={12} height={12} />}
       size="md"
       variant="secondary"
-      className="btn-simple"
+      className="btn-simple w-[120px]"
     >
       Back
     </Button>

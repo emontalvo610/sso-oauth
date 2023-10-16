@@ -2,12 +2,13 @@ import BackButton from '@components/Buttons/BackButton';
 import Footer from '@components/Footers/Footer';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import FooterLayout from '@components/Layouts/FooterLayout';
+import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button, InputField } from '@pickleballinc/react-ui';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
-      <div className="flex-1 pb-24 sm:self-start sm:pt-[88px]">
+      <div className="flex-1 pb-24 sm:self-start sm:pt-[72px]">
         <BackButtonLayout>
           <BackButton />
         </BackButtonLayout>
@@ -36,21 +37,7 @@ export default function Home() {
                 Get Started
               </Button>
             </div>
-            <div className="mt-8 text-center text-sm font-normal leading-5 text-gray-600">
-              By signing up or logging in, I agree to PickleballBrackets.com's{' '}
-              <a href="https://pickleballbrackets.com/legal_Terms.aspx">
-                terms of service
-              </a>
-              ,{' '}
-              <a href="https://pickleballbrackets.com/legal_Privacy.aspx">
-                privacy policy
-              </a>
-              ,{' '}
-              <a href="https://pickleballbrackets.com/legal_DMCA.aspx">
-                and DMCA policy
-              </a>
-              .
-            </div>
+            <TermsAndPolicy />
           </div>
         </div>
         <FooterLayout>
