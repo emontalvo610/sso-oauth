@@ -49,10 +49,15 @@ export default function RegisterFormPage() {
                 className="input-basic"
               />
             </div>
-            <div className="mt-5 text-left">
+            <div className="mt-5 flex flex-wrap gap-5 text-left sm:flex-col">
               <InputField
                 label="State"
                 placeholder="Pick your state"
+                className="input-basic"
+              />
+              <InputField
+                label="Zip Code"
+                placeholder="Zip Code"
                 className="input-basic"
               />
             </div>

@@ -2,8 +2,11 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button, InputField } from '@pickleballinc/react-ui';
+import { useState } from 'react';
 
 export default function RegisterPage() {
+  const [email, setEmail] = useState('');
+
   return (
     <div className="flex-1 self-start pt-[72px]">
       <BackButtonLayout>
@@ -28,6 +31,8 @@ export default function RegisterPage() {
                 label="Email"
                 placeholder="Enter your email"
                 className="input-basic"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
             <Button variant="primary" className="btn-submit mt-8">
