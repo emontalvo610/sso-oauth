@@ -1,11 +1,14 @@
+'use client';
+
 import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
-import { Button, InputField } from '@pickleballinc/react-ui';
+import StaticInputField from '@lib/components/Forms/StaticInputField';
+import { Button } from '@pickleballinc/react-ui';
 import { useState } from 'react';
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('example@mail.com');
 
   return (
     <div className="flex-1 self-start pt-[72px]">
@@ -27,12 +30,12 @@ export default function RegisterPage() {
           </div>
           <div className="mt-8 w-full">
             <div className="text-left">
-              <InputField
+              <StaticInputField
                 label="Email"
                 placeholder="Enter your email"
                 className="input-basic"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onValueChange={setEmail}
               />
             </div>
             <Button variant="primary" className="btn-submit mt-8">

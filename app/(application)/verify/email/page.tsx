@@ -19,7 +19,7 @@ export default function VerifyEmailPage() {
           <div className="mt-5 text-md font-normal text-gray-500">
             Open the email and click on the link to complete your signup process
           </div>
-          <div className="mt-5 text-md font-normal text-gray-500">
+          <div className="mt-5 text-sm font-normal text-gray-500">
             Didn't receive the email? <LinkButton>Click to resend</LinkButton>
           </div>
         </div>

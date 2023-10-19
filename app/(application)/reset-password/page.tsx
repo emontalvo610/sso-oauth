@@ -1,3 +1,5 @@
+'use client';
+
 import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import { Button, InputField } from '@pickleballinc/react-ui';
@@ -33,6 +35,9 @@ export default function ResetPasswordPage() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
+              <div className="mt-1 text-sm font-normal text-gray-500">
+                Must be at least 8 characters
+              </div>
             </div>
             <div className="mt-5 text-left">
               <InputField
