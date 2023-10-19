@@ -3,10 +3,7 @@ const tailwindBaseConfig = require('@pickleballinc/configs');
 /** @type {import('tailwindcss').Config} */
 const config = {
   presets: [tailwindBaseConfig],
-  content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './lib/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./app/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -19,21 +16,25 @@ const config = {
           600: '#3182ce',
           700: '#2b6cb0',
           800: '#2c5282',
-          900: '#2a4365',
+          900: '#2a4365'
         },
+        primary: {
+          600: '#254EDB',
+          700: '#1939B7'
+        }
       },
       fontSize: {
         sm: '14px',
-        md: '16px',
+        md: '16px'
       }
     },
     screens: {
-      sm: { max: "639px" }
+      sm: { max: '639px' }
     }
   },
   plugins: [],
   corePlugins: {
     preflight: false
   }
-}
-export default config
+};
+export default config;
