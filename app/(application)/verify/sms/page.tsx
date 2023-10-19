@@ -39,7 +39,7 @@ export default function VerifySMSPage() {
                   icon={faEnvelope}
                   width={20}
                   height={20}
-                  className="border-red-700 pt-1"
+                  className="pt-1"
                 />
               }
               size="md"

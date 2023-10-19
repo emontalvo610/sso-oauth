@@ -1,6 +1,6 @@
 import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
-import { faArrowLeft } from '@fortawesome/pro-solid-svg-icons';
+import { faEnvelope, faPhone } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
@@ -25,7 +25,12 @@ export default function VerifyPage() {
           <div className="mt-8 w-full">
             <Button
               prefixIcon={
-                <FontAwesomeIcon icon={faArrowLeft} width={12} height={12} />
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  width={20}
+                  height={20}
+                  className="pt-1"
+                />
               }
               size="md"
               variant="secondary"
@@ -36,7 +41,12 @@ export default function VerifyPage() {
             <div className="my-3 text-md font-normal text-gray-500">OR</div>
             <Button
               prefixIcon={
-                <FontAwesomeIcon icon={faArrowLeft} width={12} height={12} />
+                <FontAwesomeIcon
+                  icon={faPhone}
+                  width={20}
+                  height={20}
+                  className="pt-1"
+                />
               }
               size="md"
               variant="secondary"

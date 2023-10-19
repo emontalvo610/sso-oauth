@@ -4,8 +4,29 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button, InputField, Radio } from '@pickleballinc/react-ui';
+import { useState } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function RegisterFormPage() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const temp = useGoogleReCaptcha();
+  console.log({ temp });
+  const [recaptchaResult, setRecaptchaResult] = useState(false);
+
+  const onSubmit = async () => {
+    if (!executeRecaptcha) return;
+    try {
+      const token = await executeRecaptcha();
+      if (!token) {
+        setRecaptchaResult(false);
+        console.log(recaptchaResult);
+      }
+    } catch (err) {
+      console.error(err);
+      setRecaptchaResult(false);
+    }
+  };
+
   return (
     <div className="mt-16 flex-1 pb-10 sm:mt-0 sm:self-start sm:pt-[72px]">
       <BackButtonLayout>
@@ -106,7 +127,11 @@ export default function RegisterFormPage() {
                 />
               </div>
             </div>
-            <Button variant="primary" className="btn-submit mt-8">
+            <Button
+              variant="primary"
+              className="btn-submit mt-8"
+              onClick={onSubmit}
+            >
               Get started
             </Button>
           </div>
