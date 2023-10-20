@@ -2,12 +2,9 @@
 
 import axios from 'axios';
 
-export async function verifyCaptcha(token: string | null) {
+export const validateRecaptchaToken = async (token: string) => {
   const res = await axios.post(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
   );
-  if (res.data.success) {
-    return 'success!';
-  }
-  throw new Error('Failed Captcha');
-}
+  return res.data.success;
+};
