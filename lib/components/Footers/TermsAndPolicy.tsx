@@ -1,5 +1,3 @@
-'use client';
-
 const TermsAndPolicy = () => {
   return (
     <div className="mt-8 text-center text-sm font-normal leading-5 text-gray-600">

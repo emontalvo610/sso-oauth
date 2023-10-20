@@ -1,5 +1,3 @@
-'use client';
-
 import type { FC, PropsWithChildren } from 'react';
 
 const HorizontalBar: FC<PropsWithChildren> = ({ children }) => {
