@@ -1,5 +1,3 @@
-'use client';
-
 import GoogleRecaptchaWrapper from '@lib/components/Wrappers/GoogleRecaptchaWrapper';
 
 export default function RegisterLayout({

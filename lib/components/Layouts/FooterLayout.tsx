@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC, PropsWithChildren } from 'react';
 
 const FooterLayout: FC<PropsWithChildren> = ({ children }) => {

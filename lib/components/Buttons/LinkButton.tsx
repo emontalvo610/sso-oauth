@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@pickleballinc/react-ui';
 import type { FC, PropsWithChildren } from 'react';
 

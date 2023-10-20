@@ -1,3 +1,5 @@
+'use client';
+
 import { faArrowLeft } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@pickleballinc/react-ui';
