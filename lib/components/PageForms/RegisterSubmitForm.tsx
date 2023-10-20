@@ -16,14 +16,12 @@ export default function RegisterSubmitForm() {
     if (!executeRecaptcha) return;
     try {
       const token = await executeRecaptcha();
-      console.log({ token });
       if (!token) {
         setRecaptchaResult(false);
-        console.log(recaptchaResult);
         return;
       }
       const result = await validateRecaptchaToken(token);
-      alert(result);
+      setRecaptchaResult(result);
     } catch (err) {
       console.error(err);
       setRecaptchaResult(false);
@@ -130,6 +128,12 @@ export default function RegisterSubmitForm() {
                 />
               </div>
             </div>
+            {!recaptchaResult && (
+              <div className="mt-4 text-sm text-red-600">
+                We were unable to verify that you are not a robot. Please ensure
+                your browser has cookies and JavaScript enabled.
+              </div>
+            )}
             <Button
               variant="primary"
               className="btn-submit mt-8"
