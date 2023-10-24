@@ -19,9 +19,9 @@ export default function LoginForm() {
       <div className="flex justify-center">
         <div className="max-w-[360px] text-center">
           <div className="flex justify-center gap-6">
-            <img src="/images/logo-pb.png" width={64} height={64} />
-            <img src="/images/logo-pt.png" width={64} height={64} />
-            <img src="/images/logo-pb.png" width={64} height={64} />
+            <img src="/icons/logo-pt.svg" width={64} height={64} />
+            <img src="/icons/logo-p.svg" width={64} height={64} />
+            <img src="/icons/logo-pb.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Log in to your account
