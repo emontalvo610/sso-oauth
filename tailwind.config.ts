@@ -25,11 +25,13 @@ const config = {
       },
       fontSize: {
         sm: '14px',
-        md: '16px'
+        md: '16px',
+        xmd: '18px'
       }
     },
     screens: {
-      sm: { max: '639px' }
+      sm: { max: '639px' },
+      ld: { min: '640px' }
     }
   },
   plugins: [],

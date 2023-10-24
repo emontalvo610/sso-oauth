@@ -102,3 +102,16 @@ a {
   text-align: center;
   box-sizing: border-box !important;
 }
+
+.input-label {
+  @apply text-sm;
+  @apply text-gray-800;
+  @apply font-medium;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+
+.select-basic [class*="-ValueContainer"]{
+  @apply py-2;
+  height: 42px;
+}
