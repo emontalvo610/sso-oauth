@@ -2,7 +2,6 @@ import { proxy } from '@server/proxy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  console.log('@API Request from client');
   return new Promise((resolve, reject) => {
     // removes the api prefix from url
     req.url = req.url?.replace(/^\/api\/proxy/, '');

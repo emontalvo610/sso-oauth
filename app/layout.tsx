@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import '@pickleballinc/react-ui/stylesheets/bundle.css';
 
+import QueryProvider from '@lib/components/Wrappers/QueryProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="box-border flex min-h-screen items-center justify-between p-6 sm:p-4">
-          {children}
-        </main>
+        <QueryProvider>
+          <main className="box-border flex min-h-screen items-center justify-between p-6 sm:p-4">
+            {children}
+          </main>
+        </QueryProvider>
       </body>
     </html>
   );

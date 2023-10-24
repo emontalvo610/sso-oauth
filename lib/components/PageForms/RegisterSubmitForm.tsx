@@ -1,16 +1,30 @@
 'use client';
 
 import BackButton from '@components/Buttons/BackButton';
+import TermsAndPolicy from '@components/Footers/TermsAndPolicy';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
-import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
-import { validateRecaptchaToken } from '@lib/server/recaptcha';
-import { Button, InputField, Radio } from '@pickleballinc/react-ui';
+import { useGetCountries, useGetStates } from '@lib/hooks/country';
+import { Button, InputField, Radio, Select } from '@pickleballinc/react-ui';
+import { validateRecaptchaToken } from '@server/recaptcha';
 import { useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function RegisterSubmitForm() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [recaptchaResult, setRecaptchaResult] = useState(false);
+  const { data: countriesData } = useGetCountries();
+  const { data: statesData } = useGetStates();
+
+  const getCountryCodesOptions = () => {
+    return countriesData.results
+      .filter(country => country.internationalCountryCallingCode.length > 0)
+      .map(country => {
+        return {
+          value: country.id,
+          label: `${`${country.abbreviation} (${country.internationalCountryCallingCode}) `}`
+        };
+      });
+  };
 
   const onSubmit = async () => {
     if (!executeRecaptcha) return;
@@ -36,9 +50,9 @@ export default function RegisterSubmitForm() {
       <div className="flex justify-center">
         <div className="w-[512px] text-center sm:w-full sm:max-w-[360px]">
           <div className="flex justify-center gap-6">
-            <img src="/images/logo-pb.png" width={64} height={64} />
-            <img src="/images/logo-pt.png" width={64} height={64} />
-            <img src="/images/logo-pb.png" width={64} height={64} />
+            <img src="/icons/logo-pt.svg" width={64} height={64} />
+            <img src="/icons/logo-p.svg" width={64} height={64} />
+            <img src="/icons/logo-pb.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Create your account
@@ -55,30 +69,42 @@ export default function RegisterSubmitForm() {
               />
             </div>
             <div className="mt-5 flex flex-wrap gap-5 text-left sm:flex-col">
-              <InputField
-                label="First Name"
-                placeholder="Your first name"
-                className="input-basic"
-              />
-              <InputField
-                label="Last Name"
-                placeholder="Your last name"
-                className="input-basic"
+              <div className="flex-1">
+                <InputField
+                  label="First Name"
+                  placeholder="Your first name"
+                  className="input-basic"
+                />
+              </div>
+              <div className="flex-1">
+                <InputField
+                  label="Last Name"
+                  placeholder="Your last name"
+                  className="input-basic"
+                />
+              </div>
+            </div>
+            <div className="mt-5 text-left">
+              <div className="input-label">Country</div>
+              <Select
+                options={countriesData.results.map(item => {
+                  return { value: item.id, label: item.title };
+                })}
+                isClearable
+                placeholder="Pick your country"
               />
             </div>
             <div className="mt-5 text-left">
-              <InputField
-                label="Country"
-                placeholder="Pick your country"
-                className="input-basic"
+              <div className="input-label">State</div>
+              <Select
+                options={statesData.results.slice(0, 10).map(item => {
+                  return { value: item.id, label: item.title };
+                })}
+                isClearable
+                placeholder="Pick your state"
               />
             </div>
-            <div className="mt-5 flex flex-wrap gap-5 text-left sm:flex-col">
-              <InputField
-                label="State"
-                placeholder="Pick your state"
-                className="input-basic"
-              />
+            <div className="mt-5 text-left">
               <InputField
                 label="Zip Code"
                 placeholder="Zip Code"
@@ -104,12 +130,29 @@ export default function RegisterSubmitForm() {
                 type="password"
               />
             </div>
-            <div className="mt-10 text-left">
-              <InputField
-                label="Mobile Phone"
-                placeholder="000 000-0000"
-                className="input-basic"
-              />
+            <div className="mt-10 flex flex-wrap gap-2 text-left">
+              <div className="basis-[130px] sm:basis-[50%]">
+                <div className="input-label">Country</div>
+                <Select
+                  options={getCountryCodesOptions()}
+                  isClearable
+                  className="select-basic"
+                />
+              </div>
+              <div className="basis-[130px] sm:flex-1">
+                <InputField
+                  label="Area Code"
+                  placeholder="Area code"
+                  className="input-basic"
+                />
+              </div>
+              <div className="flex-1 sm:basis-[100%]">
+                <InputField
+                  label="Phone Number"
+                  placeholder="000-0000"
+                  className="input-basic"
+                />
+              </div>
             </div>
             <div className="mt-5 text-left">
               <div className="mt-1 text-sm font-normal text-gray-500">
