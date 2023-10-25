@@ -54,7 +54,9 @@ export default function LoginForm() {
               Log in
             </Button>
           </div>
-          <TermsAndPolicy />
+          <div className="mt-8">
+            <TermsAndPolicy />
+          </div>
         </div>
       </div>
     </div>

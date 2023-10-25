@@ -55,7 +55,9 @@ export default function VerifyChooseForm() {
               Verify via text message
             </Button>
           </div>
-          <TermsAndPolicy />
+          <div className="mt-8">
+            <TermsAndPolicy />
+          </div>
         </div>
       </div>
     </div>

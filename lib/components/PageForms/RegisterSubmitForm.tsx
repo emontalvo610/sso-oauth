@@ -131,11 +131,10 @@ export default function RegisterSubmitForm() {
               />
             </div>
             <div className="mt-10 flex flex-wrap gap-2 text-left">
-              <div className="basis-[130px] sm:basis-[50%]">
+              <div className="basis-[180px] sm:basis-[50%]">
                 <div className="input-label">Country</div>
                 <Select
                   options={getCountryCodesOptions()}
-                  isClearable
                   className="select-basic"
                 />
               </div>
@@ -185,7 +184,9 @@ export default function RegisterSubmitForm() {
               Get started
             </Button>
           </div>
-          <TermsAndPolicy />
+          <div className="mt-8">
+            <TermsAndPolicy />
+          </div>
         </div>
       </div>
     </div>
