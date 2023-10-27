@@ -45,6 +45,8 @@
         "jsx-a11y/no-static-element-interactions": "off",
         "jsx-a11y/anchor-is-valid": "off",
         "no-param-reassign": 0,
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "warn",
         "react/function-component-definition": "off", // Disable Airbnb's specific function type
         "react/destructuring-assignment": "off", // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
         "react/require-default-props": "off", // Allow non-defined react props as undefined

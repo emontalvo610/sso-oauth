@@ -3,17 +3,113 @@
 import BackButton from '@components/Buttons/BackButton';
 import TermsAndPolicy from '@components/Footers/TermsAndPolicy';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
+import { usePostRegister } from '@lib/hooks/auth';
 import { useGetCountries, useGetStates } from '@lib/hooks/country';
+import type { SelectOption } from '@lib/types/select';
 import { Button, InputField, Radio, Select } from '@pickleballinc/react-ui';
 import { validateRecaptchaToken } from '@server/recaptcha';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import type { ChangeEvent } from 'react';
+import { useMemo, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-export default function RegisterSubmitForm() {
+interface IFormProps {
+  email: string;
+}
+
+export default function RegisterSubmitForm(props: IFormProps) {
+  const [email, setEmail] = useState(props.email);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [countryId, setCountryId] = useState('');
+  const [, setStateId] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [phoneCountryId, setPhoneCountryId] = useState('');
+  const [phoneAreaCode, setPhoneAreaCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [, setTextAlertEnabled] = useState(-1);
+
+  const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [recaptchaResult, setRecaptchaResult] = useState(false);
+  const [recaptchaResult, setRecaptchaResult] = useState(true);
   const { data: countriesData } = useGetCountries();
   const { data: statesData } = useGetStates();
+  const postRegister = usePostRegister();
+
+  const stateTitle = useMemo(() => {
+    const country = countriesData.results.find(
+      country => country.id === countryId
+    );
+    return country?.stateTitle || 'State';
+  }, [countryId]);
+
+  const zipCodeTitle = useMemo(() => {
+    const country = countriesData.results.find(
+      country => country.id === countryId
+    );
+    return `${country?.zipCodeTitle || 'Zip'} Code`;
+  }, [countryId]);
+
+  const onEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const onFirstNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFirstName(event.target.value);
+  };
+
+  const onLastNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
+  };
+
+  const onCountryChange = (option: unknown) => {
+    console.log({ countryId });
+    setCountryId((option as SelectOption).value);
+  };
+
+  const onStateChange = (option: unknown) => {
+    setStateId((option as SelectOption).value);
+  };
+
+  const onZipCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setZipCode(event.target.value);
+  };
+
+  const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const onPassword2Change = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword2(event.target.value);
+  };
+
+  const onPhoneAreaCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhoneAreaCode(event.target.value);
+  };
+
+  const onPhoneCountryChange = (option: unknown) => {
+    setPhoneCountryId((option as SelectOption).value);
+  };
+
+  const onPhoneNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(event.target.value);
+  };
+
+  const getCountriesOptions = () => {
+    return countriesData.results.map(item => {
+      return { value: item.id, label: item.title };
+    });
+  };
+
+  const getStatesOptions = () => {
+    return statesData.results
+      .filter(state => state.countryId === countryId)
+      .map(state => {
+        return { value: state.id, label: state.title };
+      });
+  };
 
   const getCountryCodesOptions = () => {
     return countriesData.results
@@ -28,17 +124,36 @@ export default function RegisterSubmitForm() {
 
   const onSubmit = async () => {
     if (!executeRecaptcha) return;
+    let isHuman = false;
     try {
       const token = await executeRecaptcha();
       if (!token) {
         setRecaptchaResult(false);
         return;
       }
-      const result = await validateRecaptchaToken(token);
-      setRecaptchaResult(result);
+      isHuman = await validateRecaptchaToken(token);
+      setRecaptchaResult(isHuman);
     } catch (err) {
       console.error(err);
       setRecaptchaResult(false);
+    }
+
+    if (isHuman) {
+      try {
+        await postRegister({
+          email,
+          firstName,
+          lastName,
+          password,
+          phone: phoneNumber,
+          phoneAreaCode,
+          phoneCountryId: Number(phoneCountryId)
+        });
+        router.push(`/verify/email/${email}`);
+      } catch (err) {
+        console.error(err);
+        alert(`Something went wrong. Please try again some time later`);
+      }
     }
   };
 
@@ -66,6 +181,8 @@ export default function RegisterSubmitForm() {
                 label="Email"
                 placeholder="Enter your email"
                 className="input-basic"
+                value={email}
+                onChange={onEmailChange}
               />
             </div>
             <div className="mt-5 flex flex-wrap gap-5 text-left sm:flex-col">
@@ -74,6 +191,8 @@ export default function RegisterSubmitForm() {
                   label="First Name"
                   placeholder="Your first name"
                   className="input-basic"
+                  value={firstName}
+                  onChange={onFirstNameChange}
                 />
               </div>
               <div className="flex-1">
@@ -81,34 +200,36 @@ export default function RegisterSubmitForm() {
                   label="Last Name"
                   placeholder="Your last name"
                   className="input-basic"
+                  value={lastName}
+                  onChange={onLastNameChange}
                 />
               </div>
             </div>
             <div className="mt-5 text-left">
               <div className="input-label">Country</div>
               <Select
-                options={countriesData.results.map(item => {
-                  return { value: item.id, label: item.title };
-                })}
-                isClearable
+                options={getCountriesOptions()}
+                instanceId="country-select"
                 placeholder="Pick your country"
+                onChange={onCountryChange}
               />
             </div>
             <div className="mt-5 text-left">
-              <div className="input-label">State</div>
+              <div className="input-label">{stateTitle}</div>
               <Select
-                options={statesData.results.slice(0, 10).map(item => {
-                  return { value: item.id, label: item.title };
-                })}
-                isClearable
-                placeholder="Pick your state"
+                options={getStatesOptions()}
+                placeholder={`Pick your ${stateTitle.toLocaleLowerCase()}`}
+                instanceId="state-select"
+                onChange={onStateChange}
               />
             </div>
             <div className="mt-5 text-left">
               <InputField
-                label="Zip Code"
-                placeholder="Zip Code"
+                label={zipCodeTitle}
+                placeholder={zipCodeTitle}
                 className="input-basic"
+                value={zipCode}
+                onChange={onZipCodeChange}
               />
             </div>
             <div className="mt-10 text-left">
@@ -117,6 +238,8 @@ export default function RegisterSubmitForm() {
                 placeholder="Create a password"
                 className="input-basic"
                 type="password"
+                value={password}
+                onChange={onPasswordChange}
               />
               <div className="mt-1 text-sm font-normal text-gray-500">
                 Must be at least 8 characters
@@ -128,6 +251,8 @@ export default function RegisterSubmitForm() {
                 placeholder="Repeat the password"
                 className="input-basic"
                 type="password"
+                value={password2}
+                onChange={onPassword2Change}
               />
             </div>
             <div className="mt-10 flex flex-wrap gap-2 text-left">
@@ -136,6 +261,9 @@ export default function RegisterSubmitForm() {
                 <Select
                   options={getCountryCodesOptions()}
                   className="select-basic"
+                  instanceId="country-code-select"
+                  onChange={onPhoneCountryChange}
+                  placeholder="Country"
                 />
               </div>
               <div className="basis-[130px] sm:flex-1">
@@ -143,6 +271,8 @@ export default function RegisterSubmitForm() {
                   label="Area Code"
                   placeholder="Area code"
                   className="input-basic"
+                  value={phoneAreaCode}
+                  onChange={onPhoneAreaCodeChange}
                 />
               </div>
               <div className="flex-1 sm:basis-[100%]">
@@ -150,23 +280,29 @@ export default function RegisterSubmitForm() {
                   label="Phone Number"
                   placeholder="000-0000"
                   className="input-basic"
+                  value={phoneNumber}
+                  onChange={onPhoneNumberChange}
                 />
               </div>
             </div>
             <div className="mt-5 text-left">
               <div className="mt-1 text-sm font-normal text-gray-500">
-                Allow Pickleball Brackets to send you Text Alerts
+                Allow Pickleball.com to send you Text Alerts
               </div>
               <div className="flex gap-6">
                 <Radio
                   Text="Yes, get texts"
                   size="sm"
                   className="input-radio-basic"
+                  name="radio-alert"
+                  onChange={() => setTextAlertEnabled(1)}
                 />
                 <Radio
                   Text="No, don't get texts"
                   size="sm"
                   className="input-radio-basic"
+                  name="radio-alert"
+                  onChange={() => setTextAlertEnabled(0)}
                 />
               </div>
             </div>

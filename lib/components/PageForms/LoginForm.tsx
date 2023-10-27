@@ -5,11 +5,35 @@ import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
+import { usePostLogin } from '@lib/hooks/auth';
 import { Button, InputField } from '@pickleballinc/react-ui';
+import { useRouter } from 'next/navigation';
+import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
-export default function LoginForm() {
-  const [email, setEmail] = useState('example@mail.com');
+interface IFormProps {
+  email: string;
+}
+
+export default function LoginForm(props: IFormProps) {
+  const [email, setEmail] = useState(props.email);
+  const [password, setPassword] = useState('');
+  const postLogin = usePostLogin();
+  const router = useRouter();
+
+  const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const onSubmit = async () => {
+    try {
+      await postLogin({ email, password });
+      router.push('/profile');
+    } catch (error) {
+      console.error(`Error: login failed`, error);
+      alert('Login failed. Please try again with correct credentials.');
+    }
+  };
 
   return (
     <div className="flex-1 self-start pt-[72px]">
@@ -45,12 +69,18 @@ export default function LoginForm() {
                 placeholder="Input your password"
                 className="input-basic"
                 type="password"
+                value={password}
+                onChange={onPasswordChange}
               />
             </div>
             <div className="mt-6 text-right">
               <LinkButton>Forgot password</LinkButton>
             </div>
-            <Button variant="primary" className="btn-submit mt-6">
+            <Button
+              variant="primary"
+              className="btn-submit mt-6"
+              onClick={onSubmit}
+            >
               Log in
             </Button>
           </div>

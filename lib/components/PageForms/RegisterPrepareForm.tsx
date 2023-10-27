@@ -5,10 +5,20 @@ import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
 import { Button } from '@pickleballinc/react-ui';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function RegisterPrepareForm() {
-  const [email, setEmail] = useState('example@mail.com');
+interface IFormProps {
+  email: string;
+}
+
+export default function RegisterPrepareForm(props: IFormProps) {
+  const router = useRouter();
+  const [email, setEmail] = useState(props.email);
+
+  const onCreateAccount = () => {
+    router.push(`/register/${email}`);
+  };
 
   return (
     <div className="flex-1 self-start pt-[72px]">
@@ -38,7 +48,11 @@ export default function RegisterPrepareForm() {
                 onValueChange={setEmail}
               />
             </div>
-            <Button variant="primary" className="btn-submit mt-8">
+            <Button
+              variant="primary"
+              className="btn-submit mt-8"
+              onClick={onCreateAccount}
+            >
               Create your account
             </Button>
           </div>
