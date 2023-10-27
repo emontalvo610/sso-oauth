@@ -1,3 +1,4 @@
+import { Environment } from '@lib/server/environment';
 import { proxy } from '@server/proxy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -6,7 +7,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     // removes the api prefix from url
     req.url = req.url?.replace(/^\/api\/proxy/, '');
     if (req.headers['pb-user-token'] === undefined) {
-      req.headers['PB-API-TOKEN'] = process.env.API_KEY;
+      req.headers['PB-API-TOKEN'] = Environment.API_KEY;
     }
     /**
      * if an error occurs in the proxy, we will reject the promise.
