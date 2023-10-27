@@ -1,5 +1,5 @@
 export interface Country {
-  id: number;
+  id: string;
   abbreviation: string;
   title: string;
   internationalCountryCallingCode: string;
@@ -10,8 +10,8 @@ export interface Country {
 }
 
 export interface State {
-  id: number;
+  id: string;
   abbreviation: string;
   title: string;
-  countryId: number;
+  countryId: string;
 }
