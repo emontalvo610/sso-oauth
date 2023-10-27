@@ -6,6 +6,8 @@ import type {
   NextApiHandler
 } from 'next';
 
+import { Environment } from './environment';
+
 // This is where we specify the typings of req.session.*
 declare module 'iron-session' {
   interface IronSessionData {
@@ -14,7 +16,7 @@ declare module 'iron-session' {
 }
 
 export const sessionOptions = {
-  password: process.env.COOKIE_SECRET as string,
+  password: Environment.COOKIE_SECRET,
   cookieName: 'iron-session/pickleball/sso',
   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
   cookieOptions: {
@@ -23,7 +25,7 @@ export const sessionOptions = {
     secure: process.env.NODE_ENV === 'production',
     domain:
       process.env.NODE_ENV === 'production'
-        ? (process.env.COOKIE_DOMAIN as string)
+        ? Environment.COOKIE_DOMAIN
         : 'localhost'
   }
 };
