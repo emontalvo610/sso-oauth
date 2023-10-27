@@ -1,6 +1,10 @@
 import LinkButton from '@lib/components/Buttons/LinkButton';
 
-export default function VerifyEmailForm() {
+interface IFormProps {
+  email: string;
+}
+
+export default function VerifyEmailForm(props: IFormProps) {
   return (
     <div className="flex-1 self-start pt-[72px]">
       <div className="flex justify-center">
@@ -14,7 +18,7 @@ export default function VerifyEmailForm() {
           <div className="mt-5 text-md font-normal text-gray-500">
             An email was sent to
             <br />
-            <span className="text-gray-900">example@mail.com</span>
+            <span className="text-gray-900">{props.email}</span>
           </div>
           <div className="mt-5 text-md font-normal text-gray-500">
             Open the email and click on the link to complete your signup process

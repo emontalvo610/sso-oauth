@@ -1,5 +1,11 @@
 import VerifyEmailForm from '@lib/components/PageForms/VerifyEmailForm';
 
-export default function VerifyEmailPage() {
-  return <VerifyEmailForm />;
+interface IPageProps {
+  params: {
+    email: string;
+  };
+}
+
+export default function VerifyEmailPage({ params }: IPageProps) {
+  return <VerifyEmailForm email={params.email} />;
 }

@@ -1,6 +1,15 @@
-import { Button } from '@pickleballinc/react-ui';
+'use client';
 
-export default function ErrorForm() {
+import { Button } from '@pickleballinc/react-ui';
+import { useRouter } from 'next/navigation';
+
+export default function ErrorInvalidLinkForm() {
+  const router = useRouter();
+
+  const onBack2Login = () => {
+    router.push('/');
+  };
+
   return (
     <div className="flex-1 self-start pt-[72px]">
       <div className="flex justify-center">
@@ -15,7 +24,11 @@ export default function ErrorForm() {
             If you still need to reset your password, you can request a new
             reset email
           </div>
-          <Button variant="primary" className="btn-submit mt-8">
+          <Button
+            variant="primary"
+            className="btn-submit mt-8"
+            onClick={onBack2Login}
+          >
             Back to Log In
           </Button>
         </div>
