@@ -1,5 +1,16 @@
 export interface IUser {
   email: string;
+  firstName: string;
+  lastName: string;
+  countryId: string;
+  stateId: string;
+  zipCode: string;
+  password: string;
+  password2: string;
+  phoneCountryId: string;
+  phoneAreaCode: string;
+  phoneNumber: string;
+  textAlertEnabled: number;
   uuid: string;
   token: string;
   expiration: string;
@@ -20,5 +31,18 @@ export interface IUserRegisterPayload {
 
 export interface IUserLoginPayload {
   email: string;
+  password: string;
+}
+
+export interface IResendValidationEmailPayload {
+  email: string;
+}
+
+export interface IForgotPasswordRequestPayload {
+  email: string;
+}
+
+export interface IForgotPasswordPayload {
+  url: string;
   password: string;
 }
