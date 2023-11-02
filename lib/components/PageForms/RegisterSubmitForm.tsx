@@ -47,6 +47,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
     getValues,
     setValue,
     watch,
+    trigger,
     setError,
     clearErrors,
     handleSubmit,
@@ -56,28 +57,34 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const checkManualValidation = () => {
     const { countryId, stateId, phoneCountryId, textAlertEnabled } =
       getValues();
+    let valid = true;
     if (countryId) {
       clearErrors('countryId');
     } else {
       setError('countryId', { message: 'Country is required' });
+      valid = false;
     }
     if (stateId) {
       clearErrors('stateId');
     } else {
       setError('stateId', { message: 'State is required' });
+      valid = false;
     }
     if (phoneCountryId) {
       clearErrors('phoneCountryId');
     } else {
       setError('phoneCountryId', { message: 'Country is required' });
+      valid = false;
     }
     if (textAlertEnabled === undefined) {
       setError('textAlertEnabled', {
         message: 'Please select one of the alert options'
       });
+      valid = false;
     } else {
       clearErrors('textAlertEnabled');
     }
+    return valid;
   };
 
   const onSelectChange = (option: unknown, id: keyof IUser) => {
@@ -122,8 +129,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
 
   const onSubmit = async () => {
     setSubmitted(true);
-    checkManualValidation();
-    if (Object.keys(errors)?.length > 0) return;
+    const isValid = checkManualValidation() && (await trigger());
+    if (!isValid) return;
     if (!executeRecaptcha) return;
     let isHuman = false;
     try {
@@ -148,7 +155,10 @@ export default function RegisterSubmitForm(props: IFormProps) {
           password,
           phoneNumber,
           phoneAreaCode,
-          phoneCountryId
+          phoneCountryId,
+          countryId,
+          stateId,
+          zipCode
         } = getValues();
         await postRegister({
           email,
@@ -157,7 +167,10 @@ export default function RegisterSubmitForm(props: IFormProps) {
           password,
           phone: phoneNumber,
           phoneAreaCode,
-          phoneCountryId: Number(phoneCountryId)
+          phoneCountryId: Number(phoneCountryId),
+          countryId: Number(countryId),
+          stateId: Number(stateId),
+          zip: zipCode
         });
         router.push(`/signup-verify/email/${email}`);
       } catch (err) {

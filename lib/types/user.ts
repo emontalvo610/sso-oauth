@@ -27,6 +27,9 @@ export interface IUserRegisterPayload {
   phone: string;
   phoneCountryId: number;
   phoneAreaCode: string;
+  stateId: number;
+  countryId: number;
+  zip: string;
 }
 
 export interface IUserLoginPayload {
