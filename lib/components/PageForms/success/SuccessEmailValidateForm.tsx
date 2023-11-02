@@ -1,19 +1,15 @@
 'use client';
 
+import Background from '@lib/components/Extra/Background';
 import { Button } from '@pickleballinc/react-ui';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function SuccessEmailValidateForm() {
-  const router = useRouter();
-
-  const onBack2Login = () => {
-    router.push('/');
-  };
-
   return (
-    <div className="flex-1 self-start pt-[72px]">
-      <div className="flex justify-center">
-        <div className="max-w-[360px] text-center">
+    <>
+      <Background />
+      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center">
             <img src="/icons/icon-key.svg" width={64} height={64} />
           </div>
@@ -25,15 +21,13 @@ export default function SuccessEmailValidateForm() {
             <br />
             Click below to log in magically.
           </div>
-          <Button
-            variant="primary"
-            className="btn-submit mt-8"
-            onClick={onBack2Login}
-          >
-            Back to Log In
+          <Button variant="primary" className="btn-submit mt-8">
+            <Link href="/" className="link-none text-md">
+              Back to Log In
+            </Link>
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
