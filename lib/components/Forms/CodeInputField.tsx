@@ -42,7 +42,7 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 mi:scale-[85%] mi:gap-1 sm:gap-2">
       {[0, 1, 2, 3, 4, 5].map(index => (
         <Fragment key={index}>
           <InputField

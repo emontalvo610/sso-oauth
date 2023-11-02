@@ -38,7 +38,7 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
 
   const onKeyDown: any = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      if (onValueChange && inputRef.current) {
+      if (onValueChange && inputRef.current && inputRef.current.value) {
         onValueChange(inputRef.current.value);
       }
       setStatus(Status.STATIC);
@@ -69,7 +69,7 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
               onClick={onEditValue}
               onKeyDown={onEditValue}
             >
-              <FontAwesomeIcon icon={faPenLine} width={14} height={14} />
+              <FontAwesomeIcon icon={faPenLine} width={16} height={16} />
             </div>
           </div>
         </div>
