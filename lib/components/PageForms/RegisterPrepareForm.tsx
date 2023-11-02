@@ -8,6 +8,8 @@ import { Button } from '@pickleballinc/react-ui';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import Background from '../Extra/Background';
+
 interface IFormProps {
   email: string;
 }
@@ -21,12 +23,13 @@ export default function RegisterPrepareForm(props: IFormProps) {
   };
 
   return (
-    <div className="flex-1 self-start pt-[72px]">
+    <>
+      <Background />
       <BackButtonLayout>
         <BackButton />
       </BackButtonLayout>
-      <div className="flex justify-center">
-        <div className="max-w-[360px] text-center">
+      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center gap-6">
             <img src="/icons/logo-pt.svg" width={64} height={64} />
             <img src="/icons/logo-p.svg" width={64} height={64} />
@@ -61,6 +64,6 @@ export default function RegisterPrepareForm(props: IFormProps) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

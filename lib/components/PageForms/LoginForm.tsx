@@ -6,10 +6,16 @@ import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
 import { usePostLogin } from '@lib/hooks/auth';
+import type { IUser } from '@lib/types/user';
+import { passwordValidatorOptions } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import type { ChangeEvent } from 'react';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import Background from '../Extra/Background';
+import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 interface IFormProps {
   email: string;
@@ -17,31 +23,35 @@ interface IFormProps {
 
 export default function LoginForm(props: IFormProps) {
   const [email, setEmail] = useState(props.email);
-  const [password, setPassword] = useState('');
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<IUser>();
   const postLogin = usePostLogin();
   const router = useRouter();
 
-  const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const onSubmit = async () => {
+  const onSubmit = async (data: IUser) => {
     try {
-      await postLogin({ email, password });
+      await postLogin({ email, password: data.password });
       router.push('/profile');
-    } catch (error) {
-      console.error(`Error: login failed`, error);
-      alert('Login failed. Please try again with correct credentials.');
+    } catch (err) {
+      console.error(`Error: login failed`, err);
+      if (err instanceof AxiosError) {
+        setError('root.server', { message: err.response?.data.Message });
+      }
     }
   };
 
   return (
-    <div className="flex-1 self-start pt-[72px]">
+    <>
+      <Background />
       <BackButtonLayout>
         <BackButton />
       </BackButtonLayout>
-      <div className="flex justify-center">
-        <div className="max-w-[360px] text-center">
+      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center gap-6">
             <img src="/icons/logo-pt.svg" width={64} height={64} />
             <img src="/icons/logo-p.svg" width={64} height={64} />
@@ -54,41 +64,43 @@ export default function LoginForm(props: IFormProps) {
             Enter your password to log in
           </div>
           <div className="mt-8 w-full">
-            <div className="text-left">
-              <StaticInputField
-                label="Email"
-                placeholder="Enter your email"
-                className="input-basic"
-                value={email}
-                onValueChange={setEmail}
-              />
-            </div>
-            <div className="mt-5 text-left">
-              <InputField
-                label="Password"
-                placeholder="Input your password"
-                className="input-basic"
-                type="password"
-                value={password}
-                onChange={onPasswordChange}
-              />
-            </div>
-            <div className="mt-6 text-right">
-              <LinkButton>Forgot password</LinkButton>
-            </div>
-            <Button
-              variant="primary"
-              className="btn-submit mt-6"
-              onClick={onSubmit}
-            >
-              Log in
-            </Button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="text-left">
+                <StaticInputField
+                  label="Email"
+                  placeholder="Enter your email"
+                  className="input-basic"
+                  value={email}
+                  onValueChange={setEmail}
+                />
+                <ErrorWrapper>{errors.email?.message}</ErrorWrapper>
+              </div>
+              <div className="mt-5 text-left">
+                <InputField
+                  label="Password"
+                  placeholder="Input your password"
+                  className="input-basic"
+                  type="password"
+                  {...register('password', passwordValidatorOptions)}
+                />
+                <ErrorWrapper>{errors.password?.message}</ErrorWrapper>
+              </div>
+              <div className="my-6 text-right">
+                <LinkButton href={`/choose_forgot_password/${email}`}>
+                  Forgot password
+                </LinkButton>
+              </div>
+              <Button variant="primary" className="btn-submit" type="submit">
+                Log in
+              </Button>
+              <ErrorWrapper>{errors.root?.server.message}</ErrorWrapper>
+            </form>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
