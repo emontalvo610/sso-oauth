@@ -30,6 +30,7 @@ const config = {
       }
     },
     screens: {
+      mi: { max: '450px' },
       sm: { max: '639px' },
       ld: { min: '640px' }
     }
