@@ -42,6 +42,7 @@
     "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@commitlint/cz-commitlint": "^17.7.2",
+    "@next/bundle-analyzer": "^14.0.1",
     "@types/http-proxy": "^1.17.13",
     "@types/node": "^20",
     "@types/react": "^18",
