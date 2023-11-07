@@ -1,3 +1,4 @@
+import { login } from '@lib/server/api';
 import type {
   IResendValidationEmailPayload,
   IUserLoginPayload,
@@ -7,7 +8,7 @@ import axios from 'axios';
 
 export const usePostLogin = () => {
   return (body: IUserLoginPayload) => {
-    return axios.post('/api/proxy/v1/sso/login', { payload: body });
+    return login(body);
   };
 };
 

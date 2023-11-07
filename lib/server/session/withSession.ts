@@ -1,4 +1,3 @@
-import type { IUser } from '@lib/types/user';
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import type {
   GetServerSidePropsContext,
@@ -6,12 +5,20 @@ import type {
   NextApiHandler
 } from 'next';
 
-import { Environment } from './environment';
+import { Environment } from '../environment';
 
 // This is where we specify the typings of req.session.*
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: IUser;
+    user?: {
+      email: string;
+      isSuperAdmin: boolean;
+      uuid: string;
+      token: string;
+      expiration: string;
+      isCompleted: boolean;
+      oltToken: string;
+    };
   }
 }
 
