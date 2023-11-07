@@ -35,6 +35,7 @@ export interface IUserRegisterPayload {
 export interface IUserLoginPayload {
   email: string;
   password: string;
+  redirect?: string;
 }
 
 export interface IResendValidationEmailPayload {

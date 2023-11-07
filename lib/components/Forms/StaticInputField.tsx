@@ -3,12 +3,14 @@
 import { faPenLine } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputField } from '@pickleballinc/react-ui';
+import { useRouter } from 'next/navigation';
 import type { FC, InputHTMLAttributes, PropsWithChildren } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 interface IStaticInputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   onValueChange?: (value: string) => void;
+  redirect?: string;
 }
 
 enum Status {
@@ -21,12 +23,18 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
   placeholder,
   className,
   value,
-  onValueChange
+  onValueChange,
+  redirect
 }) => {
+  const router = useRouter();
   const [status, setStatus] = useState(Status.STATIC);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onEditValue = () => {
+    if (redirect) {
+      router.push(redirect);
+      return;
+    }
     setStatus(Status.EDITING);
   };
 
@@ -63,7 +71,9 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
         <div className="flex flex-col gap-2 text-center">
           <div className="text-md font-normal text-gray-600">{label}</div>
           <div className="flex justify-center gap-3 text-md font-normal text-gray-900">
-            <div>{value}</div>
+            <div onClick={onEditValue} onKeyDown={onEditValue}>
+              {value}
+            </div>
             <div
               className="cursor-pointer text-gray-500 hover:text-gray-600"
               onClick={onEditValue}
