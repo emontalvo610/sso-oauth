@@ -9,11 +9,11 @@ import { usePostLogin } from '@lib/hooks/auth';
 import type { IUser } from '@lib/types/user';
 import { passwordValidatorOptions } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
@@ -36,11 +36,9 @@ export default function LoginForm(props: IFormProps) {
     try {
       await postLogin({ email, password: data.password });
       router.push('/profile');
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Error: login failed`, err);
-      if (err instanceof AxiosError) {
-        setError('root.server', { message: err.response?.data.Message });
-      }
+      setError('root.server', { message: err.message });
     }
   };
 
@@ -51,11 +49,14 @@ export default function LoginForm(props: IFormProps) {
         <BackButton />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="pb-4">
+          <LogoButton />
+        </div>
         <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
-          <div className="flex justify-center gap-6">
-            <img src="/icons/logo-pt.svg" width={64} height={64} />
-            <img src="/icons/logo-p.svg" width={64} height={64} />
-            <img src="/icons/logo-pb.svg" width={64} height={64} />
+          <div className="flex justify-center gap-8">
+            <img src="/icons/logo-pt.svg" width={48} height={48} />
+            <img src="/icons/logo-p.svg" width={48} height={48} />
+            <img src="/icons/logo-pb.svg" width={48} height={48} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Log in to your account
@@ -72,6 +73,7 @@ export default function LoginForm(props: IFormProps) {
                   className="input-basic"
                   value={email}
                   onValueChange={setEmail}
+                  redirect="/"
                 />
                 <ErrorWrapper>{errors.email?.message}</ErrorWrapper>
               </div>

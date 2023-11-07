@@ -8,6 +8,7 @@ import { Button } from '@pickleballinc/react-ui';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
 
 interface IFormProps {
@@ -29,6 +30,9 @@ export default function RegisterPrepareForm(props: IFormProps) {
         <BackButton />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="pb-4">
+          <LogoButton />
+        </div>
         <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center gap-6">
             <img src="/icons/logo-pt.svg" width={64} height={64} />
@@ -49,6 +53,7 @@ export default function RegisterPrepareForm(props: IFormProps) {
                 className="input-basic"
                 value={email}
                 onValueChange={setEmail}
+                redirect="/"
               />
             </div>
             <Button
