@@ -2,13 +2,16 @@ import { Environment } from '@lib/server/environment';
 import { proxy } from '@server/proxy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+function removeTrailingSlash(url: string) {
+  return url.replace(/\/$/, '');
+}
+
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   return new Promise((resolve, reject) => {
     // removes the api prefix from url
-    req.url = req.url?.replace(/^\/api\/proxy/, '');
-    if (req.headers['pb-user-token'] === undefined) {
-      req.headers['PB-API-TOKEN'] = Environment.API_KEY;
-    }
+    const endUrl = req.url?.replace(/^\/api\/proxy/, '');
+    req.url = removeTrailingSlash(`${endUrl}`);
+    req.headers['PB-API-TOKEN'] = Environment.API_KEY;
     /**
      * if an error occurs in the proxy, we will reject the promise.
      * it is so important. if you don't reject the promise,
