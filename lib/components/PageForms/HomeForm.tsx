@@ -14,8 +14,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import BackButton from '../Buttons/BackButton';
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
+import BackButtonLayout from '../Layouts/BackButtonLayout';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 export default function HomeForm() {
@@ -42,6 +44,9 @@ export default function HomeForm() {
   return (
     <>
       <Background />
+      <BackButtonLayout>
+        <BackButton targetUrl={`${process.env.NEXT_PUBLIC_PB_URI}`} />
+      </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[24px]">
         <div className="pb-4">
           <LogoButton />

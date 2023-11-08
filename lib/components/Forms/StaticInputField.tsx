@@ -70,7 +70,7 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
       {status === Status.STATIC && (
         <div className="flex flex-col gap-2 text-center">
           <div className="text-md font-normal text-gray-600">{label}</div>
-          <div className="flex justify-center gap-3 text-md font-normal text-gray-900">
+          <div className="flex cursor-pointer justify-center gap-3 text-md font-normal text-gray-900">
             <div onClick={onEditValue} onKeyDown={onEditValue}>
               {value}
             </div>

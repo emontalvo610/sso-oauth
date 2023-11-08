@@ -3,7 +3,7 @@ import { validateToken } from '@lib/server/api';
 import { getServerActionSession } from '@lib/server/session/session';
 import { redirect } from 'next/navigation';
 
-export default async function ProfilePage() {
+export default async function AccountPage() {
   const session = await getServerActionSession();
   const { user } = session;
   console.log({ user });
@@ -16,5 +16,6 @@ export default async function ProfilePage() {
   } else {
     redirect('/api/logout');
   }
+
   return <ProfileForm email={user.email} />;
 }

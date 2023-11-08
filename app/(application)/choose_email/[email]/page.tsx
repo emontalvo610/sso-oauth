@@ -20,7 +20,7 @@ export default async function ValidateEmailPage({ params }: IPageProps) {
   if (user?.token) {
     const isTokenValid = await validateToken(user.token);
     if (isTokenValid) {
-      redirect('/profile');
+      redirect('/account');
     }
   }
 

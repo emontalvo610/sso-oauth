@@ -24,7 +24,7 @@ const BackButton = ({ targetUrl }: IBackButtonProps) => {
       prefixIcon={<FontAwesomeIcon icon={faArrowLeft} width={12} height={12} />}
       size="md"
       variant="secondary"
-      className="btn-simple w-[120px]"
+      className="btn-simple w-[120px] !text-purple-700"
       onClick={onBack}
     >
       Back

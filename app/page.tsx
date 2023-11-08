@@ -10,7 +10,7 @@ export default async function HomePage() {
   if (user?.token) {
     const isTokenValid = await validateToken(user.token);
     if (isTokenValid) {
-      redirect('/profile');
+      redirect('/account');
     }
   }
 

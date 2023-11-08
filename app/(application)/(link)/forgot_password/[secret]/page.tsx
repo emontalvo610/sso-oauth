@@ -18,7 +18,7 @@ export default async function ForgotPasswordPage({ params }: IPageProps) {
   if (user?.token) {
     const isTokenValid = await validateToken(user.token);
     if (isTokenValid) {
-      redirect('/profile');
+      redirect('/account');
     }
   }
 

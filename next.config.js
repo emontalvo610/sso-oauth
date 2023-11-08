@@ -7,13 +7,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = withBundleAnalyzer({
   output: 'standalone',
   poweredByHeader: false,
-  trailingSlash: true,
-  basePath: '',
   reactStrictMode: false,
-  compress: true,
-  experimental: {
-    webpackBuildWorker: true
-  }
+  compress: true
 });
 
 module.exports = nextConfig;

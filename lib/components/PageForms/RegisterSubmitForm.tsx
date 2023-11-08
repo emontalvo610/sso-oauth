@@ -366,7 +366,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 type="submit"
                 onClick={onSubmit}
               >
-                Get started
+                Submit
               </Button>
               <ErrorWrapper>{errors.root?.server.message}</ErrorWrapper>
             </form>

@@ -8,5 +8,6 @@ export const proxy = httpProxy.createProxyServer({
    * We shouldn't prefix the env variable with NEXT_PUBLIC_* to avoid exposing it to the client.
    */
   target: Environment.API_URL,
-  changeOrigin: true
+  changeOrigin: true,
+  ignorePath: true
 });
