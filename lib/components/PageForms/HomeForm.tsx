@@ -7,6 +7,7 @@ import {
   getSessionStorageItem,
   setSessionStorageItem
 } from '@lib/utils/storage';
+import { getSearchParamQuery } from '@lib/utils/url';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { emailValidatorOptions } from '@validators/user';
 import { useRouter } from 'next/navigation';
@@ -35,7 +36,7 @@ export default function HomeForm() {
 
   const onSubmit = (data: IUser) => {
     setSessionStorageItem('email', data.email);
-    router.push(`/choose_email/${data.email}`);
+    router.push(`/choose_email/${data.email}${getSearchParamQuery()}`);
   };
 
   return (

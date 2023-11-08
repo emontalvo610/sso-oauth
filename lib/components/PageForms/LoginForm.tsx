@@ -9,7 +9,7 @@ import { usePostLogin } from '@lib/hooks/auth';
 import type { IUser } from '@lib/types/user';
 import { passwordValidatorOptions } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -30,12 +30,22 @@ export default function LoginForm(props: IFormProps) {
     formState: { errors }
   } = useForm<IUser>();
   const postLogin = usePostLogin();
-  const router = useRouter();
+  const params = useSearchParams();
+  const redirect = params?.get('redirect');
 
   const onSubmit = async (data: IUser) => {
     try {
-      await postLogin({ email, password: data.password });
-      router.push('/profile');
+      const { user, olt } = await postLogin({ email, password: data.password });
+      if (process.env.NODE_ENV === 'test') {
+        window.location.href = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}?olt=${olt}`;
+      } else if (redirect) {
+        const url = decodeURIComponent(redirect as string);
+        window.location.href = url;
+      } else if (user.isSuperAdmin) {
+        window.location.href = `${process.env.NEXT_PUBLIC_PB_MANAGE_URI}`;
+      } else {
+        window.location.href = `${process.env.NEXT_PUBLIC_PB_URI}`;
+      }
     } catch (err: any) {
       console.error(`Error: login failed`, err);
       setError('root.server', { message: err.message });
