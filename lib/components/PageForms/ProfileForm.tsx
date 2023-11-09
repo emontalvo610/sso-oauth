@@ -5,6 +5,7 @@ import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import LogoButton from '../Buttons/LogoButton';
@@ -19,10 +20,6 @@ export default function ProfileForm(props: IFormProps) {
 
   const onSubmit = () => {
     router.push(`${process.env.NEXT_PUBLIC_PB_URI}`);
-  };
-
-  const onSwitchAccount = () => {
-    router.push('/api/logout');
   };
 
   return (
@@ -51,14 +48,19 @@ export default function ProfileForm(props: IFormProps) {
           </div>
           <div className="mt-8 w-full">
             <form onSubmit={onSubmit}>
-              <Button variant="primary" className="btn-submit" type="submit">
-                Continue
-              </Button>
+              <Link
+                href={`${process.env.NEXT_PUBLIC_PB_URI}`}
+                className="link-none"
+              >
+                <Button variant="primary" className="btn-submit" type="submit">
+                  Continue
+                </Button>
+              </Link>
             </form>
           </div>
           <div className="mt-4 text-center text-md">
             Do you want to user another account?{' '}
-            <LinkButton onClick={onSwitchAccount}>Switch Account</LinkButton>
+            <LinkButton href="/api/logout">Switch Account</LinkButton>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />
