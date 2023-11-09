@@ -26,7 +26,10 @@ export default function ResetVerifySMSForm(props: IFormProps) {
 
   const onSendEmailConfirmation = async () => {
     try {
-      await postForgotPasswordRequestByEmail({ email: props.email });
+      await postForgotPasswordRequestByEmail({
+        email: props.email,
+        custom_url: `${window.location.origin}/forgot_password`
+      });
       toast.success(`An email link was resent to ${props.email}`);
     } catch (err) {
       console.error(err);

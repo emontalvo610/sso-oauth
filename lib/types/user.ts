@@ -30,6 +30,7 @@ export interface IUserRegisterPayload {
   stateId: number;
   countryId: number;
   zip: string;
+  custom_url?: string;
 }
 
 export interface IUserLoginPayload {
@@ -40,10 +41,12 @@ export interface IUserLoginPayload {
 
 export interface IResendValidationEmailPayload {
   email: string;
+  custom_url?: string;
 }
 
 export interface IForgotPasswordRequestPayload {
   email: string;
+  custom_url?: string;
 }
 
 export interface IForgotPasswordPayload {

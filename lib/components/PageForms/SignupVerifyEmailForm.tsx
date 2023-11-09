@@ -15,7 +15,10 @@ export default function SignupVerifyEmailForm(props: IFormProps) {
 
   const onResendConfirm = async () => {
     try {
-      await postResendValidationEmail({ email: props.email });
+      await postResendValidationEmail({
+        email: props.email,
+        custom_url: `${window.location.origin}/validate_email`
+      });
       toast.success(`An email link was resent to ${props.email}`);
     } catch (err) {
       console.error(err);

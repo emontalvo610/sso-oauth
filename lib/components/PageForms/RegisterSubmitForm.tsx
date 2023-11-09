@@ -170,7 +170,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
           phoneCountryId: Number(phoneCountryId),
           countryId: Number(countryId),
           stateId: Number(stateId),
-          zip: zipCode
+          zip: zipCode,
+          custom_url: `${window.location.origin}/validate_email`
         });
         router.push(`/signup-verify/email/${email}`);
       } catch (err) {

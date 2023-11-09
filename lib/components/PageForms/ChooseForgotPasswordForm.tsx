@@ -28,7 +28,10 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
 
   const onSendEmailConfirmation = async () => {
     try {
-      await postForgotPasswordRequestByEmail({ email: props.email });
+      await postForgotPasswordRequestByEmail({
+        email: props.email,
+        custom_url: `${window.location.origin}/forgot_password`
+      });
       router.push(`/reset-verify/email/${props.email}`);
     } catch (err) {
       console.error(err);
