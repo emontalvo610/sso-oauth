@@ -50,6 +50,7 @@ export const validateToken = async (token: string) => {
 };
 
 export const login = async (body: IUserLoginPayload) => {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { email, password, redirect } = body;
 
   try {
@@ -76,17 +77,12 @@ export const login = async (body: IUserLoginPayload) => {
     };
     await session.save();
 
-    let url = redirect;
-    if (redirect) url = decodeURIComponent(redirect);
-    else if (user.isSuperAdmin)
-      url = `${process.env.NEXT_PUBLIC_PB_MANAGE_URI}`;
-    else url = `${process.env.NEXT_PUBLIC_PB_URI}`;
     const encryption = await apiClient.post(
       `${process.env.API_URL}/v1/pb_data/encrypt`,
       {
         ID: user.uuid,
         TIMESTAMP: Math.floor(Date.now() / 1000),
-        URL: url
+        URL: redirect
       }
     );
     const olt = encryption.data;
