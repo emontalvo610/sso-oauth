@@ -108,7 +108,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
   };
 
   const getStatesOptions = () => {
-    const { countryId } = getValues();
+    const countryId = watch('countryId');
     return statesData.results
       .filter(state => state.countryId === countryId)
       .map(state => {

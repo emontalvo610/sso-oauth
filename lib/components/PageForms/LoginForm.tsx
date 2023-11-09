@@ -48,7 +48,8 @@ export default function LoginForm(props: IFormProps) {
       }
     } catch (err: any) {
       console.error(`Error: login failed`, err);
-      setError('root.server', { message: err.message });
+      // setError('root.server', { message: err.message }); # In production, it displays "An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error."
+      setError('root.server', { message: 'Incorrect username or password' });
     }
   };
 
