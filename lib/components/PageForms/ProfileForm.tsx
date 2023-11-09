@@ -6,7 +6,6 @@ import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
@@ -16,12 +15,6 @@ interface IFormProps {
 }
 
 export default function ProfileForm(props: IFormProps) {
-  const router = useRouter();
-
-  const onSubmit = () => {
-    router.push(`${process.env.NEXT_PUBLIC_PB_URI}`);
-  };
-
   return (
     <>
       <Background />
@@ -47,16 +40,14 @@ export default function ProfileForm(props: IFormProps) {
             <div className="mt-1 text-xmd font-medium">{props.email}</div>
           </div>
           <div className="mt-8 w-full">
-            <form onSubmit={onSubmit}>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_PB_URI}`}
-                className="link-none"
-              >
-                <Button variant="primary" className="btn-submit" type="submit">
-                  Continue
-                </Button>
-              </Link>
-            </form>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_PB_URI}`}
+              className="link-none"
+            >
+              <Button variant="primary" className="btn-submit">
+                Continue
+              </Button>
+            </Link>
           </div>
           <div className="mt-4 text-center text-md">
             Do you want to user another account?{' '}
