@@ -6,7 +6,7 @@ import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
@@ -16,6 +16,16 @@ interface IFormProps {
 }
 
 export default function ProfileForm(props: IFormProps) {
+  const router = useRouter();
+
+  const logout = async () => {
+    const response = await fetch('/logout');
+    const data = await response.json();
+    if (response.status === 200 && data.status === 'OK') {
+      router.replace('/');
+    }
+  };
+
   const params = useSearchParams();
   return (
     <>
@@ -55,7 +65,7 @@ export default function ProfileForm(props: IFormProps) {
           </div>
           <div className="mt-4 text-center text-md">
             Do you want to user another account?{' '}
-            <LinkButton href="/api/logout">Switch Account</LinkButton>
+            <LinkButton onClick={() => logout()}>Switch Account</LinkButton>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />
