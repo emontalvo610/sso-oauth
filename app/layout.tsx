@@ -4,17 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Loading from '@lib/components/Loadings/Loading';
 import QueryProvider from '@lib/components/Wrappers/QueryProvider';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'Pickleball - SSO',
-  description: 'Pickleball - Auth Server'
-};
 
 export default function RootLayout({
   children
@@ -23,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </head>
       <body className={inter.className}>
         <Suspense fallback={<Loading />}>
           <QueryProvider>

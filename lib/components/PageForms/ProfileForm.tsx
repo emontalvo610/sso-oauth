@@ -6,6 +6,7 @@ import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
@@ -15,11 +16,12 @@ interface IFormProps {
 }
 
 export default function ProfileForm(props: IFormProps) {
+  const params = useSearchParams();
   return (
     <>
       <Background />
       <BackButtonLayout>
-        <BackButton />
+        <BackButton targetUrl={params?.get('cancel') || undefined} />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="pb-4">
@@ -41,7 +43,9 @@ export default function ProfileForm(props: IFormProps) {
           </div>
           <div className="mt-8 w-full">
             <Link
-              href={`${process.env.NEXT_PUBLIC_PB_URI}`}
+              href={
+                params?.get('redirect') || `${process.env.NEXT_PUBLIC_PB_URI}`
+              }
               className="link-none"
             >
               <Button variant="primary" className="btn-submit">
