@@ -35,17 +35,13 @@ export default function LoginForm(props: IFormProps) {
 
   const onSubmit = async (data: IUser) => {
     try {
-      const { user, olt } = await postLogin({ email, password: data.password });
-      if (process.env.NODE_ENV === 'test') {
-        window.location.href = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}?olt=${olt}`;
-      } else if (redirect) {
-        const url = decodeURIComponent(redirect as string);
-        window.location.href = url;
-      } else if (user.isSuperAdmin) {
-        window.location.href = `${process.env.NEXT_PUBLIC_PB_MANAGE_URI}`;
-      } else {
-        window.location.href = `${process.env.NEXT_PUBLIC_PB_URI}`;
-      }
+      const { olt } = await postLogin({
+        email,
+        password: data.password,
+        redirect: redirect ?? `${process.env.NEXT_PUBLIC_PB_URI}`
+      });
+
+      window.location.href = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}?olt=${olt}`;
     } catch (err: any) {
       console.error(`Error: login failed`, err);
       // setError('root.server', { message: err.message }); # In production, it displays "An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error."
