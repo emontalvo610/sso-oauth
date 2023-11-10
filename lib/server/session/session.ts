@@ -14,7 +14,8 @@ export const sessionOptions: IronSessionOptions = {
   cookieName: 'iron-session/pickleball/sso',
   cookieOptions: {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development'
+    secure: process.env.NODE_ENV !== 'development',
+    domain: process.env.COOKIE_DOMAIN
   }
 };
 
