@@ -197,9 +197,9 @@ export default function RegisterSubmitForm(props: IFormProps) {
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="box-border flex w-[592px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center gap-6">
-            <img src="/icons/logo-pt.svg" width={64} height={64} />
-            <img src="/icons/logo-p.svg" width={64} height={64} />
-            <img src="/icons/logo-pb.svg" width={64} height={64} />
+            <img src="/icons/logo-pt.svg" width={48} height={48} />
+            <img src="/icons/logo-p.svg" width={48} height={48} />
+            <img src="/icons/logo-pb.svg" width={48} height={48} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Create your account
@@ -370,7 +370,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 variant="primary"
                 className="btn-submit mt-8"
                 type="submit"
-                onClick={onSubmit}
+                onClick={() => checkManualValidation() && trigger()}
               >
                 Submit
               </Button>

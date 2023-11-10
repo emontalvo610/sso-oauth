@@ -59,9 +59,6 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Set new password
           </div>
-          <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
-            Your new password must be different to previously used passwords.
-          </div>
           <div className="mt-8 w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="text-left">

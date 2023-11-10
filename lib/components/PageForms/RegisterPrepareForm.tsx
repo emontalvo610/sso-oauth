@@ -35,9 +35,9 @@ export default function RegisterPrepareForm(props: IFormProps) {
         </div>
         <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center gap-6">
-            <img src="/icons/logo-pt.svg" width={64} height={64} />
-            <img src="/icons/logo-p.svg" width={64} height={64} />
-            <img src="/icons/logo-pb.svg" width={64} height={64} />
+            <img src="/icons/logo-pt.svg" width={48} height={48} />
+            <img src="/icons/logo-p.svg" width={48} height={48} />
+            <img src="/icons/logo-pb.svg" width={48} height={48} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Create your account

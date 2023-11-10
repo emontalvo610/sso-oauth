@@ -4,10 +4,8 @@ import Background from '@lib/components/Extra/Background';
 import { loginWithCookie } from '@lib/server/api';
 import { Button } from '@pickleballinc/react-ui';
 import type { IronSessionData } from 'iron-session';
-import { useRouter } from 'next/navigation';
 
 export default function SuccessEmailValidateForm(props: IronSessionData) {
-  const router = useRouter();
   const { user } = props;
 
   const getTargetUrl = () => {
@@ -22,7 +20,7 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
       if (user?.email) {
         await loginWithCookie(props);
       }
-      router.push(getTargetUrl());
+      window.location.href = getTargetUrl();
     } catch (err) {
       console.error(`Error: login failed`, err);
     }
