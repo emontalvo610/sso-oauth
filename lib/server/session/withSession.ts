@@ -32,7 +32,7 @@ export const sessionOptions = {
     secure: process.env.NODE_ENV === 'production',
     domain:
       process.env.NODE_ENV === 'production'
-        ? Environment.COOKIE_DOMAIN
+        ? process.env.COOKIE_DOMAIN
         : 'localhost'
   }
 };

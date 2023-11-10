@@ -362,6 +362,7 @@ export function createGetIronSession(
             password: passwordsMap,
             ttl: mergedOptions.ttl
           });
+          console.log('Cookie options', mergedOptions.cookieOptions);
           const cookieValue = serialize(
             mergedOptions.cookieName,
             seal,
