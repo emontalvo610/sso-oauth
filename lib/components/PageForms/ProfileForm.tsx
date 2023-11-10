@@ -19,7 +19,7 @@ export default function ProfileForm(props: IFormProps) {
   const router = useRouter();
 
   const logout = async () => {
-    const response = await fetch('/logout');
+    const response = await fetch('/api/logout');
     const data = await response.json();
     if (response.status === 200 && data.status === 'OK') {
       router.replace('/');
