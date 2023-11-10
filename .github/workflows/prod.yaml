@@ -8,17 +8,17 @@ on:
 
 env:
   REGION: us-east-1
-  ECR_REPOSITORY: ssov2-dev
-  CLUSTER_NAME: pb-cluster-dev
-  TASK_DEFINITION_NAME: ssov2-dev-task-def
+  ECR_REPOSITORY: ssov2-prod
+  CLUSTER_NAME: pb-cluster-prod
+  TASK_DEFINITION_NAME: ssov2-prod-task-def
   SERVICE_NAME: sso-v2-service
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: 6LdyWv4oAAAAAKy8sYBsjVwJvFCCpCDh1K9gk7Ga
-  API_URL: https://api.pickleballdev.net
-  COOKIE_DOMAIN: pickleballdev.net
-  NEXT_PUBLIC_PBRACKETS_SSO_URI: https://dc1894c6.pickleballbrackets.com/lrfc_0.aspx
-  NEXT_PUBLIC_PB_MANAGE_URI: https://managev2.pickleballdev.net
-  NEXT_PUBLIC_PB_URI: https://pickleballdev.net
-  NEXT_PUBLIC_PB_PLAYER_URI: https://players.pickleballdev.net
+  API_URL: https://api.pickleball.com
+  COOKIE_DOMAIN: pickleball.com
+  NEXT_PUBLIC_PBRACKETS_SSO_URI: https://pickleballbrackets.com/lrfc_0.aspx
+  NEXT_PUBLIC_PB_MANAGE_URI: https://managev2.pickleball.com
+  NEXT_PUBLIC_PB_URI: https://pickleball.com
+  NEXT_PUBLIC_PB_PLAYER_URI: https://players.pickleball.com
 
 jobs:
   build:
