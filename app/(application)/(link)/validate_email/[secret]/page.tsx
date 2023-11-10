@@ -10,9 +10,9 @@ interface IPageProps {
 
 export default async function ValidateEmailPage({ params }: IPageProps) {
   const secret = decodeURIComponent(params.secret);
-  const emailValid = await validateEmailSecret(secret);
-  return emailValid ? (
-    <SuccessEmailValidateForm email="randall.christ@pickleball.com" />
+  const user = await validateEmailSecret(secret);
+  return user ? (
+    <SuccessEmailValidateForm user={user as any} />
   ) : (
     <ErrorInvalidLinkForm />
   );

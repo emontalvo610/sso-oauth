@@ -1,28 +1,30 @@
 'use client';
 
 import Background from '@lib/components/Extra/Background';
-import { autoLogin } from '@lib/server/api';
+import { loginWithCookie } from '@lib/server/api';
 import { Button } from '@pickleballinc/react-ui';
-import Link from 'next/link';
+import type { IronSessionData } from 'iron-session';
 import { useRouter } from 'next/navigation';
 
-interface IFormProps {
-  email: string;
-}
-
-export default function SuccessEmailValidateForm(props: IFormProps) {
+export default function SuccessEmailValidateForm(props: IronSessionData) {
   const router = useRouter();
+  const { user } = props;
 
   const getTargetUrl = () => {
-    return `${process.env.NEXT_PUBLIC_PB_PLAYER_URI}/players/${props.email}/profile/edit?cplt=true`;
+    if (typeof window === 'undefined') return '/';
+    if (user?.email)
+      return `${process.env.NEXT_PUBLIC_PB_PLAYER_URI}/players/${user.email}/profile/edit?cplt=true`;
+    return window.location.origin;
   };
 
   const onClaimAccount = async () => {
     try {
-      await autoLogin(props.email);
+      if (user?.email) {
+        await loginWithCookie(props);
+      }
       router.push(getTargetUrl());
     } catch (err) {
-      router.push('/');
+      console.error(`Error: login failed`, err);
     }
   };
 
@@ -42,15 +44,13 @@ export default function SuccessEmailValidateForm(props: IFormProps) {
             <br />
             Click below to log in magically.
           </div>
-          <Link href="/" className="link-none mt-8 text-md">
-            <Button
-              variant="primary"
-              className="btn-submit"
-              onClick={onClaimAccount}
-            >
-              Claim Account
-            </Button>
-          </Link>
+          <Button
+            variant="primary"
+            className="btn-submit mt-8 text-md"
+            onClick={onClaimAccount}
+          >
+            Claim Account
+          </Button>
         </div>
       </div>
     </>

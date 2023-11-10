@@ -2,6 +2,7 @@
 
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
 import { AxiosError } from 'axios';
+import type { IronSessionData } from 'iron-session';
 import { redirect } from 'next/navigation';
 
 import apiClient from './axios';
@@ -26,11 +27,11 @@ export const validateEmailSecret = async (secret: string) => {
       `${Environment.API_URL}/v1/pub/validate_email/${secret}`
     );
     console.log({ data });
-    if (status === 200) return true;
+    if (status === 200) return data ?? {};
   } catch (error) {
     console.error(`Error: ValidateEmail by ${secret}`, error);
   }
-  return false;
+  return null;
 };
 
 export const validateToken = async (token: string) => {
@@ -48,10 +49,6 @@ export const validateToken = async (token: string) => {
     console.error(`Error: ValidateToken by ${token}`, error);
   }
   return false;
-};
-
-export const autoLogin = async (email: string) => {
-  console.log(email);
 };
 
 export const login = async (body: IUserLoginPayload) => {
@@ -95,6 +92,32 @@ export const login = async (body: IUserLoginPayload) => {
       user,
       olt
     };
+  } catch (err) {
+    console.error('Something went wrong: ', err);
+    if (err instanceof AxiosError) {
+      throw Error(err.response?.data.Message);
+    } else {
+      throw Error('Something went wrong');
+    }
+  }
+};
+
+export const loginWithCookie = async (body: IronSessionData) => {
+  const { user } = body;
+  try {
+    if (user) {
+      const session = await getServerActionSession();
+      session.user = {
+        email: user.email,
+        expiration: user.expiration,
+        isCompleted: true,
+        isSuperAdmin: user.isSuperAdmin,
+        token: user.token,
+        oltToken: user.oltToken,
+        uuid: user.uuid
+      };
+      await session.save();
+    }
   } catch (err) {
     console.error('Something went wrong: ', err);
     if (err instanceof AxiosError) {
