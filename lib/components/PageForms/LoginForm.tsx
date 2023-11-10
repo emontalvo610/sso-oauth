@@ -7,6 +7,7 @@ import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
 import { usePostLogin } from '@lib/hooks/auth';
 import type { IUser } from '@lib/types/user';
+import { getSearchParamQuery } from '@lib/utils/url';
 import { passwordValidatorOptions } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { useSearchParams } from 'next/navigation';
@@ -49,11 +50,15 @@ export default function LoginForm(props: IFormProps) {
     }
   };
 
+  const getBackUrl = () => {
+    return `/${getSearchParamQuery()}`;
+  };
+
   return (
     <>
       <Background />
       <BackButtonLayout>
-        <BackButton />
+        <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="pb-4">
@@ -66,10 +71,7 @@ export default function LoginForm(props: IFormProps) {
             <img src="/icons/logo-pb.svg" width={48} height={48} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Log in to your account
-          </div>
-          <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
-            Enter your password to log in
+            Enter your password
           </div>
           <div className="mt-8 w-full">
             <form onSubmit={handleSubmit(onSubmit)}>

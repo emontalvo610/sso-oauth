@@ -10,7 +10,7 @@ import {
 import { getSearchParamQuery } from '@lib/utils/url';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { emailValidatorOptions } from '@validators/user';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -22,6 +22,7 @@ import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 export default function HomeForm() {
   const router = useRouter();
+  const params = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -41,13 +42,18 @@ export default function HomeForm() {
     router.push(`/choose_email/${data.email}${getSearchParamQuery()}`);
   };
 
+  const getBackUrl = () => {
+    const cancelUrl = params?.get('cancel');
+    return cancelUrl || `${process.env.NEXT_PUBLIC_PB_URI}`;
+  };
+
   return (
     <>
       <Background />
       <BackButtonLayout>
-        <BackButton targetUrl={`${process.env.NEXT_PUBLIC_PB_URI}`} />
+        <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
-      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[24px]">
+      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="pb-4">
           <LogoButton />
         </div>

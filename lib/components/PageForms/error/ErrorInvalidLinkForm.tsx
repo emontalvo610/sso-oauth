@@ -2,15 +2,9 @@
 
 import Background from '@lib/components/Extra/Background';
 import { Button } from '@pickleballinc/react-ui';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ErrorInvalidLinkForm() {
-  const router = useRouter();
-
-  const onBack2Login = () => {
-    router.push('/');
-  };
-
   return (
     <>
       <Background />
@@ -25,13 +19,11 @@ export default function ErrorInvalidLinkForm() {
           <div className="mt-5 text-md font-normal text-gray-500">
             Please try again later
           </div>
-          <Button
-            variant="primary"
-            className="btn-submit mt-8"
-            onClick={onBack2Login}
-          >
-            Back to Log In
-          </Button>
+          <Link href="/" className="link-none">
+            <Button variant="primary" className="btn-submit mt-8">
+              Back to Log In
+            </Button>
+          </Link>
         </div>
       </div>
     </>

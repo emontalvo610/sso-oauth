@@ -4,8 +4,9 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
+import { getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import LogoButton from '../Buttons/LogoButton';
@@ -16,18 +17,17 @@ interface IFormProps {
 }
 
 export default function RegisterPrepareForm(props: IFormProps) {
-  const router = useRouter();
   const [email, setEmail] = useState(props.email);
 
-  const onCreateAccount = () => {
-    router.push(`/register/${email}`);
+  const getBackUrl = () => {
+    return `/${getSearchParamQuery()}`;
   };
 
   return (
     <>
       <Background />
       <BackButtonLayout>
-        <BackButton />
+        <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="pb-4">
@@ -46,7 +46,7 @@ export default function RegisterPrepareForm(props: IFormProps) {
             Your email was not found in our system
           </div>
           <div className="mt-8 w-full">
-            <div className="text-left">
+            <div className="mb-8 text-left">
               <StaticInputField
                 label="Email"
                 placeholder="Enter your email"
@@ -56,13 +56,11 @@ export default function RegisterPrepareForm(props: IFormProps) {
                 redirect="/"
               />
             </div>
-            <Button
-              variant="primary"
-              className="btn-submit mt-8"
-              onClick={onCreateAccount}
-            >
-              Create your account
-            </Button>
+            <Link href={`/register/${email}`} className="link-none">
+              <Button variant="primary" className="btn-submit">
+                Create your account
+              </Button>
+            </Link>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />

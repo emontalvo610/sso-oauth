@@ -9,7 +9,7 @@ interface IPageProps {
 
 export default function ResetVerifySMSPage({ params }: IPageProps) {
   const email = decodeURIComponent(params.email);
-  const phoneNumber = params.phoneNumber || '(+1) 425 954 5959';
+  const phoneNumber = params.phoneNumber || '**** *** 5959';
 
   return <ResetVerifySMSForm email={email} phoneNumber={phoneNumber} />;
 }

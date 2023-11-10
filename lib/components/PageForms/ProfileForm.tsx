@@ -17,6 +17,7 @@ interface IFormProps {
 
 export default function ProfileForm(props: IFormProps) {
   const router = useRouter();
+  const params = useSearchParams();
 
   const logout = async () => {
     const response = await fetch('/api/logout');
@@ -26,12 +27,16 @@ export default function ProfileForm(props: IFormProps) {
     }
   };
 
-  const params = useSearchParams();
+  const getBackUrl = () => {
+    const cancelUrl = params?.get('cancel');
+    return cancelUrl || `${process.env.NEXT_PUBLIC_PB_URI}`;
+  };
+
   return (
     <>
       <Background />
       <BackButtonLayout>
-        <BackButton targetUrl={params?.get('cancel') || undefined} />
+        <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="pb-4">

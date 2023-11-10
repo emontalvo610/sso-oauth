@@ -21,11 +21,11 @@ export default function SuccessPasswordResetForm() {
             <br />
             Click below to log in magically.
           </div>
-          <Button variant="primary" className="btn-submit mt-8">
-            <Link href="/" className="link-none text-md">
+          <Link href="/" className="link-none text-md">
+            <Button variant="primary" className="btn-submit mt-8">
               Back to Log In
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </div>
     </>

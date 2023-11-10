@@ -22,9 +22,10 @@ export const lookupEmail = async (email: string) => {
 
 export const validateEmailSecret = async (secret: string) => {
   try {
-    const { status } = await apiClient.get(
+    const { status, data } = await apiClient.get(
       `${Environment.API_URL}/v1/pub/validate_email/${secret}`
     );
+    console.log({ data });
     if (status === 200) return true;
   } catch (error) {
     console.error(`Error: ValidateEmail by ${secret}`, error);
@@ -47,6 +48,10 @@ export const validateToken = async (token: string) => {
     console.error(`Error: ValidateToken by ${token}`, error);
   }
   return false;
+};
+
+export const autoLogin = async (email: string) => {
+  console.log(email);
 };
 
 export const login = async (body: IUserLoginPayload) => {

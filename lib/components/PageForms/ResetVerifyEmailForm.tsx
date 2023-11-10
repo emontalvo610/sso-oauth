@@ -2,6 +2,8 @@
 
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import { usePostForgotPasswordRequestByEmail } from '@lib/hooks/forgot_password';
+import { Button } from '@pickleballinc/react-ui';
+import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
@@ -35,17 +37,29 @@ export default function ResetVerifyEmailForm(props: IFormProps) {
             <img src="/icons/icon-msg.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Check your email
+            Email Sent to Reset Password
           </div>
           <div className="mt-5 text-md font-normal text-gray-500">
-            We sent a password reset link to
+            Check email box for
             <br />
             <span className="font-medium text-gray-500">{props.email}</span>
+            <br />
+            for a link to reset your password.
+            <br />
+            <br />
+            <span className="text-sm font-semibold">
+              NOTE: Check your junk/spam folder if you do not receive the email
+            </span>
           </div>
-          <div className="mt-5 text-sm font-normal text-gray-500">
+          <div className="my-5 text-sm font-normal text-gray-500">
             Didn't receive the email?{' '}
-            <LinkButton onClick={onResendConfirm}>Click to resend</LinkButton>
+            <LinkButton onClick={onResendConfirm}>Resend Email</LinkButton>
           </div>
+          <Link href="/" className="link-none">
+            <Button variant="primary" className="btn-submit">
+              Back to Log In
+            </Button>
+          </Link>
         </div>
       </div>
     </>

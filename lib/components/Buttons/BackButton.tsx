@@ -27,7 +27,7 @@ const BackButton = ({ targetUrl }: IBackButtonProps) => {
         }
         size="md"
         variant="secondary"
-        className="btn-simple w-[120px] !text-purple-700"
+        className="btn-simple btn-text-purple w-[120px]"
         onClick={onBack}
       >
         Back

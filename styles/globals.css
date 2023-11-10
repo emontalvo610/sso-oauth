@@ -82,6 +82,10 @@ a {
   @apply justify-center;
 }
 
+.btn-text-purple {
+  color: #572BD6 !important;
+}
+
 .input-basic {
   height: 44px;
   @apply !text-md;

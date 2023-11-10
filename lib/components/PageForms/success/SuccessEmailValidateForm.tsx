@@ -1,10 +1,31 @@
 'use client';
 
 import Background from '@lib/components/Extra/Background';
+import { autoLogin } from '@lib/server/api';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-export default function SuccessEmailValidateForm() {
+interface IFormProps {
+  email: string;
+}
+
+export default function SuccessEmailValidateForm(props: IFormProps) {
+  const router = useRouter();
+
+  const getTargetUrl = () => {
+    return `${process.env.NEXT_PUBLIC_PB_PLAYER_URI}/players/${props.email}/profile/edit?cplt=true`;
+  };
+
+  const onClaimAccount = async () => {
+    try {
+      await autoLogin(props.email);
+      router.push(getTargetUrl());
+    } catch (err) {
+      router.push('/');
+    }
+  };
+
   return (
     <>
       <Background />
@@ -14,18 +35,22 @@ export default function SuccessEmailValidateForm() {
             <img src="/icons/icon-key.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Email confirmed
+            Almost done!
           </div>
           <div className="mt-5 text-md font-normal text-gray-500">
-            Email successfully validated.
+            Click the bottom below to complete your account setup
             <br />
             Click below to log in magically.
           </div>
-          <Button variant="primary" className="btn-submit mt-8">
-            <Link href="/" className="link-none text-md">
-              Back to Log In
-            </Link>
-          </Button>
+          <Link href="/" className="link-none mt-8 text-md">
+            <Button
+              variant="primary"
+              className="btn-submit"
+              onClick={onClaimAccount}
+            >
+              Claim Account
+            </Button>
+          </Link>
         </div>
       </div>
     </>

@@ -47,7 +47,6 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
         <Fragment key={index}>
           <InputField
             className="input-code-item"
-            placeholder="0"
             maxLength={1}
             ref={input => {
               (inputs.current[index] as unknown) = input;

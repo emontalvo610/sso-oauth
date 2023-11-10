@@ -56,11 +56,9 @@ export default function ResetVerifySMSForm(props: IFormProps) {
             <img src="/icons/icon-msg.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Check your text message
+            Text sent to
           </div>
           <div className="mb-8 mt-3 text-md font-normal text-gray-500 sm:mt-2">
-            Text message was sent to
-            <br />
             <span className="text-gray-900">{props.phoneNumber}</span>
           </div>
           <div className="relative flex w-0 justify-center">
