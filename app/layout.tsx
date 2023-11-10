@@ -1,12 +1,17 @@
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
 import '@pickleballinc/react-ui/stylesheets/bundle.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { config } from '@fortawesome/fontawesome-svg-core';
 import Loading from '@lib/components/Loadings/Loading';
 import QueryProvider from '@lib/components/Wrappers/QueryProvider';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
+
+config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
 
