@@ -4,22 +4,24 @@ import { faSpinnerThird } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Background from '@lib/components/Extra/Background';
 import apiClient from '@lib/server/axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 export const LogoutForm = () => {
   const router = useRouter();
+  const params = useSearchParams();
+  const redirect = params?.get('redirect');
 
   useEffect(() => {
     const logout = async () => {
       const response = await apiClient.get('/api/logout');
       if (response.data.status === 'OK') {
-        router.replace('/');
+        router.replace(`/${redirect ? `?${redirect}` : ''}`);
       }
     };
 
     logout();
-  }, [router]);
+  }, [router, redirect]);
 
   return (
     <>
