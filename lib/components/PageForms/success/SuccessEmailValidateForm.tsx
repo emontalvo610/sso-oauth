@@ -37,10 +37,8 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Almost done!
           </div>
-          <div className="mt-5 text-md font-normal text-gray-500">
+          <div className="mt-5 text-center text-md font-normal text-gray-500">
             Click the bottom below to complete your account setup
-            <br />
-            Click below to log in magically.
           </div>
           <Button
             variant="primary"
