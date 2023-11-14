@@ -56,8 +56,8 @@ export const phoneNumberValidatorOptions: RegisterOptions<
     message: 'Phone number is required'
   },
   pattern: {
-    value: /^(\d{6}|\d{3}-\d{3}|\d{7}|\d{3}-\d{4})$/i,
-    message: 'Phone number must be in the format of 6 or 7 digits'
+    value: /^\d+$/i,
+    message: 'Only digits are allowed'
   }
 };
 
