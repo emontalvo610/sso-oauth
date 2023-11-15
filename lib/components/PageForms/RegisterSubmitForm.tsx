@@ -26,6 +26,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 interface IFormProps {
@@ -41,6 +42,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const [stateTitle, setStateTitle] = useState('State');
   const [zipCodeTitle, setZipCodeTitle] = useState('Zip Code');
   const [isSubmitted, setSubmitted] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const postRegister = usePostRegister();
 
   const {
@@ -134,10 +136,12 @@ export default function RegisterSubmitForm(props: IFormProps) {
     if (!isValid) return;
     if (!executeRecaptcha) return;
     let isHuman = false;
+    setLoading(true);
     try {
       const token = await executeRecaptcha();
       if (!token) {
         setRecaptchaResult(false);
+        setLoading(false);
         return;
       }
       isHuman = await validateRecaptchaToken(token);
@@ -180,6 +184,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
         setError('root.server', {
           message: 'Something went wrong. Please try again some time later'
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -244,6 +250,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="input-label">Country</div>
                 <Select
                   options={getCountriesOptions()}
+                  className="select-basic"
                   instanceId="country-select"
                   placeholder="Pick your country"
                   onChange={option => onSelectChange(option, 'countryId')}
@@ -254,6 +261,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="input-label">{stateTitle}</div>
                 <Select
                   options={getStatesOptions()}
+                  className="select-basic"
                   placeholder={`Pick your ${stateTitle.toLocaleLowerCase()}`}
                   instanceId="state-select"
                   onChange={option => onSelectChange(option, 'stateId')}
@@ -371,7 +379,9 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 className="btn-submit mt-8"
                 type="submit"
                 onClick={() => checkManualValidation() && trigger()}
+                disabled={isLoading}
               >
+                {isLoading && <Spinner />}
                 Submit
               </Button>
               <ErrorWrapper>{errors.root?.server.message}</ErrorWrapper>

@@ -1,12 +1,16 @@
 'use client';
 
 import Background from '@lib/components/Extra/Background';
+import Spinner from '@lib/components/Loadings/Spinner';
 import { loginWithCookie } from '@lib/server/api';
 import { Button } from '@pickleballinc/react-ui';
 import type { IronSessionData } from 'iron-session';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function SuccessEmailValidateForm(props: IronSessionData) {
   const { user } = props;
+  const [isLoading, setLoading] = useState(false);
 
   const getTargetUrl = () => {
     if (typeof window === 'undefined') return '/';
@@ -17,12 +21,16 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
 
   const onClaimAccount = async () => {
     try {
+      setLoading(true);
       if (user?.email) {
         await loginWithCookie(props);
       }
       window.location.href = getTargetUrl();
     } catch (err) {
       console.error(`Error: login failed`, err);
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +52,9 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
             variant="primary"
             className="btn-submit mt-8 text-md"
             onClick={onClaimAccount}
+            disabled={isLoading}
           >
+            {isLoading && <Spinner />}
             Claim Account
           </Button>
         </div>

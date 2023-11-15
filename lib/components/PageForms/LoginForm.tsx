@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 interface IFormProps {
@@ -23,6 +24,7 @@ interface IFormProps {
 }
 
 export default function LoginForm(props: IFormProps) {
+  const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState(props.email);
   const {
     register,
@@ -36,6 +38,7 @@ export default function LoginForm(props: IFormProps) {
 
   const onSubmit = async (data: IUser) => {
     try {
+      setLoading(true);
       const { olt } = await postLogin({
         email,
         password: data.password,
@@ -47,6 +50,8 @@ export default function LoginForm(props: IFormProps) {
       console.error(`Error: login failed`, err);
       // setError('root.server', { message: err.message }); # In production, it displays "An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error."
       setError('root.server', { message: 'Incorrect username or password' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,7 +106,13 @@ export default function LoginForm(props: IFormProps) {
                   Forgot password
                 </LinkButton>
               </div>
-              <Button variant="primary" className="btn-submit" type="submit">
+              <Button
+                variant="primary"
+                className="btn-submit"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading && <Spinner />}
                 Log in
               </Button>
               <ErrorWrapper>{errors.root?.server.message}</ErrorWrapper>

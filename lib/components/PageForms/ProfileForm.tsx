@@ -7,23 +7,35 @@ import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
   email: string;
 }
 
 export default function ProfileForm(props: IFormProps) {
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
 
   const logout = async () => {
-    const response = await fetch('/api/logout');
-    const data = await response.json();
-    if (response.status === 200 && data.status === 'OK') {
-      router.replace('/');
+    setLoading(true);
+    try {
+      const response = await fetch('/api/logout');
+      const data = await response.json();
+      if (response.status === 200 && data.status === 'OK') {
+        router.replace('/');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +82,10 @@ export default function ProfileForm(props: IFormProps) {
           </div>
           <div className="mt-4 text-center text-md">
             Do you want to user another account?{' '}
-            <LinkButton onClick={() => logout()}>Switch Account</LinkButton>
+            <LinkButton onClick={() => logout()} disabled={isLoading}>
+              {isLoading && <Spinner />}
+              Switch Account
+            </LinkButton>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />

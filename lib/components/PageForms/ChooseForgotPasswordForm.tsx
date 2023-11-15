@@ -12,16 +12,20 @@ import {
 import { getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
 import HorizontalBar from '../Layouts/HorizontalBar';
+import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
   email: string;
 }
 
 export default function ChooseForgotPasswordForm(props: IFormProps) {
+  const [isEmailLoading, setEmailLoading] = useState(false);
+  const [isSMSLoading, setSMSLoading] = useState(false);
   const router = useRouter();
   const postForgotPasswordRequestByEmail =
     usePostForgotPasswordRequestByEmail();
@@ -29,6 +33,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
 
   const onSendEmailConfirmation = async () => {
     try {
+      setEmailLoading(true);
       await postForgotPasswordRequestByEmail({
         email: props.email,
         custom_url: `${window.location.origin}/forgot_password`
@@ -37,16 +42,21 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setEmailLoading(false);
     }
   };
 
   const onSendSMSConfirmation = async () => {
     try {
+      setSMSLoading(true);
       await postForgotPasswordRequestBySMS();
       router.push(`/reset-verify/sms/${props.email}`);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setSMSLoading(false);
     }
   };
 
@@ -74,17 +84,22 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
           <div className="mt-8 w-full">
             <Button
               prefixIcon={
-                <FontAwesomeIcon
-                  icon={faEnvelope}
-                  width={20}
-                  height={20}
-                  className="pt-1"
-                />
+                isEmailLoading ? (
+                  <Spinner />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faEnvelope}
+                    width={20}
+                    height={20}
+                    className="pt-1"
+                  />
+                )
               }
               size="md"
               variant="secondary"
               className="btn-simple w-full"
               onClick={onSendEmailConfirmation}
+              disabled={isEmailLoading || isSMSLoading}
             >
               Verify via email
             </Button>
@@ -93,17 +108,22 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
             </div>
             <Button
               prefixIcon={
-                <FontAwesomeIcon
-                  icon={faPhone}
-                  width={20}
-                  height={20}
-                  className="pt-1"
-                />
+                isSMSLoading ? (
+                  <Spinner />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPhone}
+                    width={20}
+                    height={20}
+                    className="pt-1"
+                  />
+                )
               }
               size="md"
               variant="secondary"
               className="btn-simple w-full"
               onClick={onSendSMSConfirmation}
+              disabled={isEmailLoading || isSMSLoading}
             >
               Verify via text message
             </Button>

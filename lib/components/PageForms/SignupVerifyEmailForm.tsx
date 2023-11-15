@@ -2,19 +2,23 @@
 
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import { usePostResendValidationEmail } from '@lib/hooks/auth';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
   email: string;
 }
 
 export default function SignupVerifyEmailForm(props: IFormProps) {
+  const [isLoading, setLoading] = useState(false);
   const postResendValidationEmail = usePostResendValidationEmail();
 
   const onResendConfirm = async () => {
     try {
+      setLoading(true);
       await postResendValidationEmail({
         email: props.email,
         custom_url: `${window.location.origin}/validate_email`
@@ -23,6 +27,8 @@ export default function SignupVerifyEmailForm(props: IFormProps) {
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,7 +54,10 @@ export default function SignupVerifyEmailForm(props: IFormProps) {
           </div>
           <div className="mt-5 text-sm font-normal text-gray-500">
             Didn't receive the email?{' '}
-            <LinkButton onClick={onResendConfirm}>Click to resend</LinkButton>
+            <LinkButton onClick={onResendConfirm} disabled={isLoading}>
+              {isLoading && <Spinner />}
+              Click to resend
+            </LinkButton>
           </div>
         </div>
       </div>

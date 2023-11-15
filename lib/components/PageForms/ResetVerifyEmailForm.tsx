@@ -4,19 +4,23 @@ import LinkButton from '@lib/components/Buttons/LinkButton';
 import { usePostForgotPasswordRequestByEmail } from '@lib/hooks/forgot_password';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
   email: string;
 }
 
 export default function ResetVerifyEmailForm(props: IFormProps) {
+  const [isLoading, setLoading] = useState(false);
   const postForgotPasswordRequest = usePostForgotPasswordRequestByEmail();
 
   const onResendConfirm = async () => {
     try {
+      setLoading(true);
       await postForgotPasswordRequest({
         email: props.email,
         custom_url: `${window.location.origin}/forgot_password`
@@ -25,6 +29,8 @@ export default function ResetVerifyEmailForm(props: IFormProps) {
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +59,10 @@ export default function ResetVerifyEmailForm(props: IFormProps) {
           </div>
           <div className="my-5 text-sm font-normal text-gray-500">
             Didn't receive the email?{' '}
-            <LinkButton onClick={onResendConfirm}>Resend Email</LinkButton>
+            <LinkButton onClick={onResendConfirm} disabled={isLoading}>
+              {isLoading && <Spinner />}
+              Resend Email
+            </LinkButton>
           </div>
           <Link href="/" className="link-none">
             <Button variant="primary" className="btn-submit">

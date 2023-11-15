@@ -11,10 +11,12 @@ import {
 } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
+import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 interface IFormProps {
@@ -22,6 +24,7 @@ interface IFormProps {
 }
 
 export default function ResetPasswordSubmitForm(props: IFormProps) {
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -33,11 +36,14 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
 
   const onSubmit = async (data: IUser) => {
     try {
+      setLoading(true);
       const { password } = data;
       await postForgotPassword({ url: props.secret, password });
       router.push('/success/reset-password');
     } catch (err) {
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,7 +96,9 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
                 variant="primary"
                 className="btn-submit mt-8"
                 type="submit"
+                disabled={isLoading}
               >
+                {isLoading && <Spinner />}
                 Reset Password
               </Button>
             </form>

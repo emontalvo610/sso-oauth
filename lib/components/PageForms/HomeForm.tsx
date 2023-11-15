@@ -11,16 +11,18 @@ import { getSearchParamQuery } from '@lib/utils/url';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { emailValidatorOptions } from '@validators/user';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BackButton from '../Buttons/BackButton';
 import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
 import BackButtonLayout from '../Layouts/BackButtonLayout';
+import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 export default function HomeForm() {
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
   const {
@@ -38,6 +40,7 @@ export default function HomeForm() {
   }, []);
 
   const onSubmit = (data: IUser) => {
+    setLoading(true);
     setSessionStorageItem('email', data.email);
     router.push(`/choose_email/${data.email}${getSearchParamQuery()}`);
   };
@@ -84,7 +87,9 @@ export default function HomeForm() {
                 variant="primary"
                 type="submit"
                 className="btn-submit mt-8"
+                disabled={isLoading}
               >
+                {isLoading && <Spinner />}
                 Get Started
               </Button>
             </form>

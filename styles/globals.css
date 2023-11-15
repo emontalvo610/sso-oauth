@@ -63,6 +63,10 @@ a {
   @apply !text-purple-700;
 }
 
+button:disabled .btn-link {
+  @apply !text-purple-300;
+}
+
 a {
   @apply !text-purple-700;
   @apply text-sm;
@@ -131,7 +135,6 @@ a {
   margin-bottom: 6px;
 }
 
-.select-basic [class*="-ValueContainer"]{
-  @apply py-2;
-  height: 42px;
+.select-basic [class*="-control"]{
+  min-height: 44px;
 }
