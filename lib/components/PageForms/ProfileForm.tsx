@@ -4,6 +4,7 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
+import { setSessionStorageItem } from '@lib/utils/storage';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -29,6 +30,7 @@ export default function ProfileForm(props: IFormProps) {
       const response = await fetch('/api/logout');
       const data = await response.json();
       if (response.status === 200 && data.status === 'OK') {
+        setSessionStorageItem('logout', 'true');
         router.replace('/');
       }
     } catch (err) {

@@ -25,6 +25,7 @@ export default function HomeForm() {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
+  const [logout, setLogout] = useState(false);
   const {
     register,
     handleSubmit,
@@ -34,6 +35,9 @@ export default function HomeForm() {
 
   useEffect(() => {
     const email = getSessionStorageItem('email');
+    if (getSessionStorageItem('logout')) {
+      setLogout(true);
+    }
     console.log({ email });
     setValue('email', email);
     clearSessionStorage();
@@ -67,6 +71,11 @@ export default function HomeForm() {
             <img src="/icons/logo-pb.svg" width={48} height={48} />
           </div>
           <div className="w-full">
+            {logout && (
+              <div className="flex justify-center text-[25px] text-gray-600">
+                Logged out
+              </div>
+            )}
             <div className="pt-4 text-sm font-normal leading-5 text-gray-600">
               Log into your account. If you don't have one, you will be prompted
               to create one.

@@ -302,8 +302,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 />
                 <ErrorWrapper>{errors.password2?.message}</ErrorWrapper>
               </div>
-              <div className="mt-10 flex flex-wrap gap-2 text-left">
-                <div className="basis-[180px] sm:basis-[50%]">
+              <div className="mt-10 flex flex-wrap gap-5 text-left sm:gap-2">
+                <div className="basis-[140px] sm:basis-[50%]">
                   <div className="input-label">Country</div>
                   <Select
                     options={getCountryCodesOptions()}

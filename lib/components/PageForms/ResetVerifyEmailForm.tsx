@@ -43,17 +43,13 @@ export default function ResetVerifyEmailForm(props: IFormProps) {
             <img src="/icons/icon-msg.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Email Sent to Reset Password
+            Email Sent to
           </div>
-          <div className="mt-5 text-md font-normal text-gray-500">
-            Check email box for
-            <br />
+          <div className="mt-2 text-md font-normal text-gray-500">
             <span className="font-medium text-gray-500">{props.email}</span>
             <br />
-            for a link to reset your password.
             <br />
-            <br />
-            <span className="text-sm font-semibold">
+            <span className="flex text-start text-md font-semibold">
               NOTE: Check your junk/spam folder if you do not receive the email
             </span>
           </div>
