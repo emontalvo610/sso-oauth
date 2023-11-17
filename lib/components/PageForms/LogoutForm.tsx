@@ -3,6 +3,7 @@
 import { faSpinnerThird } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Background from '@lib/components/Extra/Background';
+import { setSessionStorageItem } from '@lib/utils/storage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
@@ -17,6 +18,7 @@ export const LogoutForm = () => {
       const data = await response.json();
 
       if (data.status === 'OK') {
+        setSessionStorageItem('logout', 'true');
         router.replace(`/${redirect ? `?${redirect}` : ''}`);
       }
     };

@@ -48,7 +48,6 @@ export default function RegisterPrepareForm(props: IFormProps) {
           <div className="mt-8 w-full">
             <div className="mb-8 text-left">
               <StaticInputField
-                label="Email"
                 placeholder="Enter your email"
                 className="input-basic"
                 value={email}

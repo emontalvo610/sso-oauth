@@ -11,6 +11,7 @@ export interface IUser {
   phoneAreaCode: string;
   phoneNumber: string;
   textAlertEnabled: number;
+  gender: number;
   uuid: string;
   token: string;
   expiration: string;

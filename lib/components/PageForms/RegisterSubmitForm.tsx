@@ -9,7 +9,6 @@ import type { SelectOption } from '@lib/types/select';
 import type { IUser } from '@lib/types/user';
 import { getSearchParamQuery } from '@lib/utils/url';
 import {
-  emailValidatorOptions,
   firstNameValidatorOptions,
   lastNameValidatorOptions,
   password2ValidatorOptionsFn,
@@ -20,12 +19,14 @@ import {
 } from '@lib/validators/user';
 import { Button, InputField, Radio, Select } from '@pickleballinc/react-ui';
 import { validateRecaptchaToken } from '@server/recaptcha';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import Background from '../Extra/Background';
+import StaticInputField from '../Forms/StaticInputField';
 import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
@@ -41,7 +42,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const { data: statesData } = useGetStates();
   const [stateTitle, setStateTitle] = useState('State');
   const [zipCodeTitle, setZipCodeTitle] = useState('Zip Code');
-  const [isSubmitted, setSubmitted] = useState(false);
+  const isSubmitted = useRef<boolean>(false);
   const [isLoading, setLoading] = useState(false);
   const postRegister = usePostRegister();
 
@@ -58,8 +59,9 @@ export default function RegisterSubmitForm(props: IFormProps) {
   } = useForm<IUser>();
 
   const checkManualValidation = () => {
-    const { countryId, stateId, phoneCountryId, textAlertEnabled } =
+    const { countryId, stateId, phoneCountryId, textAlertEnabled, gender } =
       getValues();
+    console.log({ gender });
     let valid = true;
     if (countryId) {
       clearErrors('countryId');
@@ -79,6 +81,15 @@ export default function RegisterSubmitForm(props: IFormProps) {
       setError('phoneCountryId', { message: 'Country is required' });
       valid = false;
     }
+    console.log({ gender, textAlertEnabled });
+    if (gender === undefined) {
+      setError('gender', {
+        message: 'Please select your gender'
+      });
+      valid = false;
+    } else {
+      clearErrors('gender');
+    }
     if (textAlertEnabled === undefined) {
       setError('textAlertEnabled', {
         message: 'Please select one of the alert options'
@@ -93,7 +104,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const onSelectChange = (option: unknown, id: keyof IUser) => {
     const { value } = option as SelectOption;
     setValue(id, value);
-    if (isSubmitted) checkManualValidation();
+    console.log({ id, value, isSubmitted: isSubmitted.current });
+    if (isSubmitted.current) checkManualValidation();
 
     // Set title of state and zip code according to the country
     const { countryId } = getValues();
@@ -130,8 +142,13 @@ export default function RegisterSubmitForm(props: IFormProps) {
       });
   };
 
+  const onClickSubmit = () => {
+    isSubmitted.current = true;
+    if (checkManualValidation()) trigger();
+  };
+
   const onSubmit = async () => {
-    setSubmitted(true);
+    isSubmitted.current = true;
     const isValid = checkManualValidation() && (await trigger());
     if (!isValid) return;
     if (!executeRecaptcha) return;
@@ -216,17 +233,14 @@ export default function RegisterSubmitForm(props: IFormProps) {
           <div className="mt-8 w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="text-left">
-                <InputField
-                  label="Email"
+                <StaticInputField
                   placeholder="Enter your email"
                   className="input-basic"
-                  readOnly
-                  {...register('email', emailValidatorOptions)}
                   value={props.email}
+                  redirect="/"
                 />
-                <ErrorWrapper>{errors.email?.message}</ErrorWrapper>
               </div>
-              <div className="mt-5 flex flex-wrap gap-5 text-left sm:flex-col">
+              <div className="mt-3 flex flex-wrap gap-5 text-left sm:flex-col">
                 <div className="flex-1">
                   <InputField
                     label="First Name"
@@ -246,7 +260,29 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   <ErrorWrapper>{errors.lastName?.message}</ErrorWrapper>
                 </div>
               </div>
-              <div className="mt-5 text-left">
+              <div className="mt-2 text-left">
+                <div className="flex items-center gap-9">
+                  <div className="input-label pt-[6px]">Gender</div>
+                  <Radio
+                    Text="Male"
+                    size="sm"
+                    className="input-radio-basic"
+                    name="radio-gender"
+                    onChange={() => onSelectChange({ value: 1 }, 'gender')}
+                  />
+                  <Radio
+                    Text="Female"
+                    size="sm"
+                    className="input-radio-basic"
+                    name="radio-gender"
+                    onChange={() => onSelectChange({ value: 0 }, 'gender')}
+                  />
+                </div>
+                <div className="mb-4 ml-[86px] mt-[-14px]">
+                  <ErrorWrapper>{errors.gender?.message}</ErrorWrapper>
+                </div>
+              </div>
+              <div className="mt-1 text-left">
                 <div className="input-label">Country</div>
                 <Select
                   options={getCountriesOptions()}
@@ -362,7 +398,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     }
                   />
                 </div>
-                <div className="mt-[-12px]">
+                <div className="mt-[-14px]">
                   <ErrorWrapper>
                     {errors.textAlertEnabled?.message}
                   </ErrorWrapper>
@@ -378,7 +414,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 variant="primary"
                 className="btn-submit mt-8"
                 type="submit"
-                onClick={() => checkManualValidation() && trigger()}
+                onClick={onClickSubmit}
                 disabled={isLoading}
               >
                 {isLoading && <Spinner />}
@@ -386,6 +422,9 @@ export default function RegisterSubmitForm(props: IFormProps) {
               </Button>
               <ErrorWrapper>{errors.root?.server.message}</ErrorWrapper>
             </form>
+          </div>
+          <div className="mt-4">
+            <Link href={getBackUrl()}>Back to Log In</Link>
           </div>
           <div className="mt-8">
             <TermsAndPolicy />

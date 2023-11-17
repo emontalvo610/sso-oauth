@@ -1,5 +1,4 @@
 import ResetPasswordSubmitForm from '@lib/components/PageForms/ResetPasswordSubmitForm';
-import { validateToken } from '@lib/server/api';
 import { getServerActionSession } from '@lib/server/session/session';
 import { redirect } from 'next/navigation';
 
@@ -15,11 +14,8 @@ export default async function ForgotPasswordPage({ params }: IPageProps) {
   const session = await getServerActionSession();
   const { user } = session;
 
-  if (user?.token) {
-    const isTokenValid = await validateToken(user.token);
-    if (isTokenValid) {
-      redirect('/account');
-    }
+  if (user) {
+    redirect('/account');
   }
 
   return <ResetPasswordSubmitForm secret={secret} />;

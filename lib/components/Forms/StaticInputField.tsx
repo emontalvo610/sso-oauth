@@ -8,7 +8,7 @@ import type { FC, InputHTMLAttributes, PropsWithChildren } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 interface IStaticInputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   onValueChange?: (value: string) => void;
   redirect?: string;
 }
@@ -69,7 +69,9 @@ const StaticInputField: FC<PropsWithChildren<IStaticInputFieldProps>> = ({
       )}
       {status === Status.STATIC && (
         <div className="flex flex-col gap-2 text-center">
-          <div className="text-md font-normal text-gray-600">{label}</div>
+          {label && (
+            <div className="text-md font-normal text-gray-600">{label}</div>
+          )}
           <div className="flex cursor-pointer justify-center gap-3 text-md font-normal text-gray-900">
             <div onClick={onEditValue} onKeyDown={onEditValue}>
               {value}

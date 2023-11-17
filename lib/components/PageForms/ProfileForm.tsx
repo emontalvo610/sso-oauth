@@ -7,7 +7,7 @@ import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { setSessionStorageItem } from '@lib/utils/storage';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -21,7 +21,6 @@ interface IFormProps {
 
 export default function ProfileForm(props: IFormProps) {
   const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
   const params = useSearchParams();
 
   const logout = async () => {
@@ -31,7 +30,7 @@ export default function ProfileForm(props: IFormProps) {
       const data = await response.json();
       if (response.status === 200 && data.status === 'OK') {
         setSessionStorageItem('logout', 'true');
-        router.replace('/');
+        window.location.href = '/';
       }
     } catch (err) {
       console.error(err);

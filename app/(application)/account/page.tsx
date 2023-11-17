@@ -1,5 +1,4 @@
 import ProfileForm from '@lib/components/PageForms/ProfileForm';
-import { validateToken } from '@lib/server/api';
 import { getServerActionSession } from '@lib/server/session/session';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -15,13 +14,7 @@ export default async function AccountPage() {
     cookies().delete('iron-session/pickleball/sso');
   };
 
-  if (user?.token) {
-    const isTokenValid = await validateToken(user.token);
-    if (!isTokenValid) {
-      logout();
-      redirect('/');
-    }
-  } else {
+  if (!user) {
     logout();
     redirect('/');
   }

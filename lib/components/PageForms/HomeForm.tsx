@@ -2,11 +2,7 @@
 
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import type { IUser } from '@lib/types/user';
-import {
-  clearSessionStorage,
-  getSessionStorageItem,
-  setSessionStorageItem
-} from '@lib/utils/storage';
+import { clearSessionStorage, getSessionStorageItem } from '@lib/utils/storage';
 import { getSearchParamQuery } from '@lib/utils/url';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { emailValidatorOptions } from '@validators/user';
@@ -29,23 +25,18 @@ export default function HomeForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors }
   } = useForm<IUser>();
 
   useEffect(() => {
-    const email = getSessionStorageItem('email');
     if (getSessionStorageItem('logout')) {
       setLogout(true);
     }
-    console.log({ email });
-    setValue('email', email);
     clearSessionStorage();
   }, []);
 
   const onSubmit = (data: IUser) => {
     setLoading(true);
-    setSessionStorageItem('email', data.email);
     router.push(`/choose_email/${data.email}${getSearchParamQuery()}`);
   };
 

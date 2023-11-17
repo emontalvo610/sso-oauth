@@ -82,7 +82,6 @@ export default function LoginForm(props: IFormProps) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="text-left">
                 <StaticInputField
-                  label="Email"
                   placeholder="Enter your email"
                   className="input-basic"
                   value={email}

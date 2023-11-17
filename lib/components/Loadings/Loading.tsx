@@ -1,5 +1,3 @@
-'use client';
-
 import Background from '../Extra/Background';
 
 const Loading = () => {
