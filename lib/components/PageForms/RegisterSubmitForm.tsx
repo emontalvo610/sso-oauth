@@ -170,8 +170,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
 
     if (isHuman) {
       try {
+        const { email } = props;
         const {
-          email,
           firstName,
           lastName,
           password,
@@ -227,11 +227,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Create your account
           </div>
-          <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
-            Fill in the form to create your account
-          </div>
           <div className="mt-8 w-full">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <div className="text-left">
                 <StaticInputField
                   placeholder="Enter your email"
@@ -261,7 +258,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 </div>
               </div>
               <div className="mt-2 text-left">
-                <div className="flex items-center gap-9">
+                <div className="flex items-center gap-9 sm:gap-4">
                   <div className="input-label pt-[6px]">Gender</div>
                   <Radio
                     Text="Male"
@@ -278,7 +275,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     onChange={() => onSelectChange({ value: 0 }, 'gender')}
                   />
                 </div>
-                <div className="mb-4 ml-[86px] mt-[-14px]">
+                <div className="mb-4 ml-[86px] mt-[-14px] sm:ml-[60px]">
                   <ErrorWrapper>{errors.gender?.message}</ErrorWrapper>
                 </div>
               </div>

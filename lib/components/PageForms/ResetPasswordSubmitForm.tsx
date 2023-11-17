@@ -66,7 +66,7 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
             Set new password
           </div>
           <div className="mt-8 w-full">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <div className="text-left">
                 <InputField
                   label="Password"

@@ -73,7 +73,7 @@ export default function HomeForm() {
             </div>
           </div>
           <div className="w-full">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <div className="text-left">
                 <InputField
                   label="Email"
