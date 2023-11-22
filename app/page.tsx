@@ -7,7 +7,6 @@ export default async function HomePage() {
   const { user } = session;
 
   if (user) {
-    console.log('@Redirect1');
     redirect('/account');
   }
 

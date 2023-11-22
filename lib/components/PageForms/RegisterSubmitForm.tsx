@@ -61,7 +61,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const checkManualValidation = () => {
     const { countryId, stateId, phoneCountryId, textAlertEnabled, gender } =
       getValues();
-    console.log({ gender });
     let valid = true;
     if (countryId) {
       clearErrors('countryId');
@@ -81,7 +80,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
       setError('phoneCountryId', { message: 'Country is required' });
       valid = false;
     }
-    console.log({ gender, textAlertEnabled });
     if (gender === undefined) {
       setError('gender', {
         message: 'Please select your gender'
@@ -104,7 +102,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const onSelectChange = (option: unknown, id: keyof IUser) => {
     const { value } = option as SelectOption;
     setValue(id, value);
-    console.log({ id, value, isSubmitted: isSubmitted.current });
     if (isSubmitted.current) checkManualValidation();
 
     // Set title of state and zip code according to the country

@@ -17,7 +17,6 @@ export default async function ChooseForgotPasswordPage({ params }: IPageProps) {
   const { user } = session;
 
   if (user) {
-    console.log('@Redirect4');
     redirect('/account');
   }
 

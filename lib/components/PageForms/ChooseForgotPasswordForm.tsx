@@ -79,7 +79,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
           </div>
           <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
             {/* Choose to verify your account via text message or email */}
-            Click the bottom to verify your account via email
+            Click below to verify your account via email
           </div>
           <div className="mb-8 mt-5 w-full">
             <Button

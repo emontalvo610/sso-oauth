@@ -35,7 +35,6 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
 
   const handleInputKeyDown = (index: number, key: string) => {
     const { value } = inputs.current[index] as HTMLInputElement;
-    console.log(value);
     if (key === 'Backspace' && !value && index > 0) {
       setInputFocus(index - 1);
     }

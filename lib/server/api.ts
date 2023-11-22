@@ -6,6 +6,7 @@ import type { IronSessionData } from 'iron-session';
 import { redirect } from 'next/navigation';
 
 import apiClient from './axios';
+import { cacheStorage } from './cache';
 import { Environment } from './environment';
 import { getServerActionSession } from './session/session';
 
@@ -23,10 +24,13 @@ export const lookupEmail = async (email: string) => {
 
 export const validateEmailSecret = async (secret: string) => {
   try {
+    if (cacheStorage.validateEmailSecret[secret]) {
+      return cacheStorage.validateEmailSecret[secret];
+    }
     const { status, data } = await apiClient.get(
       `${Environment.API_URL}/v1/pub/validate_email/${secret}`
     );
-    console.log({ data });
+    cacheStorage.validateEmailSecret[secret] = data;
     if (status === 200) return data ?? {};
   } catch (error) {
     console.error(`Error: ValidateEmail by ${secret}`, error);

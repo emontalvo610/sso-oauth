@@ -46,7 +46,7 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
             Almost done!
           </div>
           <div className="mt-5 text-center text-md font-normal text-gray-500">
-            Click the bottom below to complete your account setup
+            Click below to complete your account setup
           </div>
           <Button
             variant="primary"
