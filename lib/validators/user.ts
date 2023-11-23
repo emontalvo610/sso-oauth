@@ -33,20 +33,6 @@ export const zipCodeValidatorOptions: RegisterOptions<IUser, 'zipCode'> = {
   }
 };
 
-export const phoneAreaCodeValidatorOptions: RegisterOptions<
-  IUser,
-  'phoneAreaCode'
-> = {
-  required: {
-    value: true,
-    message: 'Code is required'
-  },
-  pattern: {
-    value: /\d+/i,
-    message: 'Code should contain only numeric digits'
-  }
-};
-
 export const phoneNumberValidatorOptions: RegisterOptions<
   IUser,
   'phoneNumber'

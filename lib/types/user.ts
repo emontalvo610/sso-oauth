@@ -8,10 +8,9 @@ export interface IUser {
   password: string;
   password2: string;
   phoneCountryId: string;
-  phoneAreaCode: string;
   phoneNumber: string;
   textAlertEnabled: number;
-  gender: number;
+  gender: 'M' | 'F';
   uuid: string;
   token: string;
   expiration: string;
@@ -27,7 +26,7 @@ export interface IUserRegisterPayload {
   password: string;
   phone: string;
   phoneCountryId: number;
-  phoneAreaCode: string;
+  gender: 'M' | 'F';
   stateId: number;
   countryId: number;
   zip: string;

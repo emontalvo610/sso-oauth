@@ -13,7 +13,6 @@ import {
   lastNameValidatorOptions,
   password2ValidatorOptionsFn,
   passwordValidatorOptions,
-  phoneAreaCodeValidatorOptions,
   phoneNumberValidatorOptions,
   zipCodeValidatorOptions
 } from '@lib/validators/user';
@@ -173,10 +172,10 @@ export default function RegisterSubmitForm(props: IFormProps) {
           lastName,
           password,
           phoneNumber,
-          phoneAreaCode,
           phoneCountryId,
           countryId,
           stateId,
+          gender,
           zipCode
         } = getValues();
         await postRegister({
@@ -184,8 +183,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
           firstName,
           lastName,
           password,
+          gender,
           phone: phoneNumber,
-          phoneAreaCode,
           phoneCountryId: Number(phoneCountryId),
           countryId: Number(countryId),
           stateId: Number(stateId),
@@ -262,14 +261,14 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     size="sm"
                     className="input-radio-basic"
                     name="radio-gender"
-                    onChange={() => onSelectChange({ value: 1 }, 'gender')}
+                    onChange={() => onSelectChange({ value: 'M' }, 'gender')}
                   />
                   <Radio
                     Text="Female"
                     size="sm"
                     className="input-radio-basic"
                     name="radio-gender"
-                    onChange={() => onSelectChange({ value: 0 }, 'gender')}
+                    onChange={() => onSelectChange({ value: 'F' }, 'gender')}
                   />
                 </div>
                 <div className="mb-4 ml-[86px] mt-[-14px] sm:ml-[60px]">
@@ -333,7 +332,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <ErrorWrapper>{errors.password2?.message}</ErrorWrapper>
               </div>
               <div className="mt-10 flex flex-wrap gap-5 text-left sm:gap-2">
-                <div className="basis-[140px] sm:basis-[50%]">
+                <div className="basis-[140px] sm:basis-[30%]">
                   <div className="input-label">Country</div>
                   <Select
                     options={getCountryCodesOptions()}
@@ -346,19 +345,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   />
                   <ErrorWrapper>{errors.phoneCountryId?.message}</ErrorWrapper>
                 </div>
-                <div className="basis-[130px] sm:flex-1">
-                  <InputField
-                    label="Area Code"
-                    placeholder="Area code"
-                    className="input-basic"
-                    {...register(
-                      'phoneAreaCode',
-                      phoneAreaCodeValidatorOptions
-                    )}
-                  />
-                  <ErrorWrapper>{errors.phoneAreaCode?.message}</ErrorWrapper>
-                </div>
-                <div className="flex-1 sm:basis-[100%]">
+                <div className="flex-1">
                   <InputField
                     label="Phone Number"
                     placeholder="0000000"

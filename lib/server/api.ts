@@ -30,8 +30,10 @@ export const validateEmailSecret = async (secret: string) => {
     const { status, data } = await apiClient.get(
       `${Environment.API_URL}/v1/pub/validate_email/${secret}`
     );
-    cacheStorage.validateEmailSecret[secret] = data;
-    if (status === 200) return data ?? {};
+    if (status === 200) {
+      cacheStorage.validateEmailSecret[secret] = data;
+      return data ?? {};
+    }
   } catch (error) {
     console.error(`Error: ValidateEmail by ${secret}`, error);
   }
