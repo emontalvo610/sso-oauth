@@ -348,7 +348,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="flex-1">
                   <InputField
                     label="Phone Number"
-                    placeholder="0000000"
+                    placeholder="0000000000"
                     className="input-basic"
                     {...register('phoneNumber', phoneNumberValidatorOptions)}
                   />
