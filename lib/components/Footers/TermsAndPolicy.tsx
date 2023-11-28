@@ -9,9 +9,8 @@ const TermsAndPolicy = ({ simple }: ITermsAndPolicy) => {
         <div>
           This email and password lets you seamlessly log into the
           Pickleball.com products, such as Pickleball+,
-          PickleballTournaments.com, PickleballBrackets.com, PPATour.com, and
-          Pickleball TV. If you've used your email with one of these products,
-          please use it here too.
+          PickleballTournaments.com, and PickleballBrackets.com. If you've used
+          your email with one of these products, please use it here too.
           <br />
           <br />
         </div>

@@ -79,7 +79,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
           </div>
           <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
             {/* Choose to verify your account via text message or email */}
-            Click below to verify your account via email
+            Click below to reset your password via email verification
           </div>
           <div className="mb-8 mt-5 w-full">
             <Button
@@ -101,7 +101,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
               onClick={onSendEmailConfirmation}
               disabled={isEmailLoading /* || isSMSLoading */}
             >
-              Verify via email
+              Reset via email
             </Button>
             {/* <div className="my-3 text-md font-normal text-gray-500">
               <HorizontalBar>OR</HorizontalBar>

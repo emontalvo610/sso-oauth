@@ -16,7 +16,13 @@ import {
   phoneNumberValidatorOptions,
   zipCodeValidatorOptions
 } from '@lib/validators/user';
-import { Button, InputField, Radio, Select } from '@pickleballinc/react-ui';
+import {
+  Button,
+  Checkbox,
+  InputField,
+  Radio,
+  Select
+} from '@pickleballinc/react-ui';
 import { validateRecaptchaToken } from '@server/recaptcha';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -43,6 +49,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const [zipCodeTitle, setZipCodeTitle] = useState('Zip Code');
   const isSubmitted = useRef<boolean>(false);
   const [isLoading, setLoading] = useState(false);
+  const [isTermsAgreed, setTermsAgreed] = useState(false);
   const postRegister = usePostRegister();
 
   const {
@@ -391,12 +398,31 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   ensure your browser has cookies and JavaScript enabled.
                 </ErrorWrapper>
               )}
+              <div className="mt-6">
+                <Checkbox
+                  Text={() => (
+                    <>
+                      I agree to the{' '}
+                      <a
+                        href="https://pickleball.com/terms-of-use"
+                        target="_blank"
+                      >
+                        Terms of Service
+                      </a>
+                    </>
+                  )}
+                  size="sm"
+                  onChange={() => {
+                    setTermsAgreed(!isTermsAgreed);
+                  }}
+                />
+              </div>
               <Button
                 variant="primary"
-                className="btn-submit mt-8"
+                className="btn-submit mt-6"
                 type="submit"
                 onClick={onClickSubmit}
-                disabled={isLoading}
+                disabled={isLoading || !isTermsAgreed}
               >
                 {isLoading && <Spinner />}
                 Submit
