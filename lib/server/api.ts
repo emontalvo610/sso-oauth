@@ -1,5 +1,6 @@
 'use server';
 
+import { Validity } from '@lib/constants';
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
 import { AxiosError } from 'axios';
 import type { IronSessionData } from 'iron-session';
@@ -38,6 +39,19 @@ export const validateEmailSecret = async (secret: string) => {
     console.error(`Error: ValidateEmail by ${secret}`, error);
   }
   return null;
+};
+
+export const validateSecret = async (secret: string) => {
+  try {
+    const { status } = await apiClient.get(
+      `${Environment.API_URL}/v1/sso/validate_url/${secret}`
+    );
+    if (status === 200) return Validity.VALID;
+    if (status === 410) return Validity.EXPIRED;
+  } catch (error) {
+    console.error(`Error: ValidateSecret by ${secret}`, error);
+  }
+  return Validity.INVALID;
 };
 
 export const validateToken = async (token: string) => {
@@ -138,4 +152,19 @@ export const logout = async () => {
   const session = await getServerActionSession();
   session.destroy();
   redirect('/');
+};
+
+export const getMaskedPhoneNumberByEmail = async (email: string) => {
+  try {
+    const { status, data } = await apiClient.get(
+      `${Environment.API_URL}/v1/data/user-email-lookup/${email}`
+    );
+    if (status === 200) {
+      const { valid, masked_phone_number: maskedPhoneNumber } = data;
+      if (valid) return maskedPhoneNumber;
+    }
+  } catch (err) {
+    console.error(`Error: LookupUserByEmail by ${email}`, err);
+  }
+  return null;
 };

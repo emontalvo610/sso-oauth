@@ -1,14 +1,9 @@
 'use client';
 
-// import BackButton from '@components/Buttons/BackButton';
-// import BackButtonLayout from '@components/Layouts/BackButtonLayout';
-import { faEnvelope /* , faPhone */ } from '@fortawesome/pro-regular-svg-icons';
+import { faEnvelope, faPhone } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
-import {
-  usePostForgotPasswordRequestByEmail
-  // usePostForgotPasswordSMSRequestBySMS
-} from '@lib/hooks/forgot_password';
+import { usePostForgotPasswordRequest } from '@lib/hooks/forgot_password';
 import { getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
@@ -17,7 +12,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
-// import HorizontalBar from '../Layouts/HorizontalBar';
+import HorizontalBar from '../Layouts/HorizontalBar';
 import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
@@ -26,18 +21,17 @@ interface IFormProps {
 
 export default function ChooseForgotPasswordForm(props: IFormProps) {
   const [isEmailLoading, setEmailLoading] = useState(false);
-  // const [isSMSLoading, setSMSLoading] = useState(false);
+  const [isSMSLoading, setSMSLoading] = useState(false);
   const router = useRouter();
-  const postForgotPasswordRequestByEmail =
-    usePostForgotPasswordRequestByEmail();
-  // const postForgotPasswordRequestBySMS = usePostForgotPasswordSMSRequestBySMS();
+  const postForgotPasswordRequest = usePostForgotPasswordRequest();
 
   const onSendEmailConfirmation = async () => {
     try {
       setEmailLoading(true);
-      await postForgotPasswordRequestByEmail({
+      await postForgotPasswordRequest({
         email: props.email,
-        custom_url: `${window.location.origin}/forgot_password`
+        custom_url: `${window.location.origin}/forgot_password`,
+        request_type: 'email'
       });
       router.push(`/reset-verify/email/${props.email}`);
     } catch (err) {
@@ -48,18 +42,21 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
     }
   };
 
-  // const onSendSMSConfirmation = async () => {
-  //   try {
-  //     setSMSLoading(true);
-  //     await postForgotPasswordRequestBySMS();
-  //     router.push(`/reset-verify/sms/${props.email}`);
-  //   } catch (err) {
-  //     console.error(err);
-  //     toast.error('Something went wrong. Please try again later.');
-  //   } finally {
-  //     setSMSLoading(false);
-  //   }
-  // };
+  const onSendSMSConfirmation = async () => {
+    try {
+      setSMSLoading(true);
+      await postForgotPasswordRequest({
+        email: props.email,
+        request_type: 'sms'
+      });
+      router.push(`/reset-verify/sms/${props.email}`);
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setSMSLoading(false);
+    }
+  };
 
   const getBackUrl = () => {
     return `/${getSearchParamQuery()}`;
@@ -74,12 +71,10 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
             <img src="/icons/icon-shield.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            {/* Email or text message */}
-            Email Message
+            Email or text message
           </div>
-          <div className="mt-3 text-md font-normal text-gray-500 sm:mt-2">
-            {/* Choose to verify your account via text message or email */}
-            Click below to reset your password via email verification
+          <div className="mt-3 text-center text-md font-normal text-gray-500 sm:mt-2">
+            Choose to reset your password via text message or email
           </div>
           <div className="mb-8 mt-5 w-full">
             <Button
@@ -99,11 +94,11 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
               variant="secondary"
               className="btn-simple w-full"
               onClick={onSendEmailConfirmation}
-              disabled={isEmailLoading /* || isSMSLoading */}
+              disabled={isEmailLoading || isSMSLoading}
             >
-              Reset via email
+              Send via email
             </Button>
-            {/* <div className="my-3 text-md font-normal text-gray-500">
+            <div className="my-3 text-md font-normal text-gray-500">
               <HorizontalBar>OR</HorizontalBar>
             </div>
             <Button
@@ -125,8 +120,8 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
               onClick={onSendSMSConfirmation}
               disabled={isEmailLoading || isSMSLoading}
             >
-              Verify via text message
-            </Button> */}
+              Send via text message
+            </Button>
           </div>
           <Link href={getBackUrl()} className="link-none">
             <Button variant="primary" className="btn-submit">

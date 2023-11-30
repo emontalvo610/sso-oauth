@@ -47,6 +47,7 @@ export interface IResendValidationEmailPayload {
 export interface IForgotPasswordRequestPayload {
   email: string;
   custom_url?: string;
+  request_type: 'email' | 'sms';
 }
 
 export interface IForgotPasswordPayload {

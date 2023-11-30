@@ -1,7 +1,7 @@
 'use client';
 
 import LinkButton from '@lib/components/Buttons/LinkButton';
-import { usePostForgotPasswordRequestByEmail } from '@lib/hooks/forgot_password';
+import { usePostForgotPasswordRequest } from '@lib/hooks/forgot_password';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -16,14 +16,15 @@ interface IFormProps {
 
 export default function ResetVerifyEmailForm(props: IFormProps) {
   const [isLoading, setLoading] = useState(false);
-  const postForgotPasswordRequest = usePostForgotPasswordRequestByEmail();
+  const postForgotPasswordRequest = usePostForgotPasswordRequest();
 
   const onResendConfirm = async () => {
     try {
       setLoading(true);
       await postForgotPasswordRequest({
         email: props.email,
-        custom_url: `${window.location.origin}/forgot_password`
+        custom_url: `${window.location.origin}/forgot_password`,
+        request_type: 'email'
       });
       toast.success(`An email link was resent to ${props.email}`);
     } catch (err) {

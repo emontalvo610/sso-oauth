@@ -1,15 +1,20 @@
+import ErrorEmptyPhoneForm from '@lib/components/PageForms/error/ErrorEmptyPhoneForm';
 import ResetVerifySMSForm from '@lib/components/PageForms/ResetVerifySMSForm';
+import { getMaskedPhoneNumberByEmail } from '@lib/server/api';
 
 interface IPageProps {
   params: {
     email: string;
-    phoneNumber: string;
   };
 }
 
-export default function ResetVerifySMSPage({ params }: IPageProps) {
+export default async function ResetVerifySMSPage({ params }: IPageProps) {
   const email = decodeURIComponent(params.email);
-  const phoneNumber = params.phoneNumber || '**** *** 5959';
+  const phoneNumber = await getMaskedPhoneNumberByEmail(params.email);
 
-  return <ResetVerifySMSForm email={email} phoneNumber={phoneNumber} />;
+  return phoneNumber ? (
+    <ResetVerifySMSForm email={email} phoneNumber={phoneNumber} />
+  ) : (
+    <ErrorEmptyPhoneForm />
+  );
 }
