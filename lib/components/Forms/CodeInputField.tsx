@@ -1,7 +1,7 @@
 'use client';
 
 import { InputField } from '@pickleballinc/react-ui';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, KeyboardEvent, PropsWithChildren } from 'react';
 import { Fragment, useRef } from 'react';
 
 interface ICodeInputFieldProps {
@@ -21,7 +21,8 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
   const getCurrentValue = () => {
     let value = '';
     for (let i = 0; i < inputs.current.length; i += 1) {
-      value += (inputs.current[i] as HTMLInputElement).value;
+      const digit = (inputs.current[i] as HTMLInputElement).value || '#';
+      value += digit;
     }
     return value;
   };
@@ -33,10 +34,33 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
     if (onChange) onChange(getCurrentValue());
   };
 
-  const handleInputKeyDown = (index: number, key: string) => {
-    const { value } = inputs.current[index] as HTMLInputElement;
-    if (key === 'Backspace' && !value && index > 0) {
-      setInputFocus(index - 1);
+  const handleInputKeyDown = async (
+    index: number,
+    key: string,
+    e: KeyboardEvent<HTMLInputElement>
+  ) => {
+    // Pastes from clipboard
+    if (e.ctrlKey && key === 'v') {
+      let codes = await navigator.clipboard.readText();
+      codes = codes
+        .split('')
+        .filter(code => code >= '0' && code <= '9')
+        .join('');
+      if (codes.length === inputs.current.length) {
+        for (let i = 0; i < inputs.current.length; i += 1) {
+          (inputs.current[i] as HTMLInputElement).value = codes[i];
+        }
+        if (onChange) onChange(getCurrentValue());
+      }
+      return;
+    }
+    if (!e.shiftKey) {
+      if (key === 'ArrowLeft' && index > 0) {
+        setInputFocus(index - 1);
+      }
+      if (key === 'ArrowRight' && index < inputs.current.length - 1) {
+        setInputFocus(index + 1);
+      }
     }
   };
 
@@ -51,7 +75,7 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
               (inputs.current[index] as unknown) = input;
             }}
             onChange={e => handleInputChange(index, e.target.value)}
-            onKeyDown={e => handleInputKeyDown(index, e.key)}
+            onKeyDown={e => handleInputKeyDown(index, e.key, e)}
           />
           {index === 2 && (
             <span className="text-[60px] font-medium text-gray-300 sm:text-[38px]">
