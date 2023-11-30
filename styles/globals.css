@@ -106,8 +106,9 @@ a {
 }
 
 .input-code-item {
-  @apply !w-[80px] !h-[80px];
+  @apply !w-[64px] !h-[64px];
   @apply sm:!w-[48px] sm:!h-[48px];
+  @apply mi:!w-[44px] mi:!h-[44px];
   @apply !border-primary-600;
   @apply !border-[2px];
   @apply !border-solid;
@@ -120,7 +121,7 @@ a {
 }
 
 .input-code-item input {
-  @apply !text-[48px];
+  @apply !text-[40px];
   @apply sm:!text-[32px];
   @apply text-center;
   @apply p-0;
