@@ -44,7 +44,7 @@ export default function SignupVerifyEmailForm(props: IFormProps) {
             Check your email
           </div>
           <div className="mt-5 text-md font-normal text-gray-500">
-            We sent a password reset link to
+            We sent a verification link to
             <br />
             <span className="font-medium text-gray-500">{props.email}</span>
           </div>

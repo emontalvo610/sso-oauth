@@ -19,7 +19,6 @@ export default function SuccessPasswordResetForm() {
           <div className="mt-5 text-md font-normal text-gray-500">
             Your password has been successfully reset.
             <br />
-            Click below to log in magically.
           </div>
           <Link href="/" className="link-none text-md">
             <Button variant="primary" className="btn-submit mt-8">

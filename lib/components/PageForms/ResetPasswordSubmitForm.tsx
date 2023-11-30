@@ -57,7 +57,7 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
       <BackButtonLayout>
         <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
-      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[24px]">
+      <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
         <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
           <div className="flex justify-center">
             <img src="/icons/icon-key.svg" width={64} height={64} />
