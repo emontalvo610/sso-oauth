@@ -80,6 +80,7 @@ export default function HomeForm() {
                   placeholder="Enter your email"
                   {...register('email', emailValidatorOptions)}
                   className="input-basic"
+                  autoFocus
                 />
                 <ErrorWrapper>{errors.email?.message}</ErrorWrapper>
               </div>

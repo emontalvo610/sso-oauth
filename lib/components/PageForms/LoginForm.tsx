@@ -96,6 +96,7 @@ export default function LoginForm(props: IFormProps) {
                   placeholder="Input your password"
                   className="input-basic"
                   type="password"
+                  autoFocus
                   {...register('password', passwordValidatorOptions)}
                 />
                 <ErrorWrapper>{errors.password?.message}</ErrorWrapper>

@@ -73,6 +73,7 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
                   placeholder="Create a password"
                   className="input-basic"
                   type="password"
+                  autoFocus
                   {...register('password', passwordValidatorOptions)}
                 />
                 <ErrorWrapper>{errors.password?.message}</ErrorWrapper>
