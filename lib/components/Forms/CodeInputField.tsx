@@ -1,7 +1,12 @@
 'use client';
 
 import { InputField } from '@pickleballinc/react-ui';
-import type { FC, KeyboardEvent, PropsWithChildren } from 'react';
+import type {
+  ClipboardEvent,
+  FC,
+  KeyboardEvent,
+  PropsWithChildren
+} from 'react';
 import { Fragment, useRef } from 'react';
 
 interface ICodeInputFieldProps {
@@ -34,26 +39,25 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
     if (onChange) onChange(getCurrentValue());
   };
 
+  const handleClipboardPaste = (e: ClipboardEvent<HTMLInputElement>) => {
+    let codes = e.clipboardData.getData('text');
+    codes = codes
+      .split('')
+      .filter(code => code >= '0' && code <= '9')
+      .join('');
+    if (codes.length === inputs.current.length) {
+      for (let i = 0; i < inputs.current.length; i += 1) {
+        (inputs.current[i] as HTMLInputElement).value = codes[i];
+      }
+      if (onChange) onChange(getCurrentValue());
+    }
+  };
+
   const handleInputKeyDown = async (
     index: number,
     key: string,
     e: KeyboardEvent<HTMLInputElement>
   ) => {
-    // Pastes from clipboard
-    if (e.ctrlKey && key === 'v') {
-      let codes = await navigator.clipboard.readText();
-      codes = codes
-        .split('')
-        .filter(code => code >= '0' && code <= '9')
-        .join('');
-      if (codes.length === inputs.current.length) {
-        for (let i = 0; i < inputs.current.length; i += 1) {
-          (inputs.current[i] as HTMLInputElement).value = codes[i];
-        }
-        if (onChange) onChange(getCurrentValue());
-      }
-      return;
-    }
     if (!e.shiftKey) {
       if (key === 'ArrowLeft' && index > 0) {
         setInputFocus(index - 1);
@@ -76,6 +80,8 @@ const CodeInputField: FC<PropsWithChildren<ICodeInputFieldProps>> = ({
             }}
             onChange={e => handleInputChange(index, e.target.value)}
             onKeyDown={e => handleInputKeyDown(index, e.key, e)}
+            onPaste={e => handleClipboardPaste(e)}
+            autoFocus={index === 0}
           />
           {index === 2 && (
             <span className="text-[60px] font-medium text-gray-300 sm:text-[38px]">
