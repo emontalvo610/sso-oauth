@@ -3,6 +3,7 @@
 import Background from '@lib/components/Extra/Background';
 import Spinner from '@lib/components/Loadings/Spinner';
 import { loginWithCookie } from '@lib/server/api';
+import { isWebView } from '@lib/utils/webview';
 import { Button } from '@pickleballinc/react-ui';
 import type { IronSessionData } from 'iron-session';
 import { useState } from 'react';
@@ -45,18 +46,22 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
             Almost done!
           </div>
-          <div className="mt-5 text-center text-md font-normal text-gray-500">
-            Click below to complete your account setup
-          </div>
-          <Button
-            variant="primary"
-            className="btn-submit mt-8 text-md"
-            onClick={onClaimAccount}
-            disabled={isLoading}
-          >
-            {isLoading && <Spinner />}
-            Claim Account
-          </Button>
+          {!isWebView() && (
+            <>
+              <div className="mt-5 text-center text-md font-normal text-gray-500">
+                Click below to complete your account setup
+              </div>
+              <Button
+                variant="primary"
+                className="btn-submit mt-8 text-md"
+                onClick={onClaimAccount}
+                disabled={isLoading}
+              >
+                {isLoading && <Spinner />}
+                Claim Account
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </>

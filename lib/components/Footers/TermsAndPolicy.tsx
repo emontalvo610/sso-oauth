@@ -1,3 +1,5 @@
+import { isWebView } from '@lib/utils/webview';
+
 interface ITermsAndPolicy {
   simple?: boolean;
 }
@@ -15,10 +17,19 @@ const TermsAndPolicy = ({ simple }: ITermsAndPolicy) => {
           <br />
         </div>
       )}
-      By signing up or logging in, I agree to Pickleball.com's{' '}
-      <a href="https://pickleball.com/terms-of-use">terms of service</a>,{' '}
-      <a href="https://pickleball.com/privacy-policy">privacy policy</a>,{' '}
-      <a href="https://pickleball.com/dmca-notice">and DMCA policy</a>.
+      {isWebView() ? (
+        <>
+          By signing up or logging in, I agree to Pickleball.com's terms of
+          service, privacy policy, and DMCA policy.
+        </>
+      ) : (
+        <>
+          By signing up or logging in, I agree to Pickleball.com's{' '}
+          <a href="https://pickleball.com/terms-of-use">terms of service</a>,{' '}
+          <a href="https://pickleball.com/privacy-policy">privacy policy</a>,{' '}
+          <a href="https://pickleball.com/dmca-notice">and DMCA policy</a>.
+        </>
+      )}
     </div>
   );
 };
