@@ -8,6 +8,7 @@ import { useGetCountries, useGetStates } from '@lib/hooks/country';
 import type { SelectOption } from '@lib/types/select';
 import type { IUser } from '@lib/types/user';
 import { getSearchParamQuery } from '@lib/utils/url';
+import { isWebView } from '@lib/utils/webview';
 import {
   firstNameValidatorOptions,
   lastNameValidatorOptions,
@@ -145,6 +146,12 @@ export default function RegisterSubmitForm(props: IFormProps) {
       });
   };
 
+  const countryCodesOptions = getCountryCodesOptions();
+  const defaultCountryOption =
+    countryCodesOptions.find(
+      option => option.value === watch('phoneCountryId')
+    ) || countryCodesOptions[0];
+
   const onClickSubmit = () => {
     isSubmitted.current = true;
     if (checkManualValidation()) trigger();
@@ -246,6 +253,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     label="First Name"
                     placeholder="Your first name"
                     className="input-basic"
+                    autoFocus
                     {...register('firstName', firstNameValidatorOptions)}
                   />
                   <ErrorWrapper>{errors.firstName?.message}</ErrorWrapper>
@@ -342,20 +350,22 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="basis-[140px] sm:basis-[30%]">
                   <div className="input-label">Country</div>
                   <Select
-                    options={getCountryCodesOptions()}
+                    options={countryCodesOptions}
                     className="select-basic"
                     instanceId="country-code-select"
                     onChange={option =>
                       onSelectChange(option, 'phoneCountryId')
                     }
                     placeholder="Country"
+                    value={defaultCountryOption}
                   />
                   <ErrorWrapper>{errors.phoneCountryId?.message}</ErrorWrapper>
                 </div>
                 <div className="flex-1">
                   <InputField
                     label="Phone Number"
-                    placeholder="0000000000"
+                    placeholder="Phone Number"
+                    maxLength={10}
                     className="input-basic"
                     {...register('phoneNumber', phoneNumberValidatorOptions)}
                   />
@@ -400,17 +410,21 @@ export default function RegisterSubmitForm(props: IFormProps) {
               )}
               <div className="mt-6">
                 <Checkbox
-                  Text={() => (
-                    <>
-                      I agree to the{' '}
-                      <a
-                        href="https://pickleball.com/terms-of-use"
-                        target="_blank"
-                      >
-                        Terms of Service
-                      </a>
-                    </>
-                  )}
+                  Text={() =>
+                    isWebView() ? (
+                      <>I agree to the Terms of Service</>
+                    ) : (
+                      <>
+                        I agree to the{' '}
+                        <a
+                          href="https://pickleball.com/terms-of-use"
+                          target="_blank"
+                        >
+                          Terms of Service
+                        </a>
+                      </>
+                    )
+                  }
                   size="sm"
                   onChange={() => {
                     setTermsAgreed(!isTermsAgreed);
