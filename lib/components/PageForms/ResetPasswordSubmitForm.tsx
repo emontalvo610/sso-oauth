@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import Background from '../Extra/Background';
+import PasswordStrength from '../Extra/PasswordStrength';
 import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
@@ -83,6 +84,7 @@ export default function ResetPasswordSubmitForm(props: IFormProps) {
                   </div>
                 )}
               </div>
+              <PasswordStrength password={watch('password')} />
               <div className="mt-5 text-left">
                 <InputField
                   label="Repeat Password"

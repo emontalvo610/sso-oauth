@@ -32,6 +32,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import Background from '../Extra/Background';
+import PasswordStrength from '../Extra/PasswordStrength';
 import StaticInputField from '../Forms/StaticInputField';
 import Spinner from '../Loadings/Spinner';
 import ErrorWrapper from '../Wrappers/ErrorWrapper';
@@ -336,6 +337,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   </div>
                 )}
               </div>
+              <PasswordStrength password={watch('password')} />
               <div className="mt-5 text-left">
                 <InputField
                   label="Repeat Password"
