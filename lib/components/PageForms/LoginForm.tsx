@@ -34,7 +34,9 @@ export default function LoginForm(props: IFormProps) {
   } = useForm<IUser>();
   const postLogin = usePostLogin();
   const params = useSearchParams();
-  const redirect = params?.get('redirect');
+  let redirect = params?.get('redirect');
+  if (redirect && !redirect.startsWith('https://'))
+    redirect = `https://${redirect}`;
 
   const onSubmit = async (data: IUser) => {
     try {
