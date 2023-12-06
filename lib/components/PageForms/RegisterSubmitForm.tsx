@@ -374,7 +374,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   options={getCountriesOptions()}
                   className="select-basic"
                   instanceId="country-select"
-                  placeholder="Pick your country"
+                  placeholder=""
                   onChange={option => onSelectChange(option, 'countryId')}
                   value={getSelectedCountryOption() || defaultCountryOption}
                 />
@@ -385,8 +385,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <Select
                   options={getStatesOptions()}
                   className="select-basic"
-                  placeholder={`Pick your ${stateTitle.toLocaleLowerCase()}`}
                   instanceId="state-select"
+                  placeholder=""
                   onChange={option => onSelectChange(option, 'stateId')}
                 />
                 <ErrorWrapper>{errors.stateId?.message}</ErrorWrapper>
@@ -394,7 +394,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
               <div className="mt-5 text-left">
                 <InputField
                   label={zipCodeTitle}
-                  placeholder={zipCodeTitle}
                   className="input-basic"
                   value={watch('zipCode')}
                   {...register('zipCode', zipCodeValidatorOptions)}
@@ -404,7 +403,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
               <div className="mt-10 text-left">
                 <InputField
                   label="Password"
-                  placeholder="Create a password"
                   className="input-basic"
                   type="password"
                   {...register('password', passwordValidatorOptions)}
@@ -420,7 +418,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
               <div className="mt-5 text-left">
                 <InputField
                   label="Repeat Password"
-                  placeholder="Repeat the password"
                   className="input-basic"
                   type="password"
                   {...register('password2', password2ValidatorOptionsFn(watch))}
@@ -434,10 +431,10 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     options={getCountryCodesOptions()}
                     className="select-basic"
                     instanceId="country-code-select"
+                    placeholder=""
                     onChange={option =>
                       onSelectChange(option, 'phoneCountryId')
                     }
-                    placeholder="Country"
                     value={
                       getSelectedCountryCodeOption() || defaultCountryCodeOption
                     }
@@ -447,7 +444,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="flex-1">
                   <InputField
                     label="Phone Number"
-                    placeholder="Phone Number"
                     maxLength={10}
                     className="input-basic"
                     {...register('phoneNumber', phoneNumberValidatorOptions)}
