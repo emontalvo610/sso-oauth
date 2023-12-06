@@ -331,7 +331,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="flex-1">
                   <InputField
                     label="First Name"
-                    placeholder="Your first name"
                     className="input-basic"
                     autoFocus
                     {...register('firstName', firstNameValidatorOptions)}
@@ -341,7 +340,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="flex-1">
                   <InputField
                     label="Last Name"
-                    placeholder="Your last name"
                     className="input-basic"
                     {...register('lastName', lastNameValidatorOptions)}
                   />
