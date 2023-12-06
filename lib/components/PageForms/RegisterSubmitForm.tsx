@@ -7,6 +7,8 @@ import { usePostRegister } from '@lib/hooks/auth';
 import { useGetCountries, useGetStates } from '@lib/hooks/country';
 import type { SelectOption } from '@lib/types/select';
 import type { IUser } from '@lib/types/user';
+import type { ILocation } from '@lib/utils/location';
+import { getLocationFromIP } from '@lib/utils/location';
 import { getSearchParamQuery } from '@lib/utils/url';
 import { isWebView } from '@lib/utils/webview';
 import {
@@ -27,7 +29,7 @@ import {
 import { validateRecaptchaToken } from '@server/recaptcha';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
@@ -39,6 +41,13 @@ import ErrorWrapper from '../Wrappers/ErrorWrapper';
 
 interface IFormProps {
   email: string;
+  ip: string;
+}
+
+interface ISelectOption {
+  value: string;
+  label: string;
+  abbreviation: string;
 }
 
 export default function RegisterSubmitForm(props: IFormProps) {
@@ -52,6 +61,13 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const isSubmitted = useRef<boolean>(false);
   const [isLoading, setLoading] = useState(false);
   const [isTermsAgreed, setTermsAgreed] = useState(false);
+  const [location, setLocation] = useState<ILocation | null>(null);
+  const [defaultCountryOption, setDefaultCountryOption] =
+    useState<ISelectOption | null>(null);
+  const [defaultCountryCodeOption, setDefaultCountryCodeOption] =
+    useState<ISelectOption | null>(null);
+  const [defaultStateOption, setDefaultStateOption] =
+    useState<ISelectOption | null>(null);
   const postRegister = usePostRegister();
 
   const {
@@ -65,6 +81,27 @@ export default function RegisterSubmitForm(props: IFormProps) {
     handleSubmit,
     formState: { errors }
   } = useForm<IUser>();
+
+  useEffect(() => {
+    console.log('Client IP: ', props.ip);
+    getLocationFromIP(props.ip).then(location => {
+      setLocation(location);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (location && countriesData.results.length > 0) {
+      const countryOption = getDefaultCountryOption();
+      const countryCodeOption = getDefaultCountryCodeOption();
+      setDefaultCountryOption(countryOption);
+      setDefaultCountryCodeOption(countryCodeOption);
+      setValue('zipCode', location.postal);
+      if (statesData.results.length > 0) {
+        const stateOption = getDefaultStateOption();
+        setDefaultStateOption(stateOption);
+      }
+    }
+  }, [countriesData, statesData, location]);
 
   const checkManualValidation = () => {
     const { countryId, stateId, phoneCountryId, textAlertEnabled, gender } =
@@ -123,7 +160,11 @@ export default function RegisterSubmitForm(props: IFormProps) {
 
   const getCountriesOptions = () => {
     return countriesData.results.map(item => {
-      return { value: item.id, label: item.title };
+      return {
+        value: item.id,
+        label: item.title,
+        abbreviation: item.abbreviation
+      } as ISelectOption;
     });
   };
 
@@ -132,7 +173,11 @@ export default function RegisterSubmitForm(props: IFormProps) {
     return statesData.results
       .filter(state => state.countryId === countryId)
       .map(state => {
-        return { value: state.id, label: state.title };
+        return {
+          value: state.id,
+          label: state.title,
+          abbreviation: state.abbreviation
+        } as ISelectOption;
       });
   };
 
@@ -142,16 +187,94 @@ export default function RegisterSubmitForm(props: IFormProps) {
       .map(country => {
         return {
           value: country.id,
-          label: `${`${country.abbreviation} (${country.internationalCountryCallingCode}) `}`
-        };
+          label: `${country.abbreviation} (${country.internationalCountryCallingCode})`,
+          abbreviation: country.abbreviation
+        } as ISelectOption;
       });
   };
 
-  const countryCodesOptions = getCountryCodesOptions();
-  const defaultCountryOption =
-    countryCodesOptions.find(
-      option => option.value === watch('phoneCountryId')
-    ) || countryCodesOptions[0];
+  const getDefaultStateOption = () => {
+    const states = getStatesOptions();
+    let result;
+    if (location && !location?.error) {
+      result = states.find(
+        state => state.abbreviation === location.region_code
+      );
+    }
+    setValue('stateId', result?.value || '');
+    return result || null;
+  };
+
+  const getDefaultCountryOption = () => {
+    const countryOptions = getCountriesOptions();
+    let result;
+    if (location?.error) {
+      result = countryOptions[0];
+    } else {
+      result = countryOptions.find(
+        country => country.abbreviation === location?.country_code_iso3
+      );
+    }
+    setValue('countryId', result?.value || '');
+    return result || null;
+  };
+
+  const getDefaultCountryCodeOption = () => {
+    const countryOptions = getCountryCodesOptions();
+    let result;
+    if (location?.error) {
+      result = countryOptions[0];
+    } else {
+      result = countryOptions.find(
+        country => country.abbreviation === location?.country_code_iso3
+      );
+    }
+    setValue('phoneCountryId', result?.value || '');
+    return result || null;
+  };
+
+  const getSelectedCountryOption = () => {
+    const countryOptions = getCountriesOptions();
+    const selectedCountryId = watch('countryId');
+    const selectedCountry = countryOptions.find(
+      country => country.value === selectedCountryId
+    );
+    return selectedCountry;
+  };
+
+  const getSelectedCountryCodeOption = () => {
+    const countryCodeOptions = getCountryCodesOptions();
+    const selectedCountryId = watch('phoneCountryId');
+    const selectedCountry = countryCodeOptions.find(
+      country => country.value === selectedCountryId
+    );
+    return selectedCountry;
+  };
+
+  const getSelectedStateOption = () => {
+    const stateOptions = getStatesOptions();
+    const selectedStateId = watch('stateId');
+    const selectedState = stateOptions.find(
+      state => state.value === selectedStateId
+    );
+    return selectedState;
+  };
+
+  const onCountryChange = (option: ISelectOption) => {
+    if (option.value !== watch('countryId')) {
+      setValue('stateId', '');
+      setDefaultStateOption(null);
+    }
+    onSelectChange(option, 'countryId');
+  };
+
+  const onStateChange = (option: ISelectOption) => {
+    onSelectChange(option, 'stateId');
+  };
+
+  const onPhoneCountryChange = (option: ISelectOption) => {
+    onSelectChange(option, 'phoneCountryId');
+  };
 
   const onClickSubmit = () => {
     isSubmitted.current = true;
@@ -298,7 +421,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   className="select-basic"
                   instanceId="country-select"
                   placeholder="Pick your country"
-                  onChange={option => onSelectChange(option, 'countryId')}
+                  onChange={option => onCountryChange(option as ISelectOption)}
+                  value={getSelectedCountryOption() || defaultCountryOption}
                 />
                 <ErrorWrapper>{errors.countryId?.message}</ErrorWrapper>
               </div>
@@ -309,7 +433,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   className="select-basic"
                   placeholder={`Pick your ${stateTitle.toLocaleLowerCase()}`}
                   instanceId="state-select"
-                  onChange={option => onSelectChange(option, 'stateId')}
+                  onChange={option => onStateChange(option as ISelectOption)}
+                  value={getSelectedStateOption() || defaultStateOption}
                 />
                 <ErrorWrapper>{errors.stateId?.message}</ErrorWrapper>
               </div>
@@ -318,6 +443,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   label={zipCodeTitle}
                   placeholder={zipCodeTitle}
                   className="input-basic"
+                  value={watch('zipCode')}
                   {...register('zipCode', zipCodeValidatorOptions)}
                 />
                 <ErrorWrapper>{errors.zipCode?.message}</ErrorWrapper>
@@ -352,14 +478,16 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="basis-[140px] sm:basis-[30%]">
                   <div className="input-label">Country</div>
                   <Select
-                    options={countryCodesOptions}
+                    options={getCountryCodesOptions()}
                     className="select-basic"
                     instanceId="country-code-select"
                     onChange={option =>
-                      onSelectChange(option, 'phoneCountryId')
+                      onPhoneCountryChange(option as ISelectOption)
                     }
                     placeholder="Country"
-                    value={defaultCountryOption}
+                    value={
+                      getSelectedCountryCodeOption() || defaultCountryCodeOption
+                    }
                   />
                   <ErrorWrapper>{errors.phoneCountryId?.message}</ErrorWrapper>
                 </div>
