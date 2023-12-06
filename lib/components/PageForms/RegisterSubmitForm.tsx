@@ -66,8 +66,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
     useState<ISelectOption | null>(null);
   const [defaultCountryCodeOption, setDefaultCountryCodeOption] =
     useState<ISelectOption | null>(null);
-  const [defaultStateOption, setDefaultStateOption] =
-    useState<ISelectOption | null>(null);
   const postRegister = usePostRegister();
 
   const {
@@ -95,13 +93,8 @@ export default function RegisterSubmitForm(props: IFormProps) {
       const countryCodeOption = getDefaultCountryCodeOption();
       setDefaultCountryOption(countryOption);
       setDefaultCountryCodeOption(countryCodeOption);
-      setValue('zipCode', location.postal);
-      if (statesData.results.length > 0) {
-        const stateOption = getDefaultStateOption();
-        setDefaultStateOption(stateOption);
-      }
     }
-  }, [countriesData, statesData, location]);
+  }, [countriesData, location]);
 
   const checkManualValidation = () => {
     const { countryId, stateId, phoneCountryId, textAlertEnabled, gender } =
@@ -193,18 +186,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
       });
   };
 
-  const getDefaultStateOption = () => {
-    const states = getStatesOptions();
-    let result;
-    if (location && !location?.error) {
-      result = states.find(
-        state => state.abbreviation === location.region_code
-      );
-    }
-    setValue('stateId', result?.value || '');
-    return result || null;
-  };
-
   const getDefaultCountryOption = () => {
     const countryOptions = getCountriesOptions();
     let result;
@@ -249,31 +230,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
       country => country.value === selectedCountryId
     );
     return selectedCountry;
-  };
-
-  const getSelectedStateOption = () => {
-    const stateOptions = getStatesOptions();
-    const selectedStateId = watch('stateId');
-    const selectedState = stateOptions.find(
-      state => state.value === selectedStateId
-    );
-    return selectedState;
-  };
-
-  const onCountryChange = (option: ISelectOption) => {
-    if (option.value !== watch('countryId')) {
-      setValue('stateId', '');
-      setDefaultStateOption(null);
-    }
-    onSelectChange(option, 'countryId');
-  };
-
-  const onStateChange = (option: ISelectOption) => {
-    onSelectChange(option, 'stateId');
-  };
-
-  const onPhoneCountryChange = (option: ISelectOption) => {
-    onSelectChange(option, 'phoneCountryId');
   };
 
   const onClickSubmit = () => {
@@ -421,7 +377,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   className="select-basic"
                   instanceId="country-select"
                   placeholder="Pick your country"
-                  onChange={option => onCountryChange(option as ISelectOption)}
+                  onChange={option => onSelectChange(option, 'countryId')}
                   value={getSelectedCountryOption() || defaultCountryOption}
                 />
                 <ErrorWrapper>{errors.countryId?.message}</ErrorWrapper>
@@ -433,8 +389,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   className="select-basic"
                   placeholder={`Pick your ${stateTitle.toLocaleLowerCase()}`}
                   instanceId="state-select"
-                  onChange={option => onStateChange(option as ISelectOption)}
-                  value={getSelectedStateOption() || defaultStateOption}
+                  onChange={option => onSelectChange(option, 'stateId')}
                 />
                 <ErrorWrapper>{errors.stateId?.message}</ErrorWrapper>
               </div>
@@ -482,7 +437,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     className="select-basic"
                     instanceId="country-code-select"
                     onChange={option =>
-                      onPhoneCountryChange(option as ISelectOption)
+                      onSelectChange(option, 'phoneCountryId')
                     }
                     placeholder="Country"
                     value={
