@@ -1,4 +1,6 @@
 import ResetVerifyEmailForm from '@lib/components/PageForms/ResetVerifyEmailForm';
+import { base64decode } from '@lib/utils/url';
+import { notFound } from 'next/navigation';
 
 interface IPageProps {
   params: {
@@ -7,6 +9,9 @@ interface IPageProps {
 }
 
 export default function ResetVerifyEmailPage({ params }: IPageProps) {
-  const email = decodeURIComponent(params.email);
+  const email = base64decode(decodeURIComponent(params.email));
+  if (!email) {
+    return notFound();
+  }
   return <ResetVerifyEmailForm email={email} />;
 }

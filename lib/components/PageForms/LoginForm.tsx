@@ -7,7 +7,7 @@ import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
 import { usePostLogin } from '@lib/hooks/auth';
 import type { IUser } from '@lib/types/user';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { passwordValidatorOptions } from '@lib/validators/user';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { useSearchParams } from 'next/navigation';
@@ -104,7 +104,9 @@ export default function LoginForm(props: IFormProps) {
                 <ErrorWrapper>{errors.password?.message}</ErrorWrapper>
               </div>
               <div className="my-6 text-right">
-                <LinkButton href={`/choose_forgot_password/${email}`}>
+                <LinkButton
+                  href={`/choose_forgot_password/${base64encode(email)}`}
+                >
                   Forgot password
                 </LinkButton>
               </div>

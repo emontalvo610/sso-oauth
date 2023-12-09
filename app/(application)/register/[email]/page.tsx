@@ -1,6 +1,8 @@
 import RegisterSubmitForm from '@lib/components/PageForms/RegisterSubmitForm';
 import { extractIP } from '@lib/utils/location';
+import { base64decode } from '@lib/utils/url';
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 interface IPageProps {
   params: {
@@ -10,7 +12,11 @@ interface IPageProps {
 
 export default function RegisterPage({ params }: IPageProps) {
   const header = headers();
-  const email = decodeURIComponent(params.email);
+  const email = base64decode(decodeURIComponent(params.email));
+
+  if (!email) {
+    return notFound();
+  }
 
   const forwardAddr = (header.get('x-forwarded-for') ?? '127.0.0.1').split(
     ','

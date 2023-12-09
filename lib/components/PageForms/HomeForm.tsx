@@ -3,7 +3,7 @@
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import type { IUser } from '@lib/types/user';
 import { clearSessionStorage, getSessionStorageItem } from '@lib/utils/storage';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { Button, InputField } from '@pickleballinc/react-ui';
 import { emailValidatorOptions } from '@validators/user';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -37,7 +37,9 @@ export default function HomeForm() {
 
   const onSubmit = (data: IUser) => {
     setLoading(true);
-    router.push(`/choose_email/${data.email}${getSearchParamQuery()}`);
+    router.push(
+      `/choose_email/${base64encode(data.email)}${getSearchParamQuery()}`
+    );
   };
 
   const getBackUrl = () => {

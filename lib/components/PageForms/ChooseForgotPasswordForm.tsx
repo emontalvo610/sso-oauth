@@ -4,7 +4,7 @@ import { faEnvelope, faPhone } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { usePostForgotPasswordRequest } from '@lib/hooks/forgot_password';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -33,7 +33,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
         custom_url: `${window.location.origin}/forgot_password`,
         request_type: 'email'
       });
-      router.push(`/reset-verify/email/${props.email}`);
+      router.push(`/reset-verify/email/${base64encode(props.email)}`);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
@@ -49,7 +49,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
         email: props.email,
         request_type: 'sms'
       });
-      router.push(`/reset-verify/sms/${props.email}`);
+      router.push(`/reset-verify/sms/${base64encode(props.email)}`);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');

@@ -4,7 +4,7 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import StaticInputField from '@lib/components/Forms/StaticInputField';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -55,7 +55,10 @@ export default function RegisterPrepareForm(props: IFormProps) {
                 redirect="/"
               />
             </div>
-            <Link href={`/register/${email}`} className="link-none">
+            <Link
+              href={`/register/${base64encode(email)}`}
+              className="link-none"
+            >
               <Button variant="primary" className="btn-submit">
                 Create your account
               </Button>

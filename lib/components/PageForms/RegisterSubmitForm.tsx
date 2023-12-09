@@ -9,7 +9,7 @@ import type { SelectOption } from '@lib/types/select';
 import type { IUser } from '@lib/types/user';
 import type { ILocation } from '@lib/utils/location';
 import { getLocationFromIP } from '@lib/utils/location';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { isWebView } from '@lib/utils/webview';
 import {
   firstNameValidatorOptions,
@@ -285,7 +285,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
           zip: zipCode,
           custom_url: `${window.location.origin}/validate_email`
         });
-        router.push(`/signup-verify/email/${email}`);
+        router.push(`/signup-verify/email/${base64encode(email)}`);
       } catch (err) {
         console.error(err);
         setError('root.server', {

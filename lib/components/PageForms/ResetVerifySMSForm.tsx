@@ -46,7 +46,7 @@ export default function ResetVerifySMSForm(props: IFormProps) {
         custom_url: `${window.location.origin}/forgot_password`,
         request_type: 'email'
       });
-      toast.success(`An email link was resent to ${props.email}`);
+      toast.success(`An email link was sent to ${props.email}`);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
