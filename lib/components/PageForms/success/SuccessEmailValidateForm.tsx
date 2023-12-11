@@ -16,7 +16,7 @@ export default function SuccessEmailValidateForm(props: IronSessionData) {
   const getTargetUrl = () => {
     if (typeof window === 'undefined') return '/';
     if (user?.uuid)
-      return `${process.env.NEXT_PUBLIC_PB_PLAYER_URI}/players/${user.uuid}/profile/edit?cplt=true`;
+      return `${process.env.NEXT_PUBLIC_PB_URI}/players/${user.uuid}/profile/edit?cplt=true`;
     return window.location.origin;
   };
 
