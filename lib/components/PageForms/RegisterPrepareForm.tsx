@@ -34,7 +34,7 @@ export default function RegisterPrepareForm(props: IFormProps) {
           <LogoButton />
         </div>
         <div className="box-border flex w-[440px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
-          <div className="flex justify-center gap-6">
+          <div className="flex justify-center gap-8">
             <img src="/icons/logo-pt.svg" width={48} height={48} />
             <img src="/icons/logo-p.svg" width={48} height={48} />
             <img src="/icons/logo-pb.svg" width={48} height={48} />

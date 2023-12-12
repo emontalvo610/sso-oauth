@@ -33,6 +33,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
+import LogoButton from '../Buttons/LogoButton';
 import Background from '../Extra/Background';
 import PasswordStrength from '../Extra/PasswordStrength';
 import StaticInputField from '../Forms/StaticInputField';
@@ -308,8 +309,11 @@ export default function RegisterSubmitForm(props: IFormProps) {
         <BackButton targetUrl={getBackUrl()} />
       </BackButtonLayout>
       <div className="flex w-[100vw] flex-col items-center self-start pt-[104px] sm:pt-[60px]">
+        <div className="pb-4">
+          <LogoButton />
+        </div>
         <div className="box-border flex w-[592px] flex-col items-center rounded-[12px] bg-white px-10 pb-12 pt-8 sm:h-full sm:w-full sm:max-w-[420px] sm:px-4 sm:pb-4">
-          <div className="flex justify-center gap-6">
+          <div className="flex justify-center gap-8">
             <img src="/icons/logo-pt.svg" width={48} height={48} />
             <img src="/icons/logo-p.svg" width={48} height={48} />
             <img src="/icons/logo-pb.svg" width={48} height={48} />
