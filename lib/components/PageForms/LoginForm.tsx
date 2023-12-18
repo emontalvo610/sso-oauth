@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+
 'use client';
 
 import BackButton from '@components/Buttons/BackButton';
@@ -41,14 +43,15 @@ export default function LoginForm(props: IFormProps) {
   const onSubmit = async (data: IUser) => {
     try {
       setLoading(true);
-      const { olt } = await postLogin({
+      const { redirectURI, olt } = await postLogin({
         email,
         password: data.password,
         redirect: redirect ?? `${process.env.NEXT_PUBLIC_PB_URI}`
       });
-
-      window.location.href = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}?olt=${olt}`;
+      console.log(redirectURI, olt);
+      window.location.href = `${redirectURI}?olt=${olt}`;
     } catch (err: any) {
+      // eslint-disable-next-line no-console
       console.error(`Error: login failed`, err);
       // setError('root.server', { message: err.message }); # In production, it displays "An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error."
       setError('root.server', { message: 'Incorrect username or password' });

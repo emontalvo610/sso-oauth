@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 'use server';
 
 import { Validity } from '@lib/constants';
@@ -75,6 +77,7 @@ export const login = async (body: IUserLoginPayload) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { email, password, redirect } = body;
 
+  console.log(email, password);
   try {
     const response = await apiClient.post<IUser>(
       `${process.env.API_URL}/v1/sso/login`,
@@ -88,7 +91,7 @@ export const login = async (body: IUserLoginPayload) => {
 
     const user = response.data;
     const session = await getServerActionSession();
-    session.user = {
+    const userObject = {
       email: user.email,
       expiration: user.expiration,
       isCompleted: user.isCompleted,
@@ -97,7 +100,11 @@ export const login = async (body: IUserLoginPayload) => {
       oltToken: user.oltToken,
       uuid: user.uuid
     };
+    session.user = userObject;
     await session.save();
+
+    let redirectOLT;
+    let redirectURI = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}`;
 
     const encryption = await apiClient.post(
       `${process.env.API_URL}/v1/pb_data/encrypt`,
@@ -107,10 +114,34 @@ export const login = async (body: IUserLoginPayload) => {
         URL: redirect
       }
     );
-    const olt = encryption.data;
+    const OLT = encryption.data;
+    redirectOLT = OLT;
+
+    // we check if pickleballtournaments service is up and healthy
+    const healthZ = await apiClient.get(
+      `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/health`
+    );
+
+    if (healthZ.status === 200) {
+      const sessionObject = {
+        SESSION: userObject,
+        PBRACKETS: {
+          URL: process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI,
+          OLT
+        }
+      };
+      const encryptPBTournaments = await apiClient.post(
+        `${process.env.API_URL}/v1/pb_data/encrypt`,
+        sessionObject
+      );
+      redirectOLT = encryptPBTournaments.data;
+      redirectURI = `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/session`;
+    }
+
     return {
       user,
-      olt
+      redirectURI,
+      olt: redirectOLT
     };
   } catch (err) {
     console.error('Something went wrong: ', err);
