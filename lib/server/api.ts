@@ -77,7 +77,6 @@ export const login = async (body: IUserLoginPayload) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { email, password, redirect } = body;
 
-  console.log(email, password);
   try {
     const response = await apiClient.post<IUser>(
       `${process.env.API_URL}/v1/sso/login`,
@@ -121,8 +120,9 @@ export const login = async (body: IUserLoginPayload) => {
     const healthZ = await apiClient.get(
       `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/health`
     );
+    console.log(`Response of PTOURNAMENTS healthz is ${healthZ.status}`);
 
-    if (healthZ.status === 200) {
+    if (healthZ.status === 201) {
       const sessionObject = {
         SESSION: userObject,
         PBRACKETS: {

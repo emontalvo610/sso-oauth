@@ -48,7 +48,7 @@ export default function LoginForm(props: IFormProps) {
         password: data.password,
         redirect: redirect ?? `${process.env.NEXT_PUBLIC_PB_URI}`
       });
-      console.log(redirectURI, olt);
+
       window.location.href = `${redirectURI}?olt=${olt}`;
     } catch (err: any) {
       // eslint-disable-next-line no-console
