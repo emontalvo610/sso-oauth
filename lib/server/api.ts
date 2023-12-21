@@ -116,26 +116,28 @@ export const login = async (body: IUserLoginPayload) => {
     const OLT = encryption.data;
     redirectOLT = OLT;
 
-    // we check if pickleballtournaments service is up and healthy
-    const healthZ = await apiClient.get(
-      `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/health`
-    );
-    console.log(`Response of PTOURNAMENTS healthz is ${healthZ.status}`);
+    const domain = process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS;
 
-    if (healthZ.status === 201) {
-      const sessionObject = {
-        SESSION: userObject,
-        PBRACKETS: {
-          URL: process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI,
-          OLT
-        }
-      };
-      const encryptPBTournaments = await apiClient.post(
-        `${process.env.API_URL}/v1/pb_data/encrypt`,
-        sessionObject
-      );
-      redirectOLT = encryptPBTournaments.data;
-      redirectURI = `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/session`;
+    if (domain) {
+      // we check if pickleballtournaments service is up and healthy
+      const healthZ = await apiClient.get(`${domain}/health`);
+      console.log(`Response of PTOURNAMENTS healthz is ${healthZ.status}`);
+
+      if (healthZ.status === 201) {
+        const sessionObject = {
+          SESSION: userObject,
+          PBRACKETS: {
+            URL: process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI,
+            OLT
+          }
+        };
+        const encryptPBTournaments = await apiClient.post(
+          `${process.env.API_URL}/v1/pb_data/encrypt`,
+          sessionObject
+        );
+        redirectOLT = encryptPBTournaments.data;
+        redirectURI = `${process.env.NEXT_PUBLIC_PICKLEBALL_TOURNAMENTS}/session`;
+      }
     }
 
     return {
