@@ -30,6 +30,7 @@ declare module 'iron-session' {
       expiration: string;
       isCompleted: boolean;
       oltToken: string;
+      pbUuid: string;
     };
   }
 }

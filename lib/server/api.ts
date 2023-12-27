@@ -97,7 +97,8 @@ export const login = async (body: IUserLoginPayload) => {
       isSuperAdmin: user.isSuperAdmin,
       token: user.token,
       oltToken: user.oltToken,
-      uuid: user.uuid
+      uuid: user.uuid,
+      pbUuid: user.pbUuid
     };
     session.user = userObject;
     await session.save();
@@ -167,7 +168,8 @@ export const loginWithCookie = async (body: IronSessionData) => {
         isSuperAdmin: user.isSuperAdmin,
         token: user.token,
         oltToken: user.oltToken,
-        uuid: user.uuid
+        uuid: user.uuid,
+        pbUuid: user.pbUuid
       };
       await session.save();
     }

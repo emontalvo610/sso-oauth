@@ -17,6 +17,7 @@ export interface IUser {
   isCompleted: boolean;
   isSuperAdmin: boolean;
   oltToken: string;
+  pbUuid: string;
 }
 
 export interface IUserRegisterPayload {
