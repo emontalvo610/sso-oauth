@@ -139,3 +139,8 @@ a {
 .select-basic [class*="-control"]{
   min-height: 44px;
 }
+
+label p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

@@ -350,7 +350,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                   <ErrorWrapper>{errors.lastName?.message}</ErrorWrapper>
                 </div>
               </div>
-              <div className="mt-2 text-left">
+              <div className="mt-4 text-left">
                 <div className="flex items-center gap-9 sm:gap-4">
                   <div className="input-label pt-[6px]">Gender</div>
                   <Radio
@@ -368,11 +368,11 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     onChange={() => onSelectChange({ value: 'F' }, 'gender')}
                   />
                 </div>
-                <div className="mb-4 ml-[86px] mt-[-14px] sm:ml-[60px]">
+                <div className="mb-4 ml-[86px] mt-[-8px] sm:ml-[66px]">
                   <ErrorWrapper>{errors.gender?.message}</ErrorWrapper>
                 </div>
               </div>
-              <div className="mt-1 text-left">
+              <div className="mt-5 text-left">
                 <div className="input-label">Country</div>
                 <Select
                   options={getCountriesOptions()}
@@ -429,7 +429,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <ErrorWrapper>{errors.password2?.message}</ErrorWrapper>
               </div>
               <div className="mt-10 flex flex-wrap gap-5 text-left sm:gap-2">
-                <div className="basis-[140px] sm:basis-[30%]">
+                <div className="min-w-[120px] basis-[140px] sm:basis-[30%]">
                   <div className="input-label">Country</div>
                   <Select
                     options={getCountryCodesOptions()}
@@ -448,7 +448,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="flex-1">
                   <InputField
                     label="Phone Number"
-                    maxLength={10}
+                    maxLength={13}
                     className="input-basic"
                     {...register('phoneNumber', phoneNumberValidatorOptions)}
                   />
@@ -459,7 +459,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 <div className="mt-1 text-sm font-normal text-gray-500">
                   Allow Pickleball.com to send you Text Alerts
                 </div>
-                <div className="flex gap-6">
+                <div className="mt-2 flex gap-6 mi:flex-col mi:gap-2">
                   <Radio
                     Text="Yes, get texts"
                     size="sm"
@@ -479,7 +479,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     }
                   />
                 </div>
-                <div className="mt-[-14px]">
+                <div className="mt-1">
                   <ErrorWrapper>
                     {errors.textAlertEnabled?.message}
                   </ErrorWrapper>
