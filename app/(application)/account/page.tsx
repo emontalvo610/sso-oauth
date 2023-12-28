@@ -76,7 +76,6 @@ export default async function AccountPage({
       }
     }
 
-    console.log(`${redirectURI}?olt=${redirectOLT}`);
     redirect(`${redirectURI}?olt=${redirectOLT}`);
   }
 
