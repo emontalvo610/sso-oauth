@@ -4,6 +4,7 @@
 
 import { Validity } from '@lib/constants';
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
+import { getBrowserInfo, isMobileDevice } from '@lib/utils/browser';
 import { AxiosError } from 'axios';
 import type { IronSessionData } from 'iron-session';
 import { redirect } from 'next/navigation';
@@ -73,9 +74,10 @@ export const validateToken = async (token: string) => {
   return false;
 };
 
-export const login = async (body: IUserLoginPayload) => {
+export const login = async (body: IUserLoginPayload, userAgent: string) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { email, password, redirect } = body;
+  const browser = getBrowserInfo(userAgent);
 
   try {
     const response = await apiClient.post<IUser>(
@@ -84,6 +86,14 @@ export const login = async (body: IUserLoginPayload) => {
         payload: {
           email,
           password
+        }
+      },
+      {
+        headers: {
+          BROWSER: browser?.getBrowserName() || 'Unknown',
+          'BROWSER-VERSION': browser?.getBrowserVersion() || 'Unknown',
+          'IS-MOBILE': isMobileDevice(userAgent),
+          'SERVER-MACHINE-NAME': userAgent
         }
       }
     );

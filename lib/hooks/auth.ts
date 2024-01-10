@@ -8,7 +8,7 @@ import axios from 'axios';
 
 export const usePostLogin = () => {
   return (body: IUserLoginPayload) => {
-    return login(body);
+    return login(body, navigator.userAgent);
   };
 };
 
