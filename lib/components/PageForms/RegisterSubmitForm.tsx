@@ -450,6 +450,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     label="Phone Number"
                     maxLength={13}
                     className="input-basic"
+                    type="number"
                     {...register('phoneNumber', phoneNumberValidatorOptions)}
                   />
                   <ErrorWrapper>{errors.phoneNumber?.message}</ErrorWrapper>
