@@ -9,8 +9,8 @@ export default async function HomePage({
 }) {
   const session = await getServerActionSession();
   const { user } = session;
-
   const redParams = new URLSearchParams(searchParams as any);
+
   if (user) {
     redirect(`/account?${redParams.toString()}`);
   }

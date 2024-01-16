@@ -46,7 +46,8 @@ export default function LoginForm(props: IFormProps) {
       const { redirectURI, olt } = await postLogin({
         email,
         password: data.password,
-        redirect: redirect ?? `${process.env.NEXT_PUBLIC_PB_URI}`
+        redirect: redirect ?? `${process.env.NEXT_PUBLIC_PB_URI}`,
+        session: params?.get('session')
       });
 
       window.location.href = `${redirectURI}?olt=${olt}`;
