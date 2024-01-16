@@ -442,7 +442,6 @@ export default function RegisterSubmitForm(props: IFormProps) {
                     getSelectedCountryCodeOption() || defaultCountryCodeOption
                   }
                   label="Phone Number"
-                  defaultCountry={{ label: '', value: '' }}
                   SuffixIcon={() => <FontAwesomeIcon icon={faPhone} />}
                   {...register('phoneNumber', phoneNumberValidatorOptions)}
                 />
