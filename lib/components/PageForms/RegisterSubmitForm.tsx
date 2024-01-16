@@ -433,7 +433,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
               </div>
               <div className="mt-10 max-w-sm text-left">
                 <TelInputField
-                  countryList={getCountriesOptions()}
+                  countryList={getCountryCodesOptions()}
                   placeholder=""
                   countryOnChange={option =>
                     onSelectChange(option, 'phoneCountryId')
