@@ -11,6 +11,7 @@ import { redirect } from 'next/navigation';
 
 import apiClient from './axios';
 import { cacheStorage } from './cache';
+import { encryptUserSession } from './encrypt';
 import { Environment } from './environment';
 import { getServerActionSession } from './session/session';
 
@@ -116,12 +117,22 @@ export const login = async (body: IUserLoginPayload, userAgent: string) => {
     let redirectOLT;
     let redirectURI = `${process.env.NEXT_PUBLIC_PBRACKETS_SSO_URI}`;
 
+    let redirectPBRACKETS = redirect;
+    if (body.session) {
+      const userSessionQuery = await encryptUserSession(
+        body.session,
+        user.uuid,
+        user.email
+      );
+      redirectPBRACKETS = `${userSessionQuery?.redirect}?session=${userSessionQuery?.encryption}`;
+    }
+
     const encryption = await apiClient.post(
       `${process.env.API_URL}/v1/pb_data/encrypt`,
       {
         ID: user.uuid,
         TIMESTAMP: Math.floor(Date.now() / 1000),
-        URL: redirect
+        URL: redirectPBRACKETS
       }
     );
     const OLT = encryption.data;

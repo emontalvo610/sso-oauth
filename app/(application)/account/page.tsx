@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import ProfileForm from '@lib/components/PageForms/ProfileForm';
 import apiClient from '@lib/server/axios';
+import { encryptUserSession } from '@lib/server/encrypt';
 import { getServerActionSession } from '@lib/server/session/session';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -12,6 +13,7 @@ export default async function AccountPage({
 }) {
   const session = await getServerActionSession();
   const { user } = session;
+  const redParams = new URLSearchParams(searchParams as any);
 
   const logout = async () => {
     'use server';
@@ -23,6 +25,21 @@ export default async function AccountPage({
   if (!user) {
     logout();
     redirect('/');
+  }
+
+  const sessionQuery = redParams.get('session');
+  if (sessionQuery) {
+    const userSessionQuery = await encryptUserSession(
+      sessionQuery,
+      user.uuid,
+      user.email
+    );
+
+    if (userSessionQuery) {
+      redirect(
+        `${userSessionQuery.redirect}?session=${userSessionQuery.encryption}`
+      );
+    }
   }
 
   if (searchParams?.redirect) {
