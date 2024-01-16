@@ -3,6 +3,8 @@
 import BackButton from '@components/Buttons/BackButton';
 import TermsAndPolicy from '@components/Footers/TermsAndPolicy';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
+import { faPhone } from '@fortawesome/pro-light-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { usePostRegister } from '@lib/hooks/auth';
 import { useGetCountries, useGetStates } from '@lib/hooks/country';
 import type { SelectOption } from '@lib/types/select';
@@ -26,6 +28,7 @@ import {
   Radio,
   Select
 } from '@pickleballinc/react-ui';
+import TelInputField from '@pickleballinc/react-ui/TelInputField';
 import { validateRecaptchaToken } from '@server/recaptcha';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -64,9 +67,9 @@ export default function RegisterSubmitForm(props: IFormProps) {
   const [isTermsAgreed, setTermsAgreed] = useState(false);
   const [location, setLocation] = useState<ILocation | null>(null);
   const [defaultCountryOption, setDefaultCountryOption] =
-    useState<ISelectOption | null>(null);
+    useState<ISelectOption>();
   const [defaultCountryCodeOption, setDefaultCountryCodeOption] =
-    useState<ISelectOption | null>(null);
+    useState<ISelectOption>();
   const postRegister = usePostRegister();
 
   const {
@@ -198,7 +201,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
       );
     }
     setValue('countryId', result?.value || '');
-    return result || null;
+    return result;
   };
 
   const getDefaultCountryCodeOption = () => {
@@ -212,7 +215,7 @@ export default function RegisterSubmitForm(props: IFormProps) {
       );
     }
     setValue('phoneCountryId', result?.value || '');
-    return result || null;
+    return result;
   };
 
   const getSelectedCountryOption = () => {
@@ -428,33 +431,22 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 />
                 <ErrorWrapper>{errors.password2?.message}</ErrorWrapper>
               </div>
-              <div className="mt-10 flex flex-wrap gap-5 text-left sm:gap-2">
-                <div className="min-w-[120px] basis-[140px] sm:basis-[30%]">
-                  <div className="input-label">Country</div>
-                  <Select
-                    options={getCountryCodesOptions()}
-                    className="select-basic"
-                    instanceId="country-code-select"
-                    placeholder=""
-                    onChange={option =>
-                      onSelectChange(option, 'phoneCountryId')
-                    }
-                    value={
-                      getSelectedCountryCodeOption() || defaultCountryCodeOption
-                    }
-                  />
-                  <ErrorWrapper>{errors.phoneCountryId?.message}</ErrorWrapper>
-                </div>
-                <div className="flex-1">
-                  <InputField
-                    label="Phone Number"
-                    maxLength={13}
-                    className="input-basic"
-                    type="number"
-                    {...register('phoneNumber', phoneNumberValidatorOptions)}
-                  />
-                  <ErrorWrapper>{errors.phoneNumber?.message}</ErrorWrapper>
-                </div>
+              <div className="mt-10 max-w-sm text-left">
+                <TelInputField
+                  countryList={getCountriesOptions()}
+                  placeholder=""
+                  countryOnChange={option =>
+                    onSelectChange(option, 'phoneCountryId')
+                  }
+                  countryValue={
+                    getSelectedCountryCodeOption() || defaultCountryCodeOption
+                  }
+                  label="Phone Number"
+                  defaultCountry={{ label: '', value: '' }}
+                  SuffixIcon={() => <FontAwesomeIcon icon={faPhone} />}
+                  {...register('phoneNumber', phoneNumberValidatorOptions)}
+                />
+                <ErrorWrapper>{errors.phoneNumber?.message}</ErrorWrapper>
               </div>
               <div className="mt-5 text-left">
                 <div className="mt-1 text-sm font-normal text-gray-500">
