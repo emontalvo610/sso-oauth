@@ -2,7 +2,10 @@
 import ProfileForm from '@lib/components/PageForms/ProfileForm';
 import apiClient from '@lib/server/axios';
 import { encryptUserSession } from '@lib/server/encrypt';
-import { getServerActionSession } from '@lib/server/session/session';
+import {
+  getServerActionSession,
+  SESSION_NAME
+} from '@lib/server/session/session';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -19,7 +22,7 @@ export default async function AccountPage({
     'use server';
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    cookies().delete('iron-session/pickleball/sso');
+    cookies().delete(SESSION_NAME);
   };
 
   if (!user) {

@@ -132,7 +132,8 @@ export const login = async (body: IUserLoginPayload, userAgent: string) => {
       {
         ID: user.uuid,
         TIMESTAMP: Math.floor(Date.now() / 1000),
-        URL: redirectPBRACKETS
+        URL: redirectPBRACKETS,
+        LOGOUT: 0
       }
     );
     const OLT = encryption.data;

@@ -9,9 +9,11 @@ import {
   type IronSessionOptions
 } from '.';
 
+export const SESSION_NAME = 'iron-session/pickleball/sso';
+
 export const sessionOptions: IronSessionOptions = {
   password: process.env.COOKIE_SECRET as string,
-  cookieName: 'iron-session/pickleball/sso',
+  cookieName: SESSION_NAME,
   cookieOptions: {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',

@@ -6,6 +6,7 @@ import type {
 } from 'next';
 
 import { Environment } from '../environment';
+import { SESSION_NAME } from './session';
 
 // This is where we specify the typings of req.session.*
 declare module 'iron-session' {
@@ -25,7 +26,7 @@ declare module 'iron-session' {
 
 export const sessionOptions = {
   password: Environment.COOKIE_SECRET,
-  cookieName: 'iron-session/pickleball/sso',
+  cookieName: SESSION_NAME,
   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
   cookieOptions: {
     httpOnly: true,
