@@ -50,5 +50,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  NextResponse.redirect(`${redirectURI}?olt=${redirectOLT}`);
+  return NextResponse.redirect(`${redirectURI}?olt=${redirectOLT}`);
 }
