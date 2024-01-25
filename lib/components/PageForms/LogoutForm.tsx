@@ -15,11 +15,17 @@ export const LogoutForm = () => {
   useEffect(() => {
     const logout = async () => {
       const response = await fetch('/api/logout');
-      const data = await response.json();
+      const data: {
+        status: string;
+        body: { redirectURI: string; redirectOLT: string };
+      } = await response.json();
 
       if (data.status === 'OK') {
         setSessionStorageItem('logout', 'true');
-        router.replace(`/${redirect ? `?${redirect}` : ''}`);
+        const p = new URLSearchParams({
+          ...(data.body.redirectOLT && { olt: data.body.redirectOLT })
+        });
+        window.location.href = `${data.body.redirectURI}?${p.toString()}`;
       }
     };
 

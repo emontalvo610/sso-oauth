@@ -31,7 +31,10 @@ export default function ProfileForm(props: IFormProps) {
       const data = await response.json();
       if (response.status === 200 && data.status === 'OK') {
         setSessionStorageItem('logout', 'true');
-        window.location.href = '/';
+        const p = new URLSearchParams({
+          ...(data.body.redirectOLT && { olt: data.body.redirectOLT })
+        });
+        window.location.href = `${data.body.redirectURI}?${p.toString()}`;
       }
     } catch (err) {
       console.error(err);
