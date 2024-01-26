@@ -1,5 +1,7 @@
 import LoginForm from '@lib/components/PageForms/LoginForm';
 import RegisterPrepareForm from '@lib/components/PageForms/RegisterPrepareForm';
+import SignupNeverClaimedForm from '@lib/components/PageForms/SignupNeverClaimedForm';
+import { LookupEmail } from '@lib/constants';
 import { lookupEmail } from '@lib/server/api';
 import { base64decode } from '@lib/utils/url';
 import { notFound } from 'next/navigation';
@@ -18,9 +20,10 @@ export default async function ValidateEmailPage({ params }: IPageProps) {
     return notFound();
   }
 
-  return emailExist ? (
-    <LoginForm email={email} />
-  ) : (
-    <RegisterPrepareForm email={email} />
-  );
+  if (emailExist === LookupEmail.VERIFIED) return <LoginForm email={email} />;
+
+  if (emailExist === LookupEmail.NOT_FOUND)
+    return <RegisterPrepareForm email={email} />;
+
+  return <SignupNeverClaimedForm email={email} />;
 }

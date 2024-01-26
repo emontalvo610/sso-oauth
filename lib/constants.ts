@@ -7,3 +7,9 @@ export enum Validity {
   INVALID = 'invalid',
   VALID = 'valid'
 }
+
+export enum LookupEmail {
+  NOT_FOUND = 'not found',
+  NOT_CLAIMED = 'not claimed',
+  VERIFIED = 'verified'
+}

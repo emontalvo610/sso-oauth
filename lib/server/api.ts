@@ -2,7 +2,7 @@
 
 'use server';
 
-import { Validity } from '@lib/constants';
+import { LookupEmail, Validity } from '@lib/constants';
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
 import { getBrowserInfo, isMobileDevice } from '@lib/utils/browser';
 import { AxiosError } from 'axios';
@@ -17,14 +17,18 @@ import { getServerActionSession } from './session/session';
 
 export const lookupEmail = async (email: string) => {
   try {
-    const { status } = await apiClient.get(
+    const { status, data } = await apiClient.get(
       `${Environment.API_URL}/v1/data/user-email-lookup/${email}`
     );
-    if (status === 200) return true;
+    if (status === 200) {
+      if (data.email_status === 'EMAIL_NOT_CLAIMED')
+        return LookupEmail.NOT_CLAIMED;
+      if (data.email_status === 'EMAIL_CLAIMED') return LookupEmail.VERIFIED;
+    }
   } catch (error) {
     console.error(`Error: LookupEmail by ${email}`, error);
   }
-  return false;
+  return LookupEmail.NOT_FOUND;
 };
 
 export const validateEmailSecret = async (secret: string) => {

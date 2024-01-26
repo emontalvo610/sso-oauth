@@ -43,6 +43,7 @@ a {
 
 button:disabled .btn-link {
   @apply !text-purple-300;
+  pointer-events: none;
 }
 
 a {

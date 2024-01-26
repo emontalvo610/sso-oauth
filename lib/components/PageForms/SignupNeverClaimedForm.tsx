@@ -2,7 +2,7 @@
 
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import { usePostResendValidationEmail } from '@lib/hooks/auth';
-import { getSearchParamQuery } from '@lib/utils/url';
+import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -15,7 +15,7 @@ interface IFormProps {
   email: string;
 }
 
-export default function SignupVerifyEmailForm(props: IFormProps) {
+export default function SignupNeverClaimedForm(props: IFormProps) {
   const [isLoading, setLoading] = useState(false);
   const postResendValidationEmail = usePostResendValidationEmail();
 
@@ -51,23 +51,30 @@ export default function SignupVerifyEmailForm(props: IFormProps) {
             <img src="/icons/icon-msg.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Check your email
+            Claim your account
           </div>
           <div className="mt-5 text-md font-normal text-gray-500">
-            We sent a verification link to
+            <span className="font-bold text-gray-500">NOTICE:</span>
+            <br />
+            An account was started with this email but never claimed
             <br />
             <span className="font-medium text-gray-500">{props.email}</span>
           </div>
-          <div className="mt-5 text-md font-normal text-gray-500">
-            Open the email and click on the link to complete your sign up
-            process
-          </div>
           <div className="mt-5 text-sm font-normal text-gray-500">
-            Didn't receive the email?{' '}
             <LinkButton onClick={onResendConfirm} disabled={isLoading}>
               {isLoading && <Spinner />}
-              Click to resend
-            </LinkButton>
+              Click here
+            </LinkButton>{' '}
+            to resend email to claim account
+          </div>
+          <div className="mt-1 text-sm font-normal text-gray-500">
+            <LinkButton
+              href={`/register/${base64encode(props.email)}`}
+              disabled={isLoading}
+            >
+              Click here
+            </LinkButton>{' '}
+            to fill out the form again
           </div>
         </div>
       </div>
