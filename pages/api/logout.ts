@@ -8,13 +8,15 @@ const logoutHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { redirect } = req.query;
 
-    console.log(redirect || `https://${process.env.COOKIE_DOMAIN}`);
     const encryption = await apiClient.post(
       `${process.env.API_URL}/v1/pb_data/encrypt`,
       {
         ID: req.session.user?.uuid,
         TIMESTAMP: Math.floor(Date.now() / 1000),
-        URL: redirect || `https://${process.env.COOKIE_DOMAIN}`,
+        URL:
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:3000'
+            : redirect || `https://${process.env.COOKIE_DOMAIN}`,
         LOGOUT: 1
       }
     );
