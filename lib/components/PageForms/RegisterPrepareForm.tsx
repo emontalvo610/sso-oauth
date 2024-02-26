@@ -7,6 +7,7 @@ import StaticInputField from '@lib/components/Forms/StaticInputField';
 import { base64encode, getSearchParamQuery } from '@lib/utils/url';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import LogoButton from '../Buttons/LogoButton';
@@ -17,6 +18,8 @@ interface IFormProps {
 }
 
 export default function RegisterPrepareForm(props: IFormProps) {
+  const params = useSearchParams();
+  const queryParams = new URLSearchParams(params || {});
   const [email, setEmail] = useState(props.email);
 
   const getBackUrl = () => {
@@ -52,11 +55,13 @@ export default function RegisterPrepareForm(props: IFormProps) {
                 className="input-basic"
                 value={email}
                 onValueChange={setEmail}
-                redirect="/"
+                redirect={`/${queryParams ? `?${queryParams.toString()}` : ''}`}
               />
             </div>
             <Link
-              href={`/register/${base64encode(email)}`}
+              href={`/register/${base64encode(email)}${
+                queryParams ? `?${queryParams.toString()}` : ''
+              }`}
               className="link-none"
             >
               <Button variant="primary" className="btn-submit">

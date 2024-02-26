@@ -3,6 +3,7 @@
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import { usePostResendValidationEmail } from '@lib/hooks/auth';
 import { base64encode, getSearchParamQuery } from '@lib/utils/url';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -17,6 +18,8 @@ interface IFormProps {
 
 export default function SignupNeverClaimedForm(props: IFormProps) {
   const [isLoading, setLoading] = useState(false);
+  const params = useSearchParams();
+  const sessionParam = params?.get('session');
   const postResendValidationEmail = usePostResendValidationEmail();
 
   const getBackUrl = () => {
@@ -28,7 +31,9 @@ export default function SignupNeverClaimedForm(props: IFormProps) {
       setLoading(true);
       await postResendValidationEmail({
         email: props.email,
-        custom_url: `${window.location.origin}/validate_email`
+        custom_url: sessionParam
+          ? `${window.location.origin}/validate_email/${sessionParam}`
+          : `${window.location.origin}/validate_email`
       });
       toast.success(`An email link was resent to ${props.email}`);
     } catch (err) {

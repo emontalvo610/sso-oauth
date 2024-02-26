@@ -49,6 +49,38 @@ export const validateEmailSecret = async (secret: string) => {
   return null;
 };
 
+export const validateSession = async (session: string) => {
+  try {
+    const { status, data } = await apiClient.post(
+      `${Environment.API_URL}/v1/pb_data/decrypt`,
+      session
+    );
+    if (status === 200) {
+      return data ?? {};
+    }
+  } catch (error) {
+    console.error(`Error: ValidateEmail by ${session}`, error);
+  }
+  return null;
+};
+
+export const encryptUser = async (id: string, email: string) => {
+  try {
+    const { data } = await apiClient.post(
+      `${Environment.API_URL}/v1/pb_data/encrypt`,
+      JSON.stringify({
+        USER_ID: id,
+        EMAIL: email
+      })
+    );
+    console.log(data);
+    return data ?? {};
+  } catch (error) {
+    console.error(`Error: ValidateEmail by ${id}`, error);
+  }
+  return null;
+};
+
 export const validateSecret = async (secret: string) => {
   try {
     const { status } = await apiClient.get(

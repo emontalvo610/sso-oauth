@@ -31,7 +31,7 @@ import {
 import TelInputField from '@pickleballinc/react-ui/TelInputField';
 import { validateRecaptchaToken } from '@server/recaptcha';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
@@ -57,6 +57,8 @@ interface ISelectOption {
 export default function RegisterSubmitForm(props: IFormProps) {
   const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const params = useSearchParams();
+  const sessionParam = params?.get('session');
   const [recaptchaResult, setRecaptchaResult] = useState(true);
   const { data: countriesData } = useGetCountries();
   const { data: statesData } = useGetStates();
@@ -287,9 +289,13 @@ export default function RegisterSubmitForm(props: IFormProps) {
           countryId: Number(countryId),
           stateId: Number(stateId),
           zip: zipCode,
-          custom_url: `${window.location.origin}/validate_email`
+          custom_url: sessionParam
+            ? `${window.location.origin}/validate_email/${sessionParam}`
+            : `${window.location.origin}/validate_email`
         });
-        router.push(`/signup-verify/email/${base64encode(email)}`);
+        router.push(
+          `/signup-verify/email/${base64encode(email)}?${params?.toString()}`
+        );
       } catch (err) {
         console.error(err);
         setError('root.server', {
