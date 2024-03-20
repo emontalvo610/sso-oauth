@@ -50,6 +50,7 @@ export interface IForgotPasswordRequestPayload {
   email: string;
   custom_url?: string;
   request_type: 'email' | 'sms';
+  device?: string;
 }
 
 export interface IForgotPasswordPayload {

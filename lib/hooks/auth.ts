@@ -14,10 +14,10 @@ export const usePostLogin = () => {
 
 export const usePostRegister = () => {
   return (body: IUserRegisterPayload) => {
-    console.log(body);
-    return axios.post('/api/proxy/v1/pub/register_users', {
+    return axios.post('/api/register-users', {
       payload: body,
-      force_recreation: true
+      force_recreation: true,
+      device: window.navigator.userAgent
     });
   };
 };

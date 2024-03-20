@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+
 'use client';
 
 import BackButton from '@components/Buttons/BackButton';

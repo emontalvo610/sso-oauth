@@ -6,15 +6,19 @@ import axios from 'axios';
 
 export const usePostForgotPasswordRequest = () => {
   return (body: IForgotPasswordRequestPayload) => {
-    return axios.post('/api/proxy/v1/pub/request_forgot_password', {
-      payload: body
+    return axios.post('/api/request-password-reset', {
+      payload: body,
+      device: window.navigator.userAgent
     });
   };
 };
 
 export const usePostForgotPassword = () => {
   return (body: IForgotPasswordPayload) => {
-    return axios.post('/api/proxy/v1/pub/forgot_password', { payload: body });
+    return axios.post('/api/forgot-password', {
+      payload: body,
+      device: window.navigator.userAgent
+    });
   };
 };
 

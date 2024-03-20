@@ -33,7 +33,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
         custom_url: `${window.location.origin}/forgot_password`,
         request_type: 'email'
       });
-      router.push(`/reset-verify/email/${base64encode(props.email)}`);
+      // router.push(`/reset-verify/email/${base64encode(props.email)}`);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong. Please try again later.');
