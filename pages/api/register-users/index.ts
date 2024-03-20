@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from '@lib/server/axios';
+import { Environment } from '@lib/server/environment';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -9,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const response = await axios.post(
-      'https://api.pickleball.com/v1/pub/register_users',
+      `${Environment.API_URL}/v1/pub/register_users`,
       {
         payload: req.body.payload,
         force_recreation: true
