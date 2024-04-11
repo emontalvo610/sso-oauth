@@ -296,10 +296,12 @@ export default function RegisterSubmitForm(props: IFormProps) {
         router.push(
           `/signup-verify/email/${base64encode(email)}?${params?.toString()}`
         );
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
         setError('root.server', {
-          message: 'Something went wrong. Please try again some time later'
+          message:
+            err?.response?.data?.message ||
+            'Something went wrong. Please try again some time later'
         });
       } finally {
         setLoading(false);

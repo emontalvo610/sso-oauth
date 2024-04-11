@@ -1,6 +1,5 @@
 'use client';
 
-import { faEnvelope, faPhone } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
 import { usePostForgotPasswordRequest } from '@lib/hooks/forgot_password';
@@ -83,7 +82,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
                   <Spinner />
                 ) : (
                   <FontAwesomeIcon
-                    icon={faEnvelope}
+                    icon="envelope"
                     width={20}
                     height={20}
                     className="pt-1"
@@ -107,7 +106,7 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
                   <Spinner />
                 ) : (
                   <FontAwesomeIcon
-                    icon={faPhone}
+                    icon="phone"
                     width={20}
                     height={20}
                     className="pt-1"

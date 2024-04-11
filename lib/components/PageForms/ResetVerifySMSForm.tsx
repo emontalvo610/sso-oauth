@@ -1,6 +1,5 @@
 'use client';
 
-import { faEnvelope } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import CodeInputField from '@lib/components/Forms/CodeInputField';
@@ -143,7 +142,7 @@ export default function ResetVerifySMSForm(props: IFormProps) {
                   <Spinner />
                 ) : (
                   <FontAwesomeIcon
-                    icon={faEnvelope}
+                    icon="envelope"
                     width={20}
                     height={20}
                     className="pt-1"
