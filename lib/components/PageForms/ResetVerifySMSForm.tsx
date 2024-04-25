@@ -82,7 +82,7 @@ export default function ResetVerifySMSForm(props: IFormProps) {
     try {
       setLoading(true);
       setErrorMessage('');
-      const { status } = await getValidateSecret(authCode);
+      const { status } = await getValidateSecret(authCode, props.email);
       if (status === 200) {
         router.push(`/forgot_password/${authCode}`);
       }

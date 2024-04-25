@@ -71,10 +71,12 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
             <img src="/icons/icon-shield.svg" width={64} height={64} />
           </div>
           <div className="mt-6 text-[30px] font-semibold leading-9 sm:text-[24px]">
-            Email or text message
+            {props.smsEnabled ? 'Email or text message' : 'Email message'}
           </div>
           <div className="mt-3 text-center text-md font-normal text-gray-500 sm:mt-2">
-            Choose to reset your password via text message or email
+            {props.smsEnabled
+              ? 'Choose to reset your password via text message or email'
+              : 'Reset your password via email'}
           </div>
           <div className="mb-8 mt-5 w-full">
             <Button

@@ -23,7 +23,7 @@ export const usePostForgotPassword = () => {
 };
 
 export const useGetValidateSecret = () => {
-  return (secret: string) => {
-    return axios.get(`/api/proxy/v1/sso/validate_url/${secret}`);
+  return (secret: string, email: string) => {
+    return axios.get(`/api/proxy/v1/sso/validate_url/${secret}?email=${email}`);
   };
 };
