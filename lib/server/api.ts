@@ -22,13 +22,23 @@ export const lookupEmail = async (email: string) => {
     );
     if (status === 200) {
       if (data.email_status === 'EMAIL_NOT_CLAIMED')
-        return LookupEmail.NOT_CLAIMED;
-      if (data.email_status === 'EMAIL_CLAIMED') return LookupEmail.VERIFIED;
+        return {
+          status: LookupEmail.NOT_CLAIMED,
+          smsEnabled: data.phone_country_id_sms_enabled
+        };
+      if (data.email_status === 'EMAIL_CLAIMED')
+        return {
+          status: LookupEmail.VERIFIED,
+          smsEnabled: data.phone_country_id_sms_enabled
+        };
     }
   } catch (error) {
     console.error(`Error: LookupEmail by ${email}`, error);
   }
-  return LookupEmail.NOT_FOUND;
+  return {
+    status: LookupEmail.NOT_FOUND,
+    smsEnabled: false
+  };
 };
 
 export const validateEmailSecret = async (secret: string) => {

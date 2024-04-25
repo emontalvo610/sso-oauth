@@ -25,8 +25,13 @@ export default async function ChooseForgotPasswordPage({ params }: IPageProps) {
     redirect('/account');
   }
 
-  if (emailExist === LookupEmail.VERIFIED) {
-    return <ChooseForgotPasswordForm email={email} />;
+  if (emailExist.status === LookupEmail.VERIFIED) {
+    return (
+      <ChooseForgotPasswordForm
+        email={email}
+        smsEnabled={emailExist.smsEnabled}
+      />
+    );
   }
 
   redirect(`/`);

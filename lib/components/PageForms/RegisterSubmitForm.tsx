@@ -132,7 +132,10 @@ export default function RegisterSubmitForm(props: IFormProps) {
     } else {
       clearErrors('gender');
     }
-    if (textAlertEnabled === undefined) {
+    if (
+      textAlertEnabled === undefined &&
+      ['231', '232', '142', '38'].includes(phoneCountryId)
+    ) {
       setError('textAlertEnabled', {
         message: 'Please select one of the alert options'
       });
@@ -455,36 +458,40 @@ export default function RegisterSubmitForm(props: IFormProps) {
                 />
                 <ErrorWrapper>{errors.phoneNumber?.message}</ErrorWrapper>
               </div>
-              <div className="mt-5 text-left">
-                <div className="mt-1 text-sm font-normal text-gray-500">
-                  Allow Pickleball.com to send you Text Alerts
+              {['231', '232', '142', '38'].includes(
+                watch('phoneCountryId')
+              ) && (
+                <div className="mt-5 text-left">
+                  <div className="mt-1 text-sm font-normal text-gray-500">
+                    Allow Pickleball.com to send you Text Alerts
+                  </div>
+                  <div className="mt-2 flex gap-6 mi:flex-col mi:gap-2">
+                    <Radio
+                      Text="Yes, get texts"
+                      size="sm"
+                      className="input-radio-basic"
+                      name="radio-alert"
+                      onChange={() =>
+                        onSelectChange({ value: 1 }, 'textAlertEnabled')
+                      }
+                    />
+                    <Radio
+                      Text="No, don't get texts"
+                      size="sm"
+                      className="input-radio-basic"
+                      name="radio-alert"
+                      onChange={() =>
+                        onSelectChange({ value: 0 }, 'textAlertEnabled')
+                      }
+                    />
+                  </div>
+                  <div className="mt-1">
+                    <ErrorWrapper>
+                      {errors.textAlertEnabled?.message}
+                    </ErrorWrapper>
+                  </div>
                 </div>
-                <div className="mt-2 flex gap-6 mi:flex-col mi:gap-2">
-                  <Radio
-                    Text="Yes, get texts"
-                    size="sm"
-                    className="input-radio-basic"
-                    name="radio-alert"
-                    onChange={() =>
-                      onSelectChange({ value: 1 }, 'textAlertEnabled')
-                    }
-                  />
-                  <Radio
-                    Text="No, don't get texts"
-                    size="sm"
-                    className="input-radio-basic"
-                    name="radio-alert"
-                    onChange={() =>
-                      onSelectChange({ value: 0 }, 'textAlertEnabled')
-                    }
-                  />
-                </div>
-                <div className="mt-1">
-                  <ErrorWrapper>
-                    {errors.textAlertEnabled?.message}
-                  </ErrorWrapper>
-                </div>
-              </div>
+              )}
               {!recaptchaResult && (
                 <ErrorWrapper>
                   We were unable to verify that you are not a robot. Please

@@ -20,9 +20,10 @@ export default async function ValidateEmailPage({ params }: IPageProps) {
     return notFound();
   }
 
-  if (emailExist === LookupEmail.VERIFIED) return <LoginForm email={email} />;
+  if (emailExist.status === LookupEmail.VERIFIED)
+    return <LoginForm email={email} />;
 
-  if (emailExist === LookupEmail.NOT_FOUND)
+  if (emailExist.status === LookupEmail.NOT_FOUND)
     return <RegisterPrepareForm email={email} />;
 
   return <SignupNeverClaimedForm email={email} />;

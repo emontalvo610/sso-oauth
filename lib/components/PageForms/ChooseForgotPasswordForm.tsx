@@ -16,6 +16,7 @@ import Spinner from '../Loadings/Spinner';
 
 interface IFormProps {
   email: string;
+  smsEnabled: boolean;
 }
 
 export default function ChooseForgotPasswordForm(props: IFormProps) {
@@ -97,30 +98,34 @@ export default function ChooseForgotPasswordForm(props: IFormProps) {
             >
               Send via email
             </Button>
-            <div className="my-3 text-md font-normal text-gray-500">
-              <HorizontalBar>OR</HorizontalBar>
-            </div>
-            <Button
-              prefixIcon={
-                isSMSLoading ? (
-                  <Spinner />
-                ) : (
-                  <FontAwesomeIcon
-                    icon="phone"
-                    width={20}
-                    height={20}
-                    className="pt-1"
-                  />
-                )
-              }
-              size="md"
-              variant="secondary"
-              className="btn-simple w-full"
-              onClick={onSendSMSConfirmation}
-              disabled={isEmailLoading || isSMSLoading}
-            >
-              Send via text message
-            </Button>
+            {props.smsEnabled && (
+              <>
+                <div className="my-3 text-md font-normal text-gray-500">
+                  <HorizontalBar>OR</HorizontalBar>
+                </div>
+                <Button
+                  prefixIcon={
+                    isSMSLoading ? (
+                      <Spinner />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon="phone"
+                        width={20}
+                        height={20}
+                        className="pt-1"
+                      />
+                    )
+                  }
+                  size="md"
+                  variant="secondary"
+                  className="btn-simple w-full"
+                  onClick={onSendSMSConfirmation}
+                  disabled={isEmailLoading || isSMSLoading}
+                >
+                  Send via text message
+                </Button>
+              </>
+            )}
           </div>
           <Link href={getBackUrl()} className="link-none">
             <Button variant="primary" className="btn-submit">
