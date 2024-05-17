@@ -4,7 +4,6 @@ import BackButton from '@components/Buttons/BackButton';
 import BackButtonLayout from '@components/Layouts/BackButtonLayout';
 import LinkButton from '@lib/components/Buttons/LinkButton';
 import TermsAndPolicy from '@lib/components/Footers/TermsAndPolicy';
-import { setSessionStorageItem } from '@lib/utils/storage';
 import { isWebView } from '@lib/utils/webview';
 import { Button } from '@pickleballinc/react-ui';
 import Link from 'next/link';
@@ -30,7 +29,6 @@ export default function ProfileForm(props: IFormProps) {
       const response = await fetch('/api/logout');
       const data = await response.json();
       if (response.status === 200 && data.status === 'OK') {
-        setSessionStorageItem('logout', 'true');
         const p = new URLSearchParams({
           ...(data.body.redirectOLT && { olt: data.body.redirectOLT })
         });
