@@ -32,6 +32,7 @@ export interface IUserRegisterPayload {
   countryId: number;
   zip: string;
   custom_url?: string;
+  captchaToken: string;
 }
 
 export interface IUserLoginPayload {

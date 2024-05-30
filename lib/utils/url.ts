@@ -1,3 +1,19 @@
+export function removeTrailingSlash(url: string) {
+  return url.replace(/\/$/, '');
+}
+
+export const proxyWhitelist = [
+  '/v1/data/lookup_countries',
+  '/v1/data/lookup_states',
+  '/v1/pub/resend_validation_email',
+  '/v1/sso/validate_url'
+];
+
+export function isValidProxyUrl(url?: string) {
+  if (!url) return false;
+  return proxyWhitelist.some(whiteUrl => url.includes(whiteUrl));
+}
+
 export const getSearchParamQuery = () => {
   if (typeof window === 'undefined') {
     return '';

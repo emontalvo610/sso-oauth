@@ -29,7 +29,6 @@ import {
   Select
 } from '@pickleballinc/react-ui';
 import TelInputField from '@pickleballinc/react-ui/TelInputField';
-import { validateRecaptchaToken } from '@server/recaptcha';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -251,64 +250,61 @@ export default function RegisterSubmitForm(props: IFormProps) {
     const isValid = checkManualValidation() && (await trigger());
     if (!isValid) return;
     if (!executeRecaptcha) return;
-    let isHuman = false;
     setLoading(true);
+    let captchaToken = '';
     try {
-      const token = await executeRecaptcha();
-      if (!token) {
-        setRecaptchaResult(false);
-        setLoading(false);
-        return;
+      captchaToken = await executeRecaptcha();
+      if (!captchaToken) {
+        throw Error('No captcha token found');
       }
-      isHuman = await validateRecaptchaToken(token);
-      setRecaptchaResult(isHuman);
     } catch (err) {
       console.error(err);
+      setLoading(false);
       setRecaptchaResult(false);
+      return;
     }
 
-    if (isHuman) {
-      try {
-        const { email } = props;
-        const {
-          firstName,
-          lastName,
-          password,
-          phoneNumber,
-          phoneCountryId,
-          countryId,
-          stateId,
-          gender,
-          zipCode
-        } = getValues();
-        await postRegister({
-          email,
-          firstName,
-          lastName,
-          password,
-          gender,
-          phone: phoneNumber,
-          phoneCountryId: Number(phoneCountryId),
-          countryId: Number(countryId),
-          stateId: Number(stateId),
-          zip: zipCode,
-          custom_url: sessionParam
-            ? `${window.location.origin}/validate_email/${sessionParam}`
-            : `${window.location.origin}/validate_email`
-        });
-        router.push(
-          `/signup-verify/email/${base64encode(email)}?${params?.toString()}`
-        );
-      } catch (err: any) {
-        console.error(err);
-        setError('root.server', {
-          message:
-            err?.response?.data?.message ||
-            'Something went wrong. Please try again some time later'
-        });
-      } finally {
-        setLoading(false);
-      }
+    try {
+      const { email } = props;
+      const {
+        firstName,
+        lastName,
+        password,
+        phoneNumber,
+        phoneCountryId,
+        countryId,
+        stateId,
+        gender,
+        zipCode
+      } = getValues();
+      await postRegister({
+        email,
+        firstName,
+        lastName,
+        password,
+        gender,
+        phone: phoneNumber,
+        phoneCountryId: Number(phoneCountryId),
+        countryId: Number(countryId),
+        stateId: Number(stateId),
+        zip: zipCode,
+        custom_url: sessionParam
+          ? `${window.location.origin}/validate_email/${sessionParam}`
+          : `${window.location.origin}/validate_email`,
+        captchaToken
+      });
+      router.push(
+        `/signup-verify/email/${base64encode(email)}?${params?.toString()}`
+      );
+    } catch (err: any) {
+      console.error(err);
+      setError('root.server', {
+        message:
+          err?.response?.data?.message ||
+          'Something went wrong. Please try again some time later'
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
