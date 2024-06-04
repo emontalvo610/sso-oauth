@@ -26,12 +26,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       {
         payload: req.body.payload,
         force_recreation: true
-      },
-      {
-        headers: {
-          'PB-User-Ip': req.headers['x-forwarded-for'],
-          'PB-Device': req.body.device || ''
-        }
       }
     );
 

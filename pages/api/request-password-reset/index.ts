@@ -13,12 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       `${Environment.API_URL}/v1/pub/request_forgot_password`,
       {
         payload: req.body.payload
-      },
-      {
-        headers: {
-          'PB-User-Ip': req.headers['x-forwarded-for'],
-          'PB-Device': req.body.device || ''
-        }
       }
     );
 

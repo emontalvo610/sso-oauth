@@ -16,8 +16,7 @@ export const usePostRegister = () => {
   return (body: IUserRegisterPayload) => {
     return axios.post('/api/register-users', {
       payload: body,
-      force_recreation: true,
-      device: window.navigator.userAgent
+      force_recreation: true
     });
   };
 };

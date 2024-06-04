@@ -7,8 +7,7 @@ import axios from 'axios';
 export const usePostForgotPasswordRequest = () => {
   return (body: IForgotPasswordRequestPayload) => {
     return axios.post('/api/request-password-reset', {
-      payload: body,
-      device: window.navigator.userAgent
+      payload: body
     });
   };
 };
@@ -17,7 +16,7 @@ export const usePostForgotPassword = () => {
   return (body: IForgotPasswordPayload) => {
     return axios.post('/api/forgot-password', {
       payload: body,
-      device: window.navigator.userAgent
+      userAgent: window.navigator.userAgent
     });
   };
 };

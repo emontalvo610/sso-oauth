@@ -4,10 +4,11 @@
 
 import { LookupEmail, Validity } from '@lib/constants';
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
-import { getBrowserInfo, isMobileDevice } from '@lib/utils/browser';
+import { getBrowserInfo, getDeviceOS, getDeviceType } from '@lib/utils/browser';
 import { AxiosError } from 'axios';
 import type { IronSessionData } from 'iron-session';
 import { redirect } from 'next/navigation';
+import os from 'os';
 
 import apiClient from './axios';
 import { cacheStorage } from './cache';
@@ -137,10 +138,12 @@ export const login = async (body: IUserLoginPayload, userAgent: string) => {
       },
       {
         headers: {
-          BROWSER: browser?.getBrowserName() || 'Unknown',
-          'BROWSER-VERSION': browser?.getBrowserVersion() || 'Unknown',
-          'IS-MOBILE': isMobileDevice(userAgent),
-          'SERVER-MACHINE-NAME': userAgent
+          browser: browser?.getBrowserName() || 'Unknown',
+          'browser-version': browser?.getBrowserVersion() || 'Unknown',
+          'server-machine-name': os.hostname(),
+          'user-agent': userAgent,
+          'pb-device': getDeviceType(userAgent),
+          'pb-device-os': getDeviceOS(userAgent)
         }
       }
     );
