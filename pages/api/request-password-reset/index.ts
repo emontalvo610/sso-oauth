@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import axios from '@lib/server/axios';
 import { Environment } from '@lib/server/environment';
-import { getDeviceType } from '@lib/utils/browser';
 import { extractIP } from '@lib/utils/location';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -25,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       {
         headers: {
-          'pb-device': getDeviceType(userAgent),
+          'pb-device': userAgent,
           'pb-user-ip': userIp
         }
       }
