@@ -5,8 +5,10 @@
 import { LookupEmail, Validity } from '@lib/constants';
 import type { IUser, IUserLoginPayload } from '@lib/types/user';
 import { getBrowserInfo, getDeviceOS, getDeviceType } from '@lib/utils/browser';
+import { extractIP } from '@lib/utils/location';
 import { AxiosError } from 'axios';
 import type { IronSessionData } from 'iron-session';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import os from 'os';
 
@@ -128,6 +130,11 @@ export const login = async (body: IUserLoginPayload, userAgent: string) => {
   const browser = getBrowserInfo(userAgent);
 
   try {
+    const header = headers();
+    const forwardAddr = (header.get('x-forwarded-for') ?? '127.0.0.1').split(
+      ','
+    )[0]; // ::ffff:127.0.0.1
+    const userIp = extractIP(forwardAddr);
     const response = await apiClient.post<IUser>(
       `${process.env.API_URL}/v1/sso/login`,
       {
@@ -142,6 +149,7 @@ export const login = async (body: IUserLoginPayload, userAgent: string) => {
           'browser-version': browser?.getBrowserVersion() || 'Unknown',
           'server-machine-name': os.hostname(),
           'user-agent': userAgent,
+          'pb-user-ip': userIp,
           'pb-device': getDeviceType(userAgent),
           'pb-device-os': getDeviceOS(userAgent)
         }

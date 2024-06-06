@@ -2,7 +2,9 @@
 import axios from '@lib/server/axios';
 import { Environment } from '@lib/server/environment';
 import { getBrowserInfo, getDeviceOS, getDeviceType } from '@lib/utils/browser';
+import { extractIP } from '@lib/utils/location';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { headers } from 'next/headers';
 import os from 'os';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,6 +14,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const { payload, userAgent } = req.body;
   const browser = getBrowserInfo(userAgent);
+
+  const header = headers();
+  const forwardAddr = (header.get('x-forwarded-for') ?? '127.0.0.1').split(
+    ','
+  )[0]; // ::ffff:127.0.0.1
+  const userIp = extractIP(forwardAddr);
+
   try {
     const response = await axios.post(
       `${Environment.API_URL}/v1/pub/forgot_password`,
@@ -24,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           'browser-version': browser?.getBrowserVersion() || 'Unknown',
           'server-machine-name': os.hostname(),
           'user-agent': userAgent,
+          'pb-user-ip': userIp,
           'pb-device': getDeviceType(userAgent),
           'pb-device-os': getDeviceOS(userAgent)
         }
